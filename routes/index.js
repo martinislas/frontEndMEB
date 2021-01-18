@@ -14,7 +14,7 @@ module.exports = () => {
   router.use('/admin', adminRoute());
   router.use('/jobs', jobsRoute());
   router.use('/posts', postsRoute());
-  router.user('/user', userRoute());
+  router.use('/user', userRoute());
 
   return router;
 };
