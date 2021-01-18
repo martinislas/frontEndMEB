@@ -14,5 +14,5 @@ jobs:
       - uses: google-github-actions/deploy-appengine@main
         with:
           project_id: meb-resources
-          deliverables: app.yaml
+          deliverables: ./app.yaml
           credentials: ${{ secrets.gcp_credentials }}
