@@ -1,15 +1,21 @@
-const express = require('express');
-
-const datastore = require('../models/datastore');
+import express from 'express';
 
 const router = express.Router();
 
-module.exports = () => {
-  router.get('/', (request, response) => {
-    return response.json([{title: 'Job 1'}, {title: 'Job 2'}, {title: 'Job 3'}]);
+export default params => {
+  const { datastore } = params
+  router.get('/', async(request, response, next) => {
+    try {
+      const query = datastore.createQuery('job').order('created', {descending: true});
+      const [entities] = await datastore.runQuery(query);
+      return response.json(entities);
+    } catch (error) {
+      next(error);
+    }
   });
 
-  router.post('/', (request, response) => {
+  router.post('/', async (request, response, next) => {
+    try {
       const entity = {
         key: datastore.key('job'),
         excludeFromIndexes: [
@@ -18,19 +24,21 @@ module.exports = () => {
           'updated',
         ],
         data: {
-          name: 'A Job',
-          description: 'Job description',
-          workingHours: '9-5',
-          salary: '$15/hour',
-          location: 'job location',
-          industry: 'job industry',
+          name: request.body.name,
+          description: request.body.description,
+          salary: request.body.salary,
+          location: request.body.location,
+          industry: request.body.industry,
           created: new Date(),
           updated: new Date(),
         },
       };
-      datastore.insert(entity).then((err, apiResponse) => {
-        return response.json(apiResponse);
+      await datastore.save(entity, () => {
+        return response.json(entity.key);
       });
+    } catch (error) {
+      next(error);
+    }
   });
 
   return router;

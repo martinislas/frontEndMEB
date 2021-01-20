@@ -10,6 +10,7 @@
     "lint": "prettier --check '**/*.js' && eslint '**/*.js'",
     "lint:fix": "prettier --write '**/*.js' && eslint --fix '**/*.js'"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/OwenJacob/mebresources.com.git"
@@ -33,6 +34,7 @@
   },
   "dependencies": {
     "@google-cloud/datastore": "^6.3.1",
+    "body-parser": "^1.19.0",
     "express": "^4.17.1"
   }
 }

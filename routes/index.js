@@ -1,20 +1,21 @@
-const express = require('express');
-const adminRoute = require('./admin');
-const jobsRoute = require('./jobs');
-const postsRoute = require('./posts');
-const userRoute = require('./user');
+import express from 'express';
+import adminRoute from './admin.js';
+import jobsRoute from './jobs.js';
+import postsRoute from './posts.js';
+import userRoute from './user.js';
 
 const router = express.Router();
 
-module.exports = () => {
+export default params => {
+  const { datastore } = params
   router.get('/', (request, response) => {
     response.send('Landing page');
   });
 
-  router.use('/admin', adminRoute());
-  router.use('/jobs', jobsRoute());
-  router.use('/posts', postsRoute());
-  router.use('/user', userRoute());
+  router.use('/admin', adminRoute(datastore));
+  router.use('/jobs', jobsRoute(datastore));
+  router.use('/posts', postsRoute(datastore));
+  router.use('/user', userRoute(datastore));
 
   return router;
 };

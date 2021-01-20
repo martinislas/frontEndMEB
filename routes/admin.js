@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 
 const router = express.Router();
 
-module.exports = () => {
+export default () => {
   router.get('/', (request, response) => {
     response.send('Admin page');
   });
