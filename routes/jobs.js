@@ -6,9 +6,14 @@ export default params => {
   const { datastore } = params
   router.get('/', async(request, response, next) => {
     try {
-      const query = datastore.createQuery('job').order('created', {descending: true});
+      const query = datastore.createQuery('job').select(['name','location','industry']);
       const [entities] = await datastore.runQuery(query);
-      return response.json(entities);
+      const data = entities.map(entity => {
+        entity.key = entity[datastore.KEY];
+        entity.id = entity[datastore.KEY].id;
+        return entity;
+      });
+      return response.json(data);
     } catch (error) {
       next(error);
     }
@@ -40,6 +45,20 @@ export default params => {
       next(error);
     }
   });
+
+  router.get('/:id', async (request, response, next) => {
+    try {
+      const query = datastore
+        .createQuery('job')
+        .filter('__key__', '=', datastore.key(['job',parseInt(request.params.id)]));
+      const [entities] = await datastore.runQuery(query);
+      const data = entities[0];
+      data.id = entities[0][datastore.KEY].id;
+      return response.json(data);
+    } catch (error) {
+      next(error);
+    }
+  })
 
   return router;
 };
