@@ -9,6 +9,7 @@ const app = express();
 const datastore = new gcloudstore.Datastore();
 const port = process.env.PORT || 3000;
 
+app.use(express.static('dist/mebresources'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', routes({datastore}));
 
