@@ -12,6 +12,11 @@
 # below:
 .git
 .gitignore
+.github
 
 # Node.js dependencies:
 node_modules/
+
+# Angular
+e2e/
+src/
