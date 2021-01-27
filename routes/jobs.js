@@ -15,7 +15,7 @@ export default params => {
       });
       return response.json(data);
     } catch (error) {
-      return next(error.message);
+      return next(error);
     }
   });
 
