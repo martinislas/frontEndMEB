@@ -13,6 +13,10 @@ app.use(express.static('dist/mebresources'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', routes({datastore}));
 
+app.use((error, request, response, next) => {
+  response.json(error)
+})
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
