@@ -14,7 +14,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', routes({datastore}));
 
 app.use((error, request, response, next) => {
-  response.json(error)
+  const err = {
+    "error": {
+      "code": error.code || 500,
+      "message": error.message || "Internal Server Error",
+      "status": error.status || "No Trace"
+    }
+  }
+  response.json(err)
 })
 
 app.listen(port, () => {
