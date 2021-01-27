@@ -15,7 +15,7 @@ export default params => {
       });
       return response.json(data);
     } catch (error) {
-      next(error);
+      return next(error);
     }
   });
 
@@ -42,7 +42,7 @@ export default params => {
         return response.json(entity.key);
       });
     } catch (error) {
-      next(error);
+      return next(error);
     }
   });
 
@@ -56,7 +56,7 @@ export default params => {
       data.id = entities[0][datastore.KEY].id;
       return response.json(data);
     } catch (error) {
-      next(error);
+      return next(error);
     }
   })
 
