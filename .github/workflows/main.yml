@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    name: GAE Deploy
+    name: meb resources backend deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,7 +16,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/backend/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
       - uses: actions/setup-node@v1
@@ -24,9 +24,7 @@ jobs:
           node-version: '14.x'
       - name: Build 
         run: |
-           npm install -g @angular/cli
-           npm install 
-           npm run build:prod
+           cd backend
       - uses: google-github-actions/deploy-appengine@main
         with:
           credentials: ${{ secrets.gcp_credentials }}

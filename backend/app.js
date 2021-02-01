@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.static('dist/mebresources'));
 app.use(bodyParser.urlencoded({extended: true}));
-app.use('/', routes({datastore}));
+app.use('/api', routes({datastore}));
 
 app.use((error, request, response, next) => {
   const err = {
