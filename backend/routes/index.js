@@ -8,10 +8,6 @@ const router = express.Router();
 
 export default (params) => {
   const { datastore } = params;
-  router.get('/', (request, response, next) => {
-    response.redirect('/');
-  });
-
   router.use('/admin', adminRoute(datastore));
   router.use('/jobs', jobsRoute(datastore));
   router.use('/posts', postsRoute(datastore));
