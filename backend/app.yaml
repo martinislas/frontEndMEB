@@ -1,6 +1,1 @@
 runtime: nodejs14
-
-handlers:
-  - url: /favicon\.ico
-    static_files: /build/favicon.ico
-    upload: favicon\.ico
