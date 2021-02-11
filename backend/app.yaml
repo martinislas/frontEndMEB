@@ -1,8 +1,5 @@
 runtime: nodejs14
 
-env_variables:
-  BUCKET_NAME: "meb-resources"
-
 handlers:
   - url: /
     secure: always
