@@ -7,8 +7,8 @@ on:
       - main
 
 jobs:
-  deploy_frontend:
-    name: MEB Resources frontend deploy
+  deploy:
+    name: MEB Resources
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -27,19 +27,25 @@ jobs:
            cd ./frontend
            npm install
            npm run build
-      - id: upload-files
-        uses: google-github-actions/upload-cloud-storage@main
-        with:
-          credentials: ${{ secrets.gcp_credentials }}
-          path: ./frontend/build
-          destination: meb-resources
-
-  deploy_backend:
-    name: MEB Resources backend deploy
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+           mv build ../backend/
       - uses: google-github-actions/deploy-appengine@main
         with:
           working_directory: ./backend
           credentials: ${{ secrets.gcp_credentials }}
+
+  #     - id: upload-files
+  #       uses: google-github-actions/upload-cloud-storage@main
+  #       with:
+  #         credentials: ${{ secrets.gcp_credentials }}
+  #         path: ./frontend/build
+  #         destination: meb-resources
+
+  # deploy_backend:
+  #   name: MEB Resources backend deploy
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: google-github-actions/deploy-appengine@main
+  #       with:
+  #         working_directory: ./backend
+  #         credentials: ${{ secrets.gcp_credentials }}
