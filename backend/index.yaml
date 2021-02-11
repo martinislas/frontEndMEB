@@ -1,0 +1,7 @@
+indexes:
+
+- kind: job
+  properties:
+  - name: name
+  - name: location
+  - name: industry
