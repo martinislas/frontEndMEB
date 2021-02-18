@@ -6,7 +6,11 @@ export default (params) => {
   const { datastore } = params;
   router.get('/', async (request, response, next) => {
     try {
-      const query = datastore.createQuery('job').select(['name', 'location', 'industry']);
+      let limit = 10;
+      if (request.query.limit !== undefined) {
+        limit = Number(request.query.limit);
+      }
+      const query = datastore.createQuery('job').select(['name', 'location', 'industry', 'salary']).limit(limit);
       const [entities] = await datastore.runQuery(query);
       const data = entities.map((entity) => {
         entity.key = entity[datastore.KEY];
