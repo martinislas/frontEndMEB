@@ -9,13 +9,9 @@ function GetJobDetails () {
     const {id} = useParams();
     
     useEffect(() => {
-      fetch(`api/jobs/${id}`)
-      .then((response) => {
-        console.log(response)
-          response.json()
-      })
+      fetch(`/api/jobs/${id}`)
+      .then((response) => response.json())
       .then(setData);
-      
     }, [id]);
   
     if(data) {

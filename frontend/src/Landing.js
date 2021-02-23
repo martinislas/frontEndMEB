@@ -7,7 +7,7 @@ function LatestJobs () {
     const [data, setData] = useState(null)
     
     useEffect(() => {
-      fetch(`api/jobs?limit=3`)
+      fetch(`/api/jobs?limit=3`)
       .then((response) => response.json())
       .then(setData);
     }, []);

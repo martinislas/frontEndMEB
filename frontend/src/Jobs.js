@@ -7,7 +7,7 @@ function GetJobs () {
     const [data, setData] = useState(null)
     
     useEffect(() => {
-      fetch(`api/jobs`)
+      fetch(`/api/jobs`)
       .then((response) => response.json())
       .then(setData);
     }, []);
