@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import 'react-bulma-components/dist/react-bulma-components.min.css';
-import { Container, Heading, Section } from 'react-bulma-components';
+import { Columns, Container, Content, Heading, Section } from 'react-bulma-components';
 import Nav from './Nav';
 
 function GetJobDetails () {
@@ -19,9 +19,17 @@ function GetJobDetails () {
         <div>
           <Section size="medium">
             <Container>
-                <Heading>{data.name}</Heading>
-                <Heading subtitle>{data.location}</Heading>
-                <Heading subtitle>{data.salary}</Heading>
+              <Columns centered>
+                <Columns.Column size="two-thirds">
+                  <Heading>{data.name}</Heading>
+                  <Heading subtitle>Location: {data.location}</Heading>
+                  <Heading subtitle>Salary: {data.salary}</Heading>
+                  <Content>
+                    <p>Industry: {data.industry}</p>
+                    <p>{data.description}</p>
+                  </Content>
+                </Columns.Column>
+              </Columns>
             </Container>
           </Section>
         </div>
