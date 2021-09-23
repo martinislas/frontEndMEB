@@ -27,8 +27,20 @@ jobs:
            cd ./frontend
            npm install
            npm run build
-           mv build ../backend/
+           mv build ../deploy
+           cp client.yaml ../deploy/
+      - uses: google-github-actions/deploy-appengine@main
+        with:
+          working_directory: ./deploy
+          deliverables: client.yaml
+          credentials: ${{ secrets.gcp_credentials }}
       - uses: google-github-actions/deploy-appengine@main
         with:
           working_directory: ./backend
+          deliverables: api.yaml
+          credentials: ${{ secrets.gcp_credentials }}
+      - uses: google-github-actions/deploy-appengine@main
+        with:
+          working_directory: .
+          deliverables: dispatch.yaml
           credentials: ${{ secrets.gcp_credentials }}
