@@ -27,11 +27,9 @@ jobs:
            cd ./frontend
            npm install
            npm run build
-           mv build ../deploy
-           cp client.yaml ../deploy/
       - uses: google-github-actions/deploy-appengine@main
         with:
-          working_directory: ./deploy
+          working_directory: ./frontend
           deliverables: client.yaml
           credentials: ${{ secrets.gcp_credentials }}
       - uses: google-github-actions/deploy-appengine@main
