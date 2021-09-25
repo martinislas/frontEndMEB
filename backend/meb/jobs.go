@@ -2,6 +2,7 @@ package meb
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -23,8 +24,17 @@ type Job struct {
 
 func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
+	var err error
 
-	limit := 10
+	queryLimit := r.URL.Query().Get("limit")
+	limit := 5
+	if len(queryLimit) != 0 {
+		limit, err = strconv.Atoi(queryLimit)
+		if err != nil {
+			limit = 5
+		}
+	}
+	fmt.Println(limit)
 	query := datastore.NewQuery("job").Limit(limit)
 
 	var jobs []*Job
