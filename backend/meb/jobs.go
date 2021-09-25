@@ -2,6 +2,7 @@ package meb
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -25,11 +26,16 @@ func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	query := datastore.NewQuery("job").Limit(limit)
 
 	jobs := make([]*Job, limit)
-	keys, _ := ds.Client.GetAll(ds.Ctx, query, &jobs)
+	keys, err := ds.Client.GetAll(ds.Ctx, query, &jobs)
+	if err != nil {
+		w.Write([]byte(err.Error()))
+	}
+	fmt.Println(keys)
 
 	for i, key := range keys {
 		jobs[i].ID = key.ID
 	}
+	fmt.Println(jobs)
 
 	jobsResp, _ := json.Marshal(&jobs)
 
@@ -64,8 +70,11 @@ func postJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 func getJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	key := datastore.NameKey("job", ps.ByName("id"), nil)
 	job := new(Job)
-	ds.Client.Get(ds.Ctx, key, job)
-	// Handle an error on Get
+	err := ds.Client.Get(ds.Ctx, key, job)
+	if err != nil {
+		w.Write([]byte(err.Error()))
+	}
+	fmt.Println(job)
 
 	jobResp, _ := json.Marshal(&job)
 
