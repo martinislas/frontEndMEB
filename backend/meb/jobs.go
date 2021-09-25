@@ -3,6 +3,7 @@ package meb
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 	"time"
 
 	"cloud.google.com/go/datastore"
@@ -10,7 +11,7 @@ import (
 )
 
 type Job struct {
-	ID          string    `json:"id" datastore:"-"`
+	ID          int64     `json:"id" datastore:"-"`
 	Name        string    `json:"name" datastore:"name"`
 	Description string    `json:"description" datastore:"description,noindex"`
 	Salary      string    `json:"salary" datastore:"salary"`
@@ -34,7 +35,7 @@ func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 
 	for i, key := range keys {
-		jobs[i].ID = key.Name
+		jobs[i].ID = key.ID
 	}
 
 	jobsResp, err := json.Marshal(&jobs)
@@ -76,14 +77,20 @@ func postJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 func getJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
-	key := datastore.NameKey("job", ps.ByName("id"), nil)
-	job := new(Job)
-	err := dsClient.Get(ctx, key, job)
+	id, err := strconv.ParseInt(ps.ByName("id"), 10, 64)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	job.ID = key.Name
+
+	key := datastore.IDKey("job", id, nil)
+	job := new(Job)
+	err = dsClient.Get(ctx, key, job)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	job.ID = key.ID
 
 	jobResp, err := json.Marshal(&job)
 	if err != nil {
