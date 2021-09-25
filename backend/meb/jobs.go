@@ -31,7 +31,8 @@ func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	jobs := make([]*Job, limit)
 	keys, err := query.GetAll(ctx, &jobs)
 	if err != nil {
-		w.Write([]byte(err.Error()))
+		http.Error(w, err.Error(), 500)
+		return
 	}
 	fmt.Println(keys)
 
@@ -40,7 +41,11 @@ func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 	fmt.Println(jobs)
 
-	jobsResp, _ := json.Marshal(&jobs)
+	jobsResp, err := json.Marshal(&jobs)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -63,7 +68,8 @@ func postJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	key := datastore.NewIncompleteKey(ctx, "job", nil)
 	key, err := datastore.Put(ctx, key, &job)
 	if err != nil {
-		w.Write([]byte(err.Error()))
+		http.Error(w, err.Error(), 500)
+		return
 	}
 	fmt.Println(key)
 
@@ -78,11 +84,16 @@ func getJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	job := new(Job)
 	err := datastore.Get(ctx, key, job)
 	if err != nil {
-		w.Write([]byte(err.Error()))
+		http.Error(w, err.Error(), 500)
+		return
 	}
 	fmt.Println(job)
 
-	jobResp, _ := json.Marshal(&job)
+	jobResp, err := json.Marshal(&job)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
