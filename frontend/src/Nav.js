@@ -6,9 +6,7 @@ function Nav() {
     return (
       <Navbar color="primary">
         <Navbar.Brand>
-          <Navbar.Item href="/">
-            <img src={Logo} alt="MEB Resources Logo" />
-          </Navbar.Item>
+          <Navbar.Item href="/">MEB Resources</Navbar.Item>
         </Navbar.Brand>
         <Navbar.Menu>
           <Navbar.Container position="end">
