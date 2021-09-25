@@ -11,7 +11,7 @@ import (
 )
 
 type Job struct {
-	ID          int64     `json:"id" datastore:"-"`
+	ID          string    `json:"id" datastore:"-"`
 	Name        string    `json:"name" datastore:"name"`
 	Description string    `json:"description" datastore:"description,noindex"`
 	Salary      string    `json:"salary" datastore:"salary"`
@@ -35,7 +35,8 @@ func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 
 	for i, key := range keys {
-		jobs[i].ID = key.ID
+		keyName := strconv.FormatInt(key.ID, 10)
+		jobs[i].ID = keyName
 	}
 
 	jobsResp, err := json.Marshal(&jobs)
@@ -90,7 +91,7 @@ func getJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	job.ID = key.ID
+	job.ID = ps.ByName("id")
 
 	jobResp, err := json.Marshal(&job)
 	if err != nil {
