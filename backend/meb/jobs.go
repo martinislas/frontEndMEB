@@ -2,17 +2,15 @@ package meb
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"time"
 
+	"cloud.google.com/go/datastore"
 	"github.com/julienschmidt/httprouter"
-	"google.golang.org/appengine"
-	"google.golang.org/appengine/datastore"
 )
 
 type Job struct {
-	ID          int64     `json:"id" datastore:"-"`
+	ID          string    `json:"id" datastore:"-"`
 	Name        string    `json:"name" datastore:"name"`
 	Description string    `json:"description" datastore:"description,noindex"`
 	Salary      string    `json:"salary" datastore:"salary"`
@@ -23,23 +21,21 @@ type Job struct {
 }
 
 func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	ctx := appengine.NewContext(r)
+	ctx := r.Context()
 
 	limit := 10
 	query := datastore.NewQuery("job").Limit(limit)
 
-	jobs := make([]*Job, limit)
-	keys, err := query.GetAll(ctx, &jobs)
+	var jobs []*Job
+	keys, err := dsClient.GetAll(ctx, query, &jobs)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	fmt.Println(keys)
 
 	for i, key := range keys {
-		jobs[i].ID = key.IntID()
+		jobs[i].ID = key.Name
 	}
-	fmt.Println(jobs)
 
 	jobsResp, err := json.Marshal(&jobs)
 	if err != nil {
@@ -53,7 +49,7 @@ func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 
 func postJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	ctx := appengine.NewContext(r)
+	ctx := r.Context()
 
 	job := Job{
 		Name:        "job",
@@ -65,29 +61,29 @@ func postJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		Updated:     time.Now(),
 	}
 
-	key := datastore.NewIncompleteKey(ctx, "job", nil)
-	key, err := datastore.Put(ctx, key, &job)
+	key := datastore.IncompleteKey("job", nil)
+	_, err := dsClient.Put(ctx, key, &job)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	fmt.Println(key)
+	// Return complete key
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 }
 
 func getJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	ctx := appengine.NewContext(r)
+	ctx := r.Context()
 
-	key := datastore.NewKey(ctx, "job", ps.ByName("id"), 0, nil)
+	key := datastore.NameKey("job", ps.ByName("id"), nil)
 	job := new(Job)
-	err := datastore.Get(ctx, key, job)
+	err := dsClient.Get(ctx, key, job)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	fmt.Println(job)
+	job.ID = key.Name
 
 	jobResp, err := json.Marshal(&job)
 	if err != nil {

@@ -3,10 +3,14 @@ package meb
 import (
 	"net/http"
 
+	"cloud.google.com/go/datastore"
 	"github.com/julienschmidt/httprouter"
 )
 
-func Router() http.Handler {
+var dsClient *datastore.Client
+
+func Router(datastoreClient *datastore.Client) http.Handler {
+	dsClient = datastoreClient
 	mux := httprouter.New()
 
 	mux.GET("/api/jobs", getJobs)
