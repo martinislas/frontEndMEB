@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import 'react-bulma-components/dist/react-bulma-components.min.css';
-import { Card, Columns, Container, Heading, Section } from 'react-bulma-components';
+import { Card, Columns, Container, Heading, Hero, Section } from 'react-bulma-components';
 import Nav from './Nav';
 
 function LatestJobs () {
@@ -17,7 +17,7 @@ function LatestJobs () {
         <div>
           <Section size="medium">
             <Container>
-              <Heading size={2}>Latest Jobs</Heading>
+              <Heading size={3}>Latest Jobs</Heading>
               <Columns>
                 {data.map((job) => (
                   <Columns.Column size="one-third">
@@ -45,10 +45,33 @@ function LatestJobs () {
     );
 }
 
+function Welcome () {
+    return (
+      <div>
+        <Section>
+            <Hero size="medium">
+              <Hero.Body>
+                <Container>
+                  <Heading spaced>MEB Resources</Heading>
+                  <Heading size={2} subtitle spaced>
+                    We provide staffing management and HR consulting in Rochester, Austin and St. Cloud MN.
+                  </Heading>
+                  <Heading size={4} spaced>
+                    We work here. We live here. We're committed to providing great service to the clients we serve as well as the candidates and employees we partner with.
+                  </Heading>
+                </Container>
+              </Hero.Body>
+            </Hero>
+          </Section>
+      </div>
+    );
+}
+
 function Landing () {
     return (
       <div>
         <Nav />
+        <Welcome />
         <LatestJobs />
       </div>
     );
