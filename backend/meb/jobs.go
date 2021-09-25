@@ -45,26 +45,25 @@ func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 
 func postJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	// try {
-	// 	const entity = {
-	// 	  key: datastore.key('job'),
-	// 	  excludeFromIndexes: ['description', 'created', 'updated'],
-	// 	  data: {
-	// 		name: request.body.name,
-	// 		description: request.body.description,
-	// 		salary: request.body.salary,
-	// 		location: request.body.location,
-	// 		industry: request.body.industry,
-	// 		created: new Date(),
-	// 		updated: new Date(),
-	// 	  },
-	// 	};
-	// 	await datastore.save(entity, () => {
-	// 	  return response.json(entity.key);
-	// 	});
-	//   } catch (error) {
-	// 	return next(error);
-	//   }
+	job := Job{
+		Name:        "job",
+		Description: "description",
+		Salary:      "a lot",
+		Location:    "at the beach",
+		Industry:    "relax",
+		Created:     time.Now(),
+		Updated:     time.Now(),
+	}
+
+	key := datastore.IncompleteKey("job", nil)
+	key, err := ds.Client.Put(ds.Ctx, key, job)
+	if err != nil {
+		w.Write([]byte(err.Error()))
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(key.Name))
 }
 
 func getJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
