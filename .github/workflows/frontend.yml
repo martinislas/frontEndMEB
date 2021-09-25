@@ -1,0 +1,32 @@
+name: Deploy MEB Resources Frontend
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    name: Deploy React Client
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache Node Modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Setup Node Env
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - name: Build 
+        run: |
+           cd ./frontend
+           npm install
+           npm run build
+      - name: GCP React Client Deploy
+        uses: google-github-actions/deploy-appengine@main
+        with:
+          working_directory: ./frontend
+          deliverables: client.yaml
+          credentials: ${{ secrets.gcp_credentials }}

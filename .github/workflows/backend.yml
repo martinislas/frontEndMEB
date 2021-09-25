@@ -1,0 +1,22 @@
+name: Deploy MEB Resources Backend
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    name: Deploy API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: GCP API Deploy
+        uses: google-github-actions/deploy-appengine@main
+        with:
+          working_directory: ./backend
+          deliverables: api.yaml
+          credentials: ${{ secrets.gcp_credentials }}
+      - name: GCP Dispatch Deploy
+        uses: google-github-actions/deploy-appengine@main
+        with:
+          working_directory: .
+          deliverables: dispatch.yaml
+          credentials: ${{ secrets.gcp_credentials }}
