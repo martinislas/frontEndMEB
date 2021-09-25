@@ -6,8 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"cloud.google.com/go/datastore"
 	"github.com/julienschmidt/httprouter"
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/datastore"
 )
 
 type Job struct {
@@ -22,18 +23,20 @@ type Job struct {
 }
 
 func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	ctx := appengine.NewContext(r)
+
 	limit := 10
 	query := datastore.NewQuery("job").Limit(limit)
 
 	jobs := make([]*Job, limit)
-	keys, err := ds.Client.GetAll(ds.Ctx, query, &jobs)
+	keys, err := query.GetAll(ctx, &jobs)
 	if err != nil {
 		w.Write([]byte(err.Error()))
 	}
 	fmt.Println(keys)
 
 	for i, key := range keys {
-		jobs[i].ID = key.ID
+		jobs[i].ID = key.IntID()
 	}
 	fmt.Println(jobs)
 
@@ -45,6 +48,8 @@ func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 
 func postJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	ctx := appengine.NewContext(r)
+
 	job := Job{
 		Name:        "job",
 		Description: "description",
@@ -55,21 +60,23 @@ func postJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		Updated:     time.Now(),
 	}
 
-	key := datastore.IncompleteKey("job", nil)
-	key, err := ds.Client.Put(ds.Ctx, key, job)
+	key := datastore.NewIncompleteKey(ctx, "job", nil)
+	key, err := datastore.Put(ctx, key, &job)
 	if err != nil {
 		w.Write([]byte(err.Error()))
 	}
+	fmt.Println(key)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(key.Name))
 }
 
 func getJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	key := datastore.NameKey("job", ps.ByName("id"), nil)
+	ctx := appengine.NewContext(r)
+
+	key := datastore.NewKey(ctx, "job", ps.ByName("id"), 0, nil)
 	job := new(Job)
-	err := ds.Client.Get(ds.Ctx, key, job)
+	err := datastore.Get(ctx, key, job)
 	if err != nil {
 		w.Write([]byte(err.Error()))
 	}
