@@ -11,14 +11,14 @@ import (
 )
 
 type Job struct {
-	ID          int64     `json:"id"`
-	Name        string    `json:"name"`
-	Description string    `json:"description" datastore:",noindex"`
-	Salary      string    `json:"salary"`
-	Location    string    `json:"location"`
-	Industry    string    `json:"industry"`
-	Created     time.Time `datastore:",noindex"`
-	Updated     time.Time `datastore:",noindex"`
+	ID          int64     `json:"id" datastore:"-"`
+	Name        string    `json:"name" datastore:"name"`
+	Description string    `json:"description" datastore:"description,noindex"`
+	Salary      string    `json:"salary" datastore:"salary"`
+	Location    string    `json:"location" datastore:"location"`
+	Industry    string    `json:"industry" datastore:"industry"`
+	Created     time.Time `datastore:"created,noindex"`
+	Updated     time.Time `datastore:"updated,noindex"`
 }
 
 func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
