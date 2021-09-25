@@ -15,7 +15,7 @@ function LatestJobs () {
     if(data) {
       return (
         <div>
-          <Section size="medium">
+          <Section size="small">
             <Container>
               <Heading size={3}>Latest Jobs</Heading>
               <Columns>
@@ -48,21 +48,19 @@ function LatestJobs () {
 function Welcome () {
     return (
       <div>
-        <Section>
-            <Hero size="medium">
-              <Hero.Body>
-                <Container>
-                  <Heading spaced>MEB Resources</Heading>
-                  <Heading size={2} subtitle spaced>
-                    We provide staffing management and HR consulting in Rochester, Austin and St. Cloud MN.
-                  </Heading>
-                  <Heading size={4} spaced>
-                    We work here. We live here. We're committed to providing great service to the clients we serve as well as the candidates and employees we partner with.
-                  </Heading>
-                </Container>
-              </Hero.Body>
-            </Hero>
-          </Section>
+        <Hero size="medium">
+          <Hero.Body>
+            <Container>
+              <Heading spaced>MEB Resources</Heading>
+              <Heading size={2} subtitle spaced>
+                We provide staffing management and HR consulting in Rochester, Austin and St. Cloud MN.
+              </Heading>
+              <Heading size={4} subtitle spaced>
+                We work here. We live here. We're committed to providing great service to the clients we serve as well as the candidates and employees we partner with.
+              </Heading>
+            </Container>
+          </Hero.Body>
+        </Hero>
       </div>
     );
 }
