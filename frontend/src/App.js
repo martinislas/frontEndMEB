@@ -6,24 +6,22 @@ import AdminLogin from './AdminLogin';
 
 function App() {
   return (
-    <div>
-      <Router>
-        <Switch>
-          <Route path="/admin">
-            <AdminLogin />
-          </Route>
-          <Route path="/jobs/:id">
-            <JobDetails />
-          </Route>
-          <Route path="/jobs">
-            <Jobs />
-          </Route>
-          <Route path="/">
-            <Landing />
-          </Route>
-        </Switch>
-      </Router>
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/admin">
+          <AdminLogin />
+        </Route>
+        <Route path="/jobs/:id">
+          <JobDetails />
+        </Route>
+        <Route path="/jobs">
+          <Jobs />
+        </Route>
+        <Route path="/">
+          <Landing />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

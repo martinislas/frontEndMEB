@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import 'react-bulma-components/dist/react-bulma-components.min.css';
+import 'bulma/css/bulma.min.css';
 import { Button, Container, Section, Table } from 'react-bulma-components';
-import Nav from './Nav';
+import Nav from './components/Nav';
 
 function GetJobs () {
     const [data, setData] = useState(null)

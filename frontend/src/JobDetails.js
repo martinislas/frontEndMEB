@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import 'react-bulma-components/dist/react-bulma-components.min.css';
+import 'bulma/css/bulma.min.css';
 import { Columns, Container, Content, Heading, Section } from 'react-bulma-components';
-import Nav from './Nav';
+import Nav from './components/Nav';
 
 function GetJobDetails () {
     const [data, setData] = useState(null)

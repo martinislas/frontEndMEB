@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import 'react-bulma-components/dist/react-bulma-components.min.css';
+import 'bulma/css/bulma.min.css';
 import { Button, Container, Form, Heading, Icon, Level, Section } from 'react-bulma-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock } from '@fortawesome/fontawesome-free-solid';
+import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 
 function AdminLogin () {
   const [form, setForm] = useState({ username: '', password: '' });
