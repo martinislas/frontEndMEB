@@ -2,7 +2,6 @@ package meb
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -34,13 +33,12 @@ func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 			limit = 5
 		}
 	}
-	fmt.Println(limit)
 	query := datastore.NewQuery("job").Limit(limit)
 
 	var jobs []*Job
 	keys, err := dsClient.GetAll(ctx, query, &jobs)
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -49,15 +47,13 @@ func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		jobs[i].ID = keyName
 	}
 
-	jobsResp, err := json.Marshal(&jobs)
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
-
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write(jobsResp)
+	json.NewEncoder(w).Encode(jobs)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }
 
 func postJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -76,7 +72,7 @@ func postJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	key := datastore.IncompleteKey("job", nil)
 	_, err := dsClient.Put(ctx, key, &job)
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	// Return complete key
@@ -90,7 +86,7 @@ func getJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	id, err := strconv.ParseInt(ps.ByName("id"), 10, 64)
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -98,18 +94,16 @@ func getJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	job := new(Job)
 	err = dsClient.Get(ctx, key, job)
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	job.ID = ps.ByName("id")
 
-	jobResp, err := json.Marshal(&job)
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
-
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write(jobResp)
+	json.NewEncoder(w).Encode(job)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }

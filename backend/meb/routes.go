@@ -17,5 +17,7 @@ func Router(datastoreClient *datastore.Client) http.Handler {
 	mux.GET("/api/jobs/:id", getJob)
 	mux.POST("/api/jobs", postJob)
 
+	mux.POST("/api/admin/new-admin", postNewAdminUser)
+
 	return mux
 }

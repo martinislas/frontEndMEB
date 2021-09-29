@@ -6,3 +6,8 @@ indexes:
   - name: location
   - name: industry
   - name: salary
+
+- kind: admin
+  properties:
+  - name: username
+  - name: is_active
