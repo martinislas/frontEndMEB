@@ -8,7 +8,7 @@ import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import useToken from '../auth/UseToken';
 
 function AdminLogin () {
-  const [token, setToken] = useToken();
+  const [, setToken] = useToken();
 
   const [form, setForm] = useState({ username: '', password: '' });
   const update = (({ target }) => setForm({ ...form, [target.name]: target.value }));
