@@ -1,12 +1,34 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router';
+import { axios } from 'axios';
 import 'bulma/css/bulma.min.css';
 import { Button, Container, Form, Heading, Icon, Level, Section } from 'react-bulma-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+import useToken from '../auth/UseToken';
 
 function AdminLogin () {
+  const [token, setToken] = useToken();
+
   const [form, setForm] = useState({ username: '', password: '' });
-  const update = (({ target }) => setForm({ ...form, [target.name]: target.value }))
+  const update = (({ target }) => setForm({ ...form, [target.name]: target.value }));
+
+  const history = useHistory();
+
+  const onLoginClicked = async () => {
+    try {
+      const response = await axios.post('/api/admin/login-admin', {
+        username: form.username,
+        password: form.password,
+      });
+      const { token } = response.data;
+      setToken(token);
+      history.push('/admin');
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   return (
     <div>
       <Section>
@@ -43,7 +65,7 @@ function AdminLogin () {
                 </Form.Field>
                 <Form.Field>
                   <Form.Control>
-                    <Button type="primary" onClick={() => console.log(form)}>Submit</Button>
+                    <Button type="primary" onClick={onLoginClicked}>Submit</Button>
                   </Form.Control>
                 </Form.Field>
               </div>
