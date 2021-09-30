@@ -95,13 +95,13 @@ func postLoginAdminUser(w http.ResponseWriter, r *http.Request, ps httprouter.Pa
 	loginAdminKey := datastore.NameKey("admin", loginAdmin.Username, nil)
 	err = dsClient.Get(ctx, loginAdminKey, &loginAdmin)
 	if err != nil {
-		w.WriteHeader(http.StatusForbidden)
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
 	authorised := bcrypt.CompareHashAndPassword(loginAdmin.HashedPassword, []byte(loginAdmin.Password))
 	if authorised != nil {
-		w.WriteHeader(http.StatusForbidden)
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
