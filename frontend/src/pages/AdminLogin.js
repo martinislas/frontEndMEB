@@ -21,6 +21,7 @@ function AdminLogin () {
         username: form.username,
         password: form.password,
       });
+      console.log(response)
       const { token } = response.data;
       setToken(token);
       history.push('/admin');
