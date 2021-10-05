@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router';
-import { axios } from 'axios';
+import axios from 'axios';
 import 'bulma/css/bulma.min.css';
 import { Button, Container, Form, Heading, Icon, Level, Section } from 'react-bulma-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,7 +21,6 @@ function AdminLogin () {
         username: form.username,
         password: form.password,
       });
-      console.log(response)
       const { token } = response.data;
       setToken(token);
       history.push('/admin');
