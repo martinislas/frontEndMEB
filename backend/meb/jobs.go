@@ -21,6 +21,10 @@ type Job struct {
 	Updated     time.Time `datastore:"updated,noindex"`
 }
 
+type NewJobResp struct {
+	ID string `json:"id"`
+}
+
 func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 	var err error
@@ -49,7 +53,7 @@ func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(jobs)
+	err = json.NewEncoder(w).Encode(jobs)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -59,26 +63,30 @@ func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 func postJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
-	job := Job{
-		Name:        "job",
-		Description: "description",
-		Salary:      "a lot",
-		Location:    "at the beach",
-		Industry:    "relax",
-		Created:     time.Now(),
-		Updated:     time.Now(),
-	}
-
-	key := datastore.IncompleteKey("job", nil)
-	_, err := dsClient.Put(ctx, key, &job)
+	var newJob Job
+	err := json.NewDecoder(r.Body).Decode(&newJob)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// Return complete key
+
+	key := datastore.IncompleteKey("job", nil)
+	storedKey, err := dsClient.Put(ctx, key, &newJob)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	newJobID := strconv.FormatInt(storedKey.ID, 10)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+	err = json.NewEncoder(w).Encode(NewJobResp{
+		ID: newJobID,
+	})
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }
 
 func getJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -101,7 +109,7 @@ func getJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(job)
+	err = json.NewEncoder(w).Encode(job)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

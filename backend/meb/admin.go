@@ -11,8 +11,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var hmacSampleSecret = "Asecret" // This should come from GCP secret manager
-
 type AdminUser struct {
 	FirstName      string    `json:"first_name" datastore:"first_name,noindex"`
 	Surname        string    `json:"surname" datastore:"surname,noindex"`
@@ -66,7 +64,7 @@ func postNewAdminUser(w http.ResponseWriter, r *http.Request, ps httprouter.Para
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(newAdmin)
+	err = json.NewEncoder(w).Encode(newAdmin)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -125,7 +123,7 @@ func postLoginAdminUser(w http.ResponseWriter, r *http.Request, ps httprouter.Pa
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(session)
+	err = json.NewEncoder(w).Encode(session)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
