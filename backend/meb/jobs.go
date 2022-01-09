@@ -17,6 +17,8 @@ type Job struct {
 	Salary      string    `json:"salary" datastore:"salary"`
 	Location    string    `json:"location" datastore:"location"`
 	Industry    string    `json:"industry" datastore:"industry"`
+	PostedBy    string    `json:"posted_by" datastore:"posted_by"`
+	Active      bool      `datastore:"active"`
 	Created     time.Time `datastore:"created,noindex"`
 	Updated     time.Time `datastore:"updated,noindex"`
 }
@@ -63,12 +65,19 @@ func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 func postJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
+	// adminUser := ctx.Value(adminUserCtx).(string)
+	adminDisplay := ctx.Value(adminDisplayCtx).(string)
+
 	var newJob Job
 	err := json.NewDecoder(r.Body).Decode(&newJob)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	newJob.PostedBy = adminDisplay
+	newJob.Active = true
+	newJob.Created = time.Now()
+	newJob.Updated = time.Now()
 
 	key := datastore.IncompleteKey("job", nil)
 	storedKey, err := dsClient.Put(ctx, key, &newJob)

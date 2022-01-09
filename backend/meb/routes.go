@@ -1,6 +1,7 @@
 package meb
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"strings"
@@ -13,9 +14,18 @@ import (
 var dsClient *datastore.Client
 var hmacSampleSecret = "Asecret" // This should come from GCP secret manager
 
+type adminUserContext string
+type adminDisplayContext string
+
+var (
+	adminUserCtx    = adminUserContext("admin-username")
+	adminDisplayCtx = adminDisplayContext("admin-displayname")
+)
+
 func withJWTAuth(next httprouter.Handle) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		authHeader := strings.Split(r.Header.Get("Authorization"), "Bearer ")
+		var adminUsername, adminDisplayname string
 
 		if len(authHeader) != 2 {
 			w.WriteHeader(http.StatusUnauthorized)
@@ -31,7 +41,6 @@ func withJWTAuth(next httprouter.Handle) httprouter.Handle {
 				return []byte(hmacSampleSecret), nil
 			})
 			if err != nil {
-				_ = fmt.Errorf(err.Error())
 				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
@@ -40,7 +49,17 @@ func withJWTAuth(next httprouter.Handle) httprouter.Handle {
 				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
+
+			if claims, ok := token.Claims.(jwt.MapClaims); ok {
+				adminUsername = claims["username"].(string)
+				adminDisplayname = claims["displayname"].(string)
+			}
 		}
+
+		withAdminUserCtx := context.WithValue(r.Context(), adminUserCtx, adminUsername)
+		withAdminDisplayCtx := context.WithValue(withAdminUserCtx, adminDisplayCtx, adminDisplayname)
+
+		next(w, r.WithContext(withAdminDisplayCtx), p)
 	}
 }
 

@@ -105,9 +105,10 @@ func postLoginAdminUser(w http.ResponseWriter, r *http.Request, ps httprouter.Pa
 
 	// Create a new token object
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"usr": loginAdmin.Username,
-		"iat": time.Now(),
-		"exp": time.Now().AddDate(0, 0, 2),
+		"username":    loginAdmin.Username,
+		"displayname": loginAdmin.FirstName,
+		"issued":      time.Now(),
+		"expiry":      time.Now().AddDate(0, 1, 0),
 	})
 
 	// Sign and get the complete encoded token as a string using the secret
