@@ -31,6 +31,7 @@ func withJWTAuth(next httprouter.Handle) httprouter.Handle {
 				return []byte(hmacSampleSecret), nil
 			})
 			if err != nil {
+				_ = fmt.Errorf(err.Error())
 				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
