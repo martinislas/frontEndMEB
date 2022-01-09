@@ -23,7 +23,7 @@ function AdminJobs () {
         industry: form.industry,
       }, {
       headers: {'Authorization': 'Bearer ' + token}
-      })
+      });
       history.push('/admin#jobs?status=success');
       console.log(response)
     } catch (e) {
