@@ -28,7 +28,7 @@ func withJWTAuth(next httprouter.Handle) httprouter.Handle {
 				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 					return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 				}
-				return nil, nil
+				return []byte(hmacSampleSecret), nil
 			})
 			if err != nil {
 				w.WriteHeader(http.StatusUnauthorized)
