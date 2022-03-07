@@ -1,33 +1,17 @@
-package meb
+package job
 
 import (
 	"encoding/json"
 	"net/http"
 	"strconv"
-	"time"
 
 	"cloud.google.com/go/datastore"
+	"github.com/OwenJacob/mebresources/meb/ds"
+	"github.com/OwenJacob/mebresources/meb/model"
 	"github.com/julienschmidt/httprouter"
 )
 
-type Job struct {
-	ID          string    `json:"id" datastore:"-"`
-	Name        string    `json:"name" datastore:"name"`
-	Description string    `json:"description" datastore:"description,noindex"`
-	Salary      string    `json:"salary" datastore:"salary"`
-	Location    string    `json:"location" datastore:"location"`
-	Industry    string    `json:"industry" datastore:"industry"`
-	PostedBy    string    `json:"posted_by" datastore:"posted_by"`
-	Active      bool      `datastore:"active"`
-	Created     time.Time `datastore:"created,noindex"`
-	Updated     time.Time `datastore:"updated,noindex"`
-}
-
-type NewJobResp struct {
-	ID string `json:"id"`
-}
-
-func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func GetJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 	var err error
 
@@ -41,8 +25,8 @@ func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 	query := datastore.NewQuery("job").Limit(limit)
 
-	var jobs []*Job
-	keys, err := dsClient.GetAll(ctx, query, &jobs)
+	var jobs []*model.Job
+	keys, err := ds.Client.GetAll(ctx, query, &jobs)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -62,43 +46,7 @@ func getJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 }
 
-func postJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	ctx := r.Context()
-
-	// adminUser := ctx.Value(adminUserCtx).(string)
-	adminDisplay := ctx.Value(adminDisplayCtx).(string)
-
-	var newJob Job
-	err := json.NewDecoder(r.Body).Decode(&newJob)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	newJob.PostedBy = adminDisplay
-	newJob.Active = true
-	newJob.Created = time.Now()
-	newJob.Updated = time.Now()
-
-	key := datastore.IncompleteKey("job", nil)
-	storedKey, err := dsClient.Put(ctx, key, &newJob)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	newJobID := strconv.FormatInt(storedKey.ID, 10)
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	err = json.NewEncoder(w).Encode(NewJobResp{
-		ID: newJobID,
-	})
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-}
-
-func getJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func GetJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
 	id, err := strconv.ParseInt(ps.ByName("id"), 10, 64)
@@ -108,8 +56,36 @@ func getJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 
 	key := datastore.IDKey("job", id, nil)
-	job := new(Job)
-	err = dsClient.Get(ctx, key, job)
+	job := new(model.Job)
+	err = ds.Client.Get(ctx, key, job)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	job.ID = ps.ByName("id")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	err = json.NewEncoder(w).Encode(job)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+// ApplyJob WIP
+func ApplyJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	ctx := r.Context()
+
+	id, err := strconv.ParseInt(ps.ByName("id"), 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	key := datastore.IDKey("job", id, nil)
+	job := new(model.Job)
+	err = ds.Client.Get(ctx, key, job)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

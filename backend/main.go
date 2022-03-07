@@ -8,6 +8,7 @@ import (
 
 	"cloud.google.com/go/datastore"
 	"github.com/OwenJacob/mebresources/meb"
+	"github.com/OwenJacob/mebresources/meb/ds"
 )
 
 func main() {
@@ -17,16 +18,17 @@ func main() {
 	}
 
 	ctx := context.Background()
+	var err error
 
 	// Create a datastore client. In a typical application, you would create
 	// a single client which is reused for every datastore operation.
-	dsClient, err := datastore.NewClient(ctx, "meb-resources")
+	ds.Client, err = datastore.NewClient(ctx, "meb-resources")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer dsClient.Close()
+	defer ds.Client.Close()
 
-	err = http.ListenAndServe(":"+port, meb.Router(dsClient))
+	err = http.ListenAndServe(":"+port, meb.Router())
 	if err != nil {
 		log.Fatal(err)
 	}
