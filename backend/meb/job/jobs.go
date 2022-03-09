@@ -15,6 +15,9 @@ func GetJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 	var err error
 
+	// get jobs by industry
+	// get jobs by location
+	// get jobs by active
 	queryLimit := r.URL.Query().Get("limit")
 	limit := 5
 	if len(queryLimit) != 0 {
@@ -90,6 +93,11 @@ func ApplyJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	// Get applicant details
+	// if not existing create new
+	// Update job with applicant id
+
 	job.ID = ps.ByName("id")
 
 	w.Header().Set("Content-Type", "application/json")

@@ -23,16 +23,17 @@ func Router() http.Handler {
 	mux.PUT("/api/admin/password", middleware.WithAdminAuth(admin.PutAdminUserPassword)) // update password for authenticated admin
 	mux.POST("/api/admin", middleware.WithAdminAuth(admin.PostAdminUser))                // new admin
 	mux.GET("/api/admins", middleware.WithAdminAuth(admin.GetAdminUsers))                // get a list of admins
-	// GET admin/industry (existing industry)
-	// POST admin/industry (new industry)
-	// PUT admin/industry (modify existing industry)
-	// DELETE admin/industry (delete existing industry -> Should be possible or not? Pretty dangerous)
-	// GET admin/location (existing locations)
-	// POST admin/location (new location)
-	// PUT admin/location (modify existing location)
+
+	mux.GET("/api/industries", admin.GetIndustries)                         // get existing industries
+	mux.PUT("/api/industry", middleware.WithAdminAuth(admin.PutIndustry))   // modify existing industry
+	mux.POST("/api/industry", middleware.WithAdminAuth(admin.PostIndustry)) // new industry
+
+	mux.GET("/api/locations", admin.GetLocations)                           // get existing locations
+	mux.PUT("/api/location", middleware.WithAdminAuth(admin.PutLocation))   // modify existing location
+	mux.POST("/api/location", middleware.WithAdminAuth(admin.PostLocation)) // new location
 
 	mux.POST("/api/admin/job", middleware.WithAdminAuth(admin.PostJob)) // POST admin/job (new job)
-	mux.POST("/api/admin/job", middleware.WithAdminAuth(admin.PutJob))  // PUT admin/job (modify existing job)
+	mux.PUT("/api/admin/job", middleware.WithAdminAuth(admin.PutJob))   // PUT admin/job (modify existing job)
 	// GET admin/job/:id/applicants (get applicants by job)
 	// GET admin/applicants (get existing applicants)
 	// GET admin/applicants/:id (get an existing applicant)

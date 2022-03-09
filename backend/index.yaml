@@ -11,3 +11,11 @@ indexes:
   properties:
   - name: username
   - name: is_active
+
+- kind: industry
+  properties:
+  - name: name
+
+- kind: location
+  properties:
+  - name: name

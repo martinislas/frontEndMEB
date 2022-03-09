@@ -10,20 +10,20 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-var hmacUserSecret = "Usersecret" // This should come from GCP secret manager
+var hmacUserSecret = "applicantSecret" // This should come from GCP secret manager
 
-type UserPhoneContext string
-type UserNameContext string
+type ApplicantIDContext string
+type ApplicantDisplayContext string
 
 var (
-	UserPhoneCtx = UserPhoneContext("user-phone")
-	UserNameCtx  = UserNameContext("user-name")
+	ApplicantIDCtx      = ApplicantIDContext("applicant-id")
+	ApplicantDisplayCtx = ApplicantDisplayContext("applicant-displayname")
 )
 
 func WithUserAuth(next httprouter.Handle) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		authHeader := strings.Split(r.Header.Get("Authorization"), "Bearer ")
-		var userphone, username string
+		var applicantID, applicantDisplayname string
 
 		if len(authHeader) != 2 {
 			w.WriteHeader(http.StatusUnauthorized)
@@ -49,14 +49,14 @@ func WithUserAuth(next httprouter.Handle) httprouter.Handle {
 			}
 
 			if claims, ok := token.Claims.(jwt.MapClaims); ok {
-				userphone = claims["phone"].(string)
-				username = claims["username"].(string)
+				applicantID = claims["id"].(string)
+				applicantDisplayname = claims["displayname"].(string)
 			}
 		}
 
-		withUserPhoneCtx := context.WithValue(r.Context(), UserPhoneCtx, userphone)
-		withUserNameCtx := context.WithValue(withUserPhoneCtx, UserNameCtx, username)
+		withApplicantIDCtx := context.WithValue(r.Context(), ApplicantIDCtx, applicantID)
+		withApplicantDisplayCtx := context.WithValue(withApplicantIDCtx, ApplicantDisplayCtx, applicantDisplayname)
 
-		next(w, r.WithContext(withUserNameCtx), p)
+		next(w, r.WithContext(withApplicantDisplayCtx), p)
 	}
 }

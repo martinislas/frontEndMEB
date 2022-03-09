@@ -7,8 +7,10 @@ type Job struct {
 	Name        string    `json:"name" datastore:"name"`
 	Description string    `json:"description" datastore:"description,noindex"`
 	Salary      string    `json:"salary" datastore:"salary"`
-	Location    string    `json:"location" datastore:"location"`
-	Industry    string    `json:"industry" datastore:"industry"`
+	Location    string    `json:"location" datastore:"-"`
+	LocationKey string    `json:"location_key" datastore:"location"`
+	Industry    string    `json:"industry" datastore:"-"`
+	IndustryKey string    `json:"industry_key" datastore:"industry"`
 	PostedBy    string    `json:"posted_by" datastore:"posted_by"`
 	Active      bool      `datastore:"active"`
 	Created     time.Time `datastore:"created,noindex"`
