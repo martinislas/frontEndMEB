@@ -16,12 +16,12 @@ import (
 
 var hmacAdminSecret = "Asecret" // This should come from GCP secret manager
 
-// Session is the response of LoginAdminUser
+// Session is the response of LoginAdmin
 type Session struct {
 	Token string `json:"token"`
 }
 
-func LoginAdminUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func LoginAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
 	var loginAdmin model.Admin
@@ -86,7 +86,7 @@ func LoginAdminUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params
 	}
 }
 
-func GetAdminUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func GetAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
 	adminUsername := ctx.Value(middleware.AdminUserCtx).(string)
@@ -112,7 +112,7 @@ func GetAdminUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 	}
 }
 
-func PutAdminUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func PutAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
 	var updateAdmin model.Admin
@@ -164,7 +164,7 @@ func PutAdminUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 	}
 }
 
-func PutAdminUserPassword(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func PutAdminPassword(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
 	var updateAdmin model.Admin
@@ -176,7 +176,7 @@ func PutAdminUserPassword(w http.ResponseWriter, r *http.Request, ps httprouter.
 
 	updateAdminUsername := ctx.Value(middleware.AdminUserCtx).(string)
 	if updateAdmin.Username != updateAdminUsername {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusForbidden)
 		return
 	}
 	updateAdminKey := datastore.NameKey("admin", updateAdminUsername, nil)
@@ -228,13 +228,18 @@ func PutAdminUserPassword(w http.ResponseWriter, r *http.Request, ps httprouter.
 	}
 }
 
-func PostAdminUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func PostAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
 	var newAdmin model.Admin
 	err := json.NewDecoder(r.Body).Decode(&newAdmin)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if len(newAdmin.Password) == 0 {
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
@@ -277,7 +282,7 @@ func PostAdminUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 	}
 }
 
-func GetAdminUsers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func GetAdmins(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
 	query := datastore.NewQuery("admin")

@@ -10,7 +10,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-var hmacUserSecret = "applicantSecret" // This should come from GCP secret manager
+var hmacApplicantSecret = "applicantSecret" // This should come from GCP secret manager
 
 type ApplicantIDContext string
 type ApplicantDisplayContext string
@@ -20,7 +20,7 @@ var (
 	ApplicantDisplayCtx = ApplicantDisplayContext("applicant-displayname")
 )
 
-func WithUserAuth(next httprouter.Handle) httprouter.Handle {
+func WithApplicantAuth(next httprouter.Handle) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		authHeader := strings.Split(r.Header.Get("Authorization"), "Bearer ")
 		var applicantID, applicantDisplayname string
@@ -36,7 +36,7 @@ func WithUserAuth(next httprouter.Handle) httprouter.Handle {
 				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 					return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 				}
-				return []byte(hmacUserSecret), nil
+				return []byte(hmacApplicantSecret), nil
 			})
 			if err != nil {
 				w.WriteHeader(http.StatusUnauthorized)

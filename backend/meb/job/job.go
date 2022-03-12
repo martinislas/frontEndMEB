@@ -38,6 +38,9 @@ func GetJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	for i, key := range keys {
 		keyName := strconv.FormatInt(key.ID, 10)
 		jobs[i].ID = keyName
+		jobs[i].ApplicantCount = len(jobs[i].ApplicantKeys)
+		// Don't leak applicant ID's on public endpoint
+		jobs[i].ApplicantKeys = []string{}
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -52,57 +55,34 @@ func GetJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 func GetJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
-	id, err := strconv.ParseInt(ps.ByName("id"), 10, 64)
+	var getJob model.Job
+	err := json.NewDecoder(r.Body).Decode(&getJob)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	id, err := strconv.ParseInt(getJob.ID, 10, 64)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	key := datastore.IDKey("job", id, nil)
-	job := new(model.Job)
-	err = ds.Client.Get(ctx, key, job)
+	gotJob := new(model.Job)
+	err = ds.Client.Get(ctx, key, gotJob)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	job.ID = ps.ByName("id")
+	gotJob.ID = getJob.ID
+	gotJob.ApplicantCount = len(gotJob.ApplicantKeys)
+	// Don't leak applicant ID's on public endpoint
+	gotJob.ApplicantKeys = []string{}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	err = json.NewEncoder(w).Encode(job)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-}
-
-// ApplyJob WIP
-func ApplyJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	ctx := r.Context()
-
-	id, err := strconv.ParseInt(ps.ByName("id"), 10, 64)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	key := datastore.IDKey("job", id, nil)
-	job := new(model.Job)
-	err = ds.Client.Get(ctx, key, job)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	// Get applicant details
-	// if not existing create new
-	// Update job with applicant id
-
-	job.ID = ps.ByName("id")
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	err = json.NewEncoder(w).Encode(job)
+	err = json.NewEncoder(w).Encode(gotJob)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
