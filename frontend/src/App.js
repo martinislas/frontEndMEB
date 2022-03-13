@@ -12,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/login/admin" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminAuthRoute><AdminDash /></AdminAuthRoute>} />
+        {/* <Route path="/admin" element={<AdminDash />} /> */}
         <Route path="/jobs/:id" element={<JobDetails />} />
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/" element={<Landing />} />
