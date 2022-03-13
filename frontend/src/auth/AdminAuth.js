@@ -1,12 +1,12 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import useToken from './UseToken';
 
-function AdminAuthRoute (props) {
+function AdminAuthRoute (children) {
     const [token] = useToken();
 
-    if (!token) return <Redirect to="/login/admin" />
+    if (!token) return <Navigate to="/login/admin" />
 
-    return <Route {...props} />
+    return children
 }
 
 export default AdminAuthRoute;

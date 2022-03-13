@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import 'bulma/css/bulma.min.css';
 import { Button, Container, Form, Section } from 'react-bulma-components';
@@ -11,11 +11,11 @@ function AdminJobs () {
   const [form, setForm] = useState({ username: '', password: '' });
   const update = (({ target }) => setForm({ ...form, [target.name]: target.value }));
 
-  const history = useHistory();
+  let navigate = useNavigate();
 
   const onLoginClicked = async () => {
     try {
-      const response = await axios.post('/api/jobs', {
+      const response = await axios.post('/api/admin/job', {
         name: form.title,
         description: form.description,
         salary: form.salary,
@@ -24,11 +24,11 @@ function AdminJobs () {
       }, {
       headers: {'Authorization': 'Bearer ' + token}
       });
-      history.push('/admin#jobs?status=success');
+      navigate('/admin#jobs?status=success');
       console.log(response)
     } catch (e) {
       if (e.response) {
-        history.push('/admin#jobs?status=failed');
+        navigate('/admin#jobs?status=failed');
       } else {
         console.log(e)
       }

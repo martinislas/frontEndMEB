@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import 'bulma/css/bulma.min.css';
 import { Button, Container, Form, Heading, Icon, Level, Section } from 'react-bulma-components';
@@ -13,17 +13,17 @@ function AdminLogin () {
   const [form, setForm] = useState({ username: '', password: '' });
   const update = (({ target }) => setForm({ ...form, [target.name]: target.value }));
 
-  const history = useHistory();
+  let navigate = useNavigate();
 
   const onLoginClicked = async () => {
     try {
-      const response = await axios.post('/api/admin/login-admin', {
+      const response = await axios.post('/api/admin/login', {
         username: form.username,
         password: form.password,
       });
       const { token } = response.data;
       setToken(token);
-      history.push('/admin');
+      navigate('/admin');
     } catch (e) {
       console.log(e)
     }
@@ -47,7 +47,7 @@ function AdminLogin () {
               <div>
                 <Form.Field>
                   <Form.Label>Username</Form.Label>
-                  <Form.Control iconLeft>
+                  <Form.Control iconleft>
                     <Form.Input name="username" type="text" value={form.username} onChange={update} />
                     <Icon align="left">
                       <FontAwesomeIcon icon={faUser} />
@@ -56,7 +56,7 @@ function AdminLogin () {
                 </Form.Field>
                 <Form.Field>
                   <Form.Label>Password</Form.Label>
-                  <Form.Control iconLeft>
+                  <Form.Control iconleft>
                     <Form.Input name="password" type="password" value={form.password} onChange={update} />
                     <Icon align="left">
                       <FontAwesomeIcon icon={faLock} />

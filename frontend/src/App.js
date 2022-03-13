@@ -1,7 +1,7 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AdminAuthRoute from './auth/AdminAuth';
 import AdminDash from './pages/AdminDash';
-import Landing from './Landing';
+import Landing from './pages/Landing';
 import Jobs from './Jobs';
 import JobDetails from './JobDetails';
 import AdminLogin from './pages/AdminLogin';
@@ -9,23 +9,13 @@ import AdminLogin from './pages/AdminLogin';
 function App() {
   return (
     <Router>
-      <Switch>
-        <Route path="/login/admin">
-          <AdminLogin />
-        </Route>
-        <AdminAuthRoute path="/admin">
-          <AdminDash />
-        </AdminAuthRoute>
-        <Route path="/jobs/:id">
-          <JobDetails />
-        </Route>
-        <Route path="/jobs">
-          <Jobs />
-        </Route>
-        <Route path="/">
-          <Landing />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route path="/login/admin" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminAuthRoute><AdminDash /></AdminAuthRoute>} />
+        <Route path="/jobs/:id" element={<JobDetails />} />
+        <Route path="/jobs" element={<Jobs />} />
+        <Route path="/" element={<Landing />} />
+      </Routes>
     </Router>
   );
 }

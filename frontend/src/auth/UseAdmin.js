@@ -6,7 +6,7 @@ function useAdmin () {
 
     const getPayloadFromToken = token => {
         const encodedPayload = token.split('.')[1];
-        return JSON.parse(atob(encodedPayload));
+        return JSON.parse(Buffer.from(encodedPayload, base64));
     }
 
     const [admin, setAdmin] = useState(() => {

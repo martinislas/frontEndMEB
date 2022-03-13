@@ -1,8 +1,8 @@
 import 'bulma/css/bulma.min.css';
 import { Columns, Container, Heading, Hero, Image } from 'react-bulma-components';
-import SiteFooter from './components/Footer';
-import Nav from './components/Nav';
-import Logo from './landingLogo.png';
+import SiteFooter from '../components/Footer';
+import Nav from '../components/Nav';
+import Logo from '../landingLogo.png';
 
 function Landing () {
   return (
