@@ -2,20 +2,12 @@ indexes:
 
 - kind: job
   properties:
-  - name: name
   - name: location
   - name: industry
-  - name: salary
+  - name: posted_by
+  - name: active
 
-- kind: admin
+- kind: applicant
   properties:
-  - name: username
-  - name: is_active
-
-- kind: industry
-  properties:
-  - name: name
-
-- kind: location
-  properties:
-  - name: name
+  - name: email
+  - name: phone

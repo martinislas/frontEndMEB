@@ -16,8 +16,8 @@ type Applicant struct {
 	AddressCity           string    `json:"address_city" datastore:"address_city,noindex"`
 	AddressZip            string    `json:"address_zip" datastore:"address_zip,noindex"`
 	AddressState          string    `json:"address_state" datastore:"address_state,noindex"`
-	PreferredLocationKeys []string  `json:"preferred_location_keys" datastore:"preferred_location_keys"`
-	PreferredIndustryKeys []string  `json:"preferred_industry_keys" datastore:"preferred_industry_keys"`
+	PreferredLocationKeys []string  `json:"preferred_location_keys" datastore:"preferred_location_keys,noindex"`
+	PreferredIndustryKeys []string  `json:"preferred_industry_keys" datastore:"preferred_industry_keys,noindex"`
 	JobKeys               []string  `json:"job_keys" datastore:"job_keys,noindex"`
 	JobCount              int       `json:"job_count" datastore:"-"`
 	Created               time.Time `datastore:"created,noindex"`

@@ -4,9 +4,9 @@ import "time"
 
 type Job struct {
 	ID             string    `json:"id" datastore:"-"`
-	Name           string    `json:"name" datastore:"name"`
+	Name           string    `json:"name" datastore:"name,noindex"`
 	Description    string    `json:"description" datastore:"description,noindex"`
-	Salary         string    `json:"salary" datastore:"salary"`
+	Salary         string    `json:"salary" datastore:"salary,noindex"`
 	Location       string    `json:"location" datastore:"-"`
 	LocationKey    string    `json:"location_key" datastore:"location"`
 	Industry       string    `json:"industry" datastore:"-"`
