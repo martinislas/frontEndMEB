@@ -21,8 +21,8 @@ func Router() http.Handler {
 	mux.GET("/api/admin", middleware.WithAdminAuth(admin.GetAdmin))                  // get current admin
 	mux.PUT("/api/admin", middleware.WithAdminAuth(admin.PutAdmin))                  // modify any existing admin
 	mux.PUT("/api/admin/password", middleware.WithAdminAuth(admin.PutAdminPassword)) // update password for authenticated admin
-	// mux.POST("/api/admin", middleware.WithAdminAuth(admin.PostAdmin))                // new admin
-	mux.POST("/api/admin", admin.PostAdmin)
+	mux.POST("/api/admin", middleware.WithAdminAuth(admin.PostAdmin))                // new admin
+	// mux.POST("/api/admin", admin.PostAdmin)
 	mux.GET("/api/admins", middleware.WithAdminAuth(admin.GetAdmins)) // get a list of admins
 
 	mux.GET("/api/industries", admin.GetIndustries)                         // get existing industries
