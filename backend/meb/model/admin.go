@@ -5,7 +5,7 @@ import "time"
 type Admin struct {
 	FirstName      string    `json:"first_name" datastore:"first_name,noindex"`
 	Surname        string    `json:"surname" datastore:"surname,noindex"`
-	Username       string    `json:"username" datastore:"-"`
+	Username       string    `json:"username" datastore:"username"`
 	Password       string    `json:"password" datastore:"-"`
 	HashedPassword []byte    `json:"-" datastore:"password,noindex"`
 	ResetPassword  bool      `json:"reset_password" datastore:"reset_password,noindex"`
