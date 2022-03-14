@@ -61,7 +61,9 @@ function AdminSystem () {
     async function getIndustries() {
       try {
         const { data: industries } = await axios.get('/api/industries');
-        setIndustryList({ industries })
+        if (industries) {
+          setIndustryList({ industries })
+        }
       } catch (e) {
         console.log(e)
       }
