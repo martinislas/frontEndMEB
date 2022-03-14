@@ -11,8 +11,8 @@ function AdminNav() {
         <Navbar.Container align="right">
           <Navbar.Item href="/admin#jobs">Jobs</Navbar.Item>
           <Navbar.Item href="/admin#applicants">Applicants</Navbar.Item>
-          <Navbar.Item href="/admin#users">Users</Navbar.Item>
-          <Navbar.Item href="/admin#config">Config</Navbar.Item>
+          <Navbar.Item href="/admin#users">Admins</Navbar.Item>
+          <Navbar.Item href="/admin#system">System</Navbar.Item>
         </Navbar.Container>
       </Navbar.Menu>
     </Navbar>

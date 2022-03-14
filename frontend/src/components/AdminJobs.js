@@ -13,7 +13,7 @@ function AdminJobs () {
 
   let navigate = useNavigate();
 
-  const onLoginClicked = async () => {
+  const onNewJobClicked = async () => {
     try {
       const response = await axios.post('/api/admin/job', {
         name: form.title,
@@ -71,7 +71,7 @@ function AdminJobs () {
           </Form.Field>
           <Form.Field>
             <Form.Control>
-              <Button type="primary" onClick={onLoginClicked}>Submit</Button>
+              <Button type="primary" onClick={onNewJobClicked}>Submit</Button>
             </Form.Control>
           </Form.Field>
         </div>
