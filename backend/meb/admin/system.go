@@ -17,10 +17,14 @@ func GetIndustries(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 	query := datastore.NewQuery("industry")
 
 	var industries []*model.Industry
-	_, err := ds.Client.GetAll(ctx, query, &industries)
+	keys, err := ds.Client.GetAll(ctx, query, &industries)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	}
+
+	for i, industry := range industries {
+		industry.Name = keys[i].Name
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -67,6 +71,8 @@ func PutIndustry(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	updatedIndustry.Name = updateIndustry.Name
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -121,10 +127,14 @@ func GetLocations(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 	query := datastore.NewQuery("location")
 
 	var locations []*model.Location
-	_, err := ds.Client.GetAll(ctx, query, &locations)
+	keys, err := ds.Client.GetAll(ctx, query, &locations)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	}
+
+	for i, location := range locations {
+		location.Name = keys[i].Name
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -171,6 +181,8 @@ func PutLocation(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	updatedLocation.Name = updateLocation.Name
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)

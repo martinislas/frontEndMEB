@@ -28,6 +28,7 @@ func Router() http.Handler {
 	mux.GET("/api/industries", admin.GetIndustries)                         // get existing industries
 	mux.PUT("/api/industry", middleware.WithAdminAuth(admin.PutIndustry))   // modify existing industry
 	mux.POST("/api/industry", middleware.WithAdminAuth(admin.PostIndustry)) // new industry
+	// mux.POST("/api/industry", admin.PostIndustry) // new industry
 
 	mux.GET("/api/locations", admin.GetLocations)                           // get existing locations
 	mux.PUT("/api/location", middleware.WithAdminAuth(admin.PutLocation))   // modify existing location
