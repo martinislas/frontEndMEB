@@ -55,7 +55,7 @@ function AdminSystem () {
   const [industryForm, setIndustryForm] = useState({ displayName: '', name: '' });
   const updateIndustryForm = (({ target }) => setIndustryForm({ ...industryForm, [target.name]: target.value }));
 
-  const [industryList, setIndustryList] = useState({ industries: [] });
+  const [industryList, setIndustryList] = useState({industries: [] });
     
   useEffect(() => {
     async function getIndustries() {
@@ -175,12 +175,12 @@ function AdminSystem () {
               <Form.Field>
                   <Form.Label>Edit Existing Industry</Form.Label>
                   <Form.Control>
-                    <Form.Select name="displayName" onChange={updateIndustryForm}>
-                      {industryList.industries.map((industry) => (
-                        <Form.Option value={industry.name}>
-                          {industry.displayName}
-                        </Form.Option>
-                      ))}
+                    <Form.Select>
+                      {industryList.industries.map((industry) => {
+                        return (
+                          <option value={industry.name}>{industry.display_name}</option>
+                        );
+                      })}
                     </Form.Select>
                   </Form.Control>
                 </Form.Field>
