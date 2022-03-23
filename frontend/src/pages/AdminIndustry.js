@@ -19,7 +19,9 @@ function AdminIndustry () {
   useEffect(() => {
     async function getIndustry() {
       try {
-        const { data: industry } = await axios.get(`/api/industry/${id}`);
+        const { data: industry } = await axios.get('/api/industry', {
+          id: id,
+        });
         if (industry) {
           setUpdateIndustryForm({ industry })
         }
@@ -29,7 +31,7 @@ function AdminIndustry () {
     }
 
     getIndustry()
-  }, []);
+  }, [id]);
 
   // Update Industry
   const onUpdateIndustryClicked = async () => {

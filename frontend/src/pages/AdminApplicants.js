@@ -8,7 +8,7 @@ import AdminNav from '../components/AdminNav';
 import LocationPicker from '../components/LocationPicker';
 import IndustryPicker from '../components/IndustryPicker';
 
-function AdminJobs () {
+function AdminApplicants () {
   const [token, ] = useToken();
   let navigate = useNavigate();
 
@@ -133,4 +133,4 @@ function AdminJobs () {
   );
 }
 
-export default AdminJobs;
+export default AdminApplicants;

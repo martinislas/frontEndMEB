@@ -6,47 +6,47 @@ import { Button, Container, Form, Heading, Section } from 'react-bulma-component
 import useToken from '../auth/UseToken';
 import AdminNav from '../components/AdminNav';
 
-function AdminLocation () {
+function Admin () {
   const [token, ] = useToken();
   const {id} = useParams();
   let navigate = useNavigate();
 
-  // Existing location
-  const [updateLocationForm, setUpdateLocationForm] = useState({ displayName: '' });
-  const updateUpdateLocationForm = (({ target }) => setUpdateLocationForm({ ...updateLocationForm, [target.name]: target.value }));
+  // Existing industry
+  const [updateIndustryForm, setUpdateIndustryForm] = useState({ displayName: '' });
+  const updateUpdateIndustryForm = (({ target }) => setUpdateIndustryForm({ ...updateIndustryForm, [target.name]: target.value }));
 
   // Populate initial form
   useEffect(() => {
-    async function getLocation() {
+    async function getIndustry() {
       try {
-        const { data: location } = await axios.get('/api/location', {
+        const { data: industry } = await axios.get('/api/industry', {
           id: id,
         });
-        if (location) {
-          setUpdateLocationForm({ location })
+        if (industry) {
+          setUpdateIndustryForm({ industry })
         }
       } catch (e) {
         console.log(e)
       }
     }
 
-    getLocation()
+    getIndustry()
   }, [id]);
 
-  // Update Location
-  const onUpdateLocationClicked = async () => {
+  // Update Industry
+  const onUpdateIndustryClicked = async () => {
     try {
-      const response = await axios.put('/api/location', {
-        display_name: updateLocationForm.displayName,
-        name: updateLocationForm.name,
+      const response = await axios.put('/api/industry', {
+        display_name: updateIndustryForm.displayName,
+        name: updateIndustryForm.name,
       }, {
       headers: {'Authorization': 'Bearer ' + token}
       });
-      navigate(`/admin/system/location/${response.data.name}?status=success`);
+      navigate(`/admin/system/industry/${response.data.name}?status=success`);
       console.log(response)
     } catch (e) {
       if (e.response) {
-        navigate(`/admin/system/location/${id}?status=failed`);
+        navigate(`/admin/system/industry/${id}?status=failed`);
       } else {
         console.log(e)
       }
@@ -58,22 +58,22 @@ function AdminLocation () {
       <AdminNav />
       <Container>
         <Section>
-          <Heading>Edit Existing Location</Heading>
+          <Heading>Edit Existing Industry</Heading>
           <Container>
             <Form.Field>
-              <Form.Label>Location Name (As displayed)</Form.Label>
+              <Form.Label>Industry Name (As displayed)</Form.Label>
               <Form.Control>
-                <Form.Input name="displayName" type="text" value={updateLocationForm.displayName} onChange={updateUpdateLocationForm} />
+                <Form.Input name="displayName" type="text" value={updateIndustryForm.displayName} onChange={updateUpdateIndustryForm} />
               </Form.Control>
             </Form.Field>
             <Form.Field hidden>
               <Form.Control>
-                <Form.Input name="name" type="text" value={updateLocationForm.name} />
+                <Form.Input name="name" type="text" value={updateIndustryForm.name} />
               </Form.Control>
             </Form.Field>
             <Form.Field>
               <Form.Control>
-                <Button type="primary" onClick={onUpdateLocationClicked}>Update Location</Button>
+                <Button type="primary" onClick={onUpdateIndustryClicked}>Update Industry</Button>
               </Form.Control>
             </Form.Field>
           </Container>
@@ -83,4 +83,4 @@ function AdminLocation () {
   );
 }
 
-export default AdminLocation;
+export default Admin;
