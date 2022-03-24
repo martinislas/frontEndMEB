@@ -12,7 +12,7 @@ function AdminIndustry () {
   let navigate = useNavigate();
 
   // Existing industry
-  const [updateIndustryForm, setUpdateIndustryForm] = useState({ displayName: '' });
+  const [updateIndustryForm, setUpdateIndustryForm] = useState({ displayName: '', name: '' });
   const updateUpdateIndustryForm = (({ target }) => setUpdateIndustryForm({ ...updateIndustryForm, [target.name]: target.value }));
 
   // Populate initial form

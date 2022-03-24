@@ -12,7 +12,7 @@ function AdminLocation () {
   let navigate = useNavigate();
 
   // Existing location
-  const [updateLocationForm, setUpdateLocationForm] = useState({ displayName: '' });
+  const [updateLocationForm, setUpdateLocationForm] = useState({ displayName: '', name: '' });
   const updateUpdateLocationForm = (({ target }) => setUpdateLocationForm({ ...updateLocationForm, [target.name]: target.value }));
 
   // Populate initial form
