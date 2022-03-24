@@ -12,7 +12,7 @@ function AdminIndustry () {
   let navigate = useNavigate();
 
   // Existing industry
-  const [updateIndustryForm, setUpdateIndustryForm] = useState({ displayName: '', name: '' });
+  const [updateIndustryForm, setUpdateIndustryForm] = useState({});
   const updateUpdateIndustryForm = (({ target }) => setUpdateIndustryForm({ ...updateIndustryForm, [target.name]: target.value }));
 
   // Populate initial form
@@ -21,7 +21,7 @@ function AdminIndustry () {
       try {
         const { data: industry } = await axios.get(`/api/industry/${id}`);
         if (industry) {
-          updateUpdateIndustryForm(industry)
+          setUpdateIndustryForm(updateIndustryForm => ({...updateIndustryForm, [industry.fieldName] : industry.value }))
         }
       } catch (e) {
         console.log(e)
@@ -29,7 +29,7 @@ function AdminIndustry () {
     }
 
     getIndustry()
-  }, [id, updateUpdateIndustryForm]);
+  }, [id]);
 
   // Update Industry
   const onUpdateIndustryClicked = async () => {
