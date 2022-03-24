@@ -3,6 +3,7 @@ package admin
 import (
 	"encoding/json"
 	"net/http"
+	"regexp"
 	"time"
 
 	"cloud.google.com/go/datastore"
@@ -30,6 +31,29 @@ func GetIndustries(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	err = json.NewEncoder(w).Encode(industries)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func GetIndustry(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	ctx := r.Context()
+
+	industryID := ps.ByName("id")
+
+	key := datastore.NameKey("industry", industryID, nil)
+	getIndustry := new(model.Industry)
+	err := ds.Client.Get(ctx, key, getIndustry)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	getIndustry.Name = industryID
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	err = json.NewEncoder(w).Encode(getIndustry)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -93,6 +117,13 @@ func PostIndustry(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		return
 	}
 
+	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	newIndustry.Name = reg.ReplaceAllString(newIndustry.Name, "")
+
 	newIndustry.Created = time.Now()
 	newIndustry.Updated = time.Now()
 
@@ -140,6 +171,29 @@ func GetLocations(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	err = json.NewEncoder(w).Encode(locations)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func GetLocation(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	ctx := r.Context()
+
+	locationID := ps.ByName("id")
+
+	key := datastore.NameKey("location", locationID, nil)
+	getLocation := new(model.Location)
+	err := ds.Client.Get(ctx, key, getLocation)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	getLocation.Name = locationID
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	err = json.NewEncoder(w).Encode(getLocation)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -202,6 +256,16 @@ func PostLocation(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	newLocation.Name = reg.ReplaceAllString(newLocation.Name, "")
+
+	newLocation.Created = time.Now()
+	newLocation.Updated = time.Now()
 
 	newLocationKey := datastore.NameKey("location", newLocation.Name, nil)
 	_, err = ds.Client.RunInTransaction(ctx, func(tx *datastore.Transaction) error {

@@ -53,32 +53,26 @@ func GetApplicants(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 func GetApplicant(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
-	var getApplicant model.Applicant
-	err := json.NewDecoder(r.Body).Decode(&getApplicant)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	id, err := strconv.ParseInt(getApplicant.ID, 10, 64)
+	applicantID := ps.ByName("id")
+	id, err := strconv.ParseInt(applicantID, 10, 64)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	key := datastore.IDKey("applicant", id, nil)
-	gotApplicant := new(model.Applicant)
-	err = ds.Client.Get(ctx, key, gotApplicant)
+	getApplicant := new(model.Applicant)
+	err = ds.Client.Get(ctx, key, getApplicant)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	gotApplicant.ID = getApplicant.ID
-	gotApplicant.JobCount = len(gotApplicant.JobKeys)
+	getApplicant.ID = applicantID
+	getApplicant.JobCount = len(getApplicant.JobKeys)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	err = json.NewEncoder(w).Encode(gotApplicant)
+	err = json.NewEncoder(w).Encode(getApplicant)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

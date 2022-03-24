@@ -16,31 +16,25 @@ import (
 func GetJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
-	var getJob model.Job
-	err := json.NewDecoder(r.Body).Decode(&getJob)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	id, err := strconv.ParseInt(getJob.ID, 10, 64)
+	jobID := ps.ByName("id")
+	id, err := strconv.ParseInt(jobID, 10, 64)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	key := datastore.IDKey("job", id, nil)
-	gotJob := new(model.Job)
+	getJob := new(model.Job)
 	err = ds.Client.Get(ctx, key, getJob)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	gotJob.ID = getJob.ID
+	getJob.ID = jobID
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	err = json.NewEncoder(w).Encode(gotJob)
+	err = json.NewEncoder(w).Encode(getJob)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
