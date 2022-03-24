@@ -122,7 +122,7 @@ func PostIndustry(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	newIndustry.Name = reg.ReplaceAllString(newIndustry.Name, "")
+	newIndustry.Name = reg.ReplaceAllString(newIndustry.DisplayName, "")
 
 	newIndustry.Created = time.Now()
 	newIndustry.Updated = time.Now()
@@ -262,7 +262,7 @@ func PostLocation(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	newLocation.Name = reg.ReplaceAllString(newLocation.Name, "")
+	newLocation.Name = reg.ReplaceAllString(newLocation.DisplayName, "")
 
 	newLocation.Created = time.Now()
 	newLocation.Updated = time.Now()
