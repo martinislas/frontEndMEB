@@ -21,7 +21,7 @@ function AdminIndustry () {
       try {
         const { data: industry } = await axios.get(`/api/industry/${id}`);
         if (industry) {
-          updateUpdateIndustryForm({ industry })
+          setUpdateIndustryForm(updateIndustryForm => ({...updateIndustryForm, [industry.fieldName] : industry.value }))
         }
       } catch (e) {
         console.log(e)

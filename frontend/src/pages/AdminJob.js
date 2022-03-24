@@ -28,7 +28,7 @@ function AdminJob () {
           headers: {'Authorization': 'Bearer ' + token}
         });
         if (job) {
-          setUpdateJobForm({ job })
+          setUpdateJobForm(updateJobForm => ({...updateJobForm, [job.fieldName] : job.value }))
           getApplicants()
         }
       } catch (e) {

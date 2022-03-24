@@ -21,7 +21,7 @@ function AdminLocation () {
       try {
         const { data: location } = await axios.get(`/api/location/${id}`);
         if (location) {
-          updateUpdateLocationForm({ location })
+          setUpdateLocationForm(updateLocationForm => ({...updateLocationForm, [location.fieldName] : location.value }))
         }
       } catch (e) {
         console.log(e)
