@@ -19,9 +19,7 @@ function AdminLocation () {
   useEffect(() => {
     async function getLocation() {
       try {
-        const { data: location } = await axios.get('/api/location', {
-          id: id,
-        });
+        const { data: location } = await axios.get(`/api/location/${id}`);
         if (location) {
           setUpdateLocationForm({ location })
         }

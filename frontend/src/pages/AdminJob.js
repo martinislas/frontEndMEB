@@ -24,9 +24,7 @@ function AdminJob () {
   useEffect(() => {
     async function getJob() {
       try {
-        const { data: job } = await axios.get('/api/admin/job', {
-          id: id,
-        }, {
+        const { data: job } = await axios.get(`/api/admin/job/${id}`, {
           headers: {'Authorization': 'Bearer ' + token}
         });
         if (job) {
@@ -41,9 +39,7 @@ function AdminJob () {
     async function getApplicants() {
         setApplicantList([...applicantList, updateJobForm.applicant_keys.map((applicantID) => {
         try {
-          const { data: applicant } = axios.get('/api/admin/applicant', {
-            id: applicantID,
-          }, {
+          const { data: applicant } = axios.get(`/api/admin/applicant/${id}`, {
             headers: {'Authorization': 'Bearer ' + token}
           });
           if (applicant) {
@@ -150,7 +146,7 @@ function AdminJob () {
                       <td>{applicant.last_name}</td>
                       <td>{applicant.phone}</td>
                       <td>
-                        <Button renderAs="a" href={'admin/applicant/'+applicant.id}>View Applicant</Button>
+                        <Button renderAs="a" href={'/admin/applicant/'+applicant.id}>View Applicant</Button>
                       </td>
                     </tr>
                   );

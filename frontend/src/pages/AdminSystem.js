@@ -119,7 +119,7 @@ function AdminSystem () {
                         <tr>
                           <td>{industry.display_name}</td>
                           <td>
-                            <Button renderAs="a" href={'admin/system/industry/'+industry.name}>Edit</Button>
+                            <Button renderAs="a" href={'/admin/system/industry/'+industry.name}>Edit</Button>
                           </td>
                         </tr>
                       );
@@ -160,7 +160,7 @@ function AdminSystem () {
                         <tr>
                           <td>{location.display_name}</td>
                           <td>
-                            <Button renderAs="a" href={'admin/system/location/'+location.name}>Edit</Button>
+                            <Button renderAs="a" href={'/admin/system/location/'+location.name}>Edit</Button>
                           </td>
                         </tr>
                       );

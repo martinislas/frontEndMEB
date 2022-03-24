@@ -19,9 +19,7 @@ function Admin () {
   useEffect(() => {
     async function getIndustry() {
       try {
-        const { data: industry } = await axios.get('/api/industry', {
-          id: id,
-        });
+        const { data: industry } = await axios.get(`/api/industry/${id}`);
         if (industry) {
           setUpdateIndustryForm({ industry })
         }

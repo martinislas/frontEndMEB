@@ -119,7 +119,7 @@ function AdminJobs () {
                       <td>{job.industry}</td>
                       <td>{job.applicant_count}</td>
                       <td>
-                        <Button renderAs="a" href={'admin/jobs/'+job.id}>View / Edit</Button>
+                        <Button renderAs="a" href={'/admin/jobs/'+job.id}>View / Edit</Button>
                       </td>
                     </tr>
                   );
