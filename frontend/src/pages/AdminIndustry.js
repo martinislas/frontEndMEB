@@ -13,7 +13,7 @@ function AdminIndustry () {
 
   // Existing industry
   const [updateIndustryForm, setUpdateIndustryForm] = useState({});
-  const updateUpdateIndustryForm = (({ target }) => setUpdateIndustryForm({ ...updateIndustryForm, [target.name]: target.value }));
+  const updateUpdateIndustryForm = (e, field) => setUpdateIndustryForm({ ...updateIndustryForm, [field]: e.target.value });
 
   // Populate initial form
   useEffect(() => {
@@ -61,12 +61,12 @@ function AdminIndustry () {
             <Form.Field>
               <Form.Label>Industry Name (As displayed)</Form.Label>
               <Form.Control>
-                <Form.Input name="displayName" type="text" value={updateIndustryForm.displayName} onChange={updateUpdateIndustryForm} />
+                <Form.Input name="displayName" type="text" value={updateIndustryForm.displayName} onChange={(e) => {updateUpdateIndustryForm(e, "displayName");}} />
               </Form.Control>
             </Form.Field>
             <Form.Field hidden>
               <Form.Control>
-                <Form.Input name="name" type="text" value={updateIndustryForm.name} />
+                <Form.Input name="name" type="text" value={updateIndustryForm.name} onChange={(e) => {updateUpdateIndustryForm(e, "name");}} />
               </Form.Control>
             </Form.Field>
             <Form.Field>
