@@ -20,9 +20,7 @@ function AdminIndustry () {
       try {
         const response = await axios.get(`/api/industry/${id}`);
         if (response) {
-          console.log(response)
-          setUpdateIndustryForm({ name: response.data.name, displayName: response.data.displayName })
-          console.log(updateIndustryForm)
+          setUpdateIndustryForm({ displayName: response.data.displayName })
         }
       } catch (e) {
         console.log(e)
@@ -30,7 +28,8 @@ function AdminIndustry () {
     }
 
     getIndustry()
-  }, [id, updateIndustryForm]);
+    return () => {};
+  }, [id]);
 
   const updateIndustryFormDisplayNameField = ((event) => setUpdateIndustryForm({ displayName: event.target.value }));
 
