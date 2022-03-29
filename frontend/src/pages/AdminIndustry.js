@@ -12,7 +12,7 @@ function AdminIndustry () {
   let navigate = useNavigate();
 
   // Existing industry
-  const [updateIndustryForm, setUpdateIndustryForm] = useState({});
+  const [updateIndustryForm, setUpdateIndustryForm] = useState({name: id, displayName: ''});
 
   // Populate initial form
   useEffect(() => {
@@ -20,7 +20,8 @@ function AdminIndustry () {
       try {
         const response = await axios.get(`/api/industry/${id}`);
         if (response) {
-          setUpdateIndustryForm(updateIndustryForm => ({...updateIndustryForm, [response.fieldName] : response.value }))
+          console.log(response)
+          setUpdateIndustryForm({ name: response.name, displayName: response.displayName })
           console.log(updateIndustryForm)
         }
       } catch (e) {
