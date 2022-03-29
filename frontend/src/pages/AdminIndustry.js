@@ -13,6 +13,7 @@ function AdminIndustry () {
 
   // Existing industry
   const [updateIndustryForm, setUpdateIndustryForm] = useState({name: id, displayName: ''});
+  const [currentIndustry, setCurrentIndustry] = useState({ displayName: '' })
 
   // Populate initial form
   useEffect(() => {
@@ -20,15 +21,15 @@ function AdminIndustry () {
       try {
         const response = await axios.get(`/api/industry/${id}`);
         if (response) {
-          setUpdateIndustryForm({ displayName: response.data.displayName })
+          setCurrentIndustry({ displayName: response.data.displayName })
         }
+        console.log(response.data)
       } catch (e) {
         console.log(e)
       }
     }
 
     getIndustry()
-    return () => {};
   }, [id]);
 
   const updateIndustryFormDisplayNameField = ((event) => setUpdateIndustryForm({ displayName: event.target.value }));
@@ -61,7 +62,13 @@ function AdminIndustry () {
           <Heading>Edit Existing Industry</Heading>
           <Container>
             <Form.Field>
-              <Form.Label>Industry Name (As displayed)</Form.Label>
+              <Form.Label>Current Industry Name</Form.Label>
+              <Form.Control>
+                <Form.Input name="displayName" type="text" value={currentIndustry.displayName} disabled />
+              </Form.Control>
+            </Form.Field>
+            <Form.Field>
+              <Form.Label>Updated Industry Name</Form.Label>
               <Form.Control>
                 <Form.Input name="displayName" type="text" value={updateIndustryForm.displayName} onChange={updateIndustryFormDisplayNameField} />
               </Form.Control>
