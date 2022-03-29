@@ -61,7 +61,7 @@ function AdminIndustry () {
           <Heading>Edit Existing Industry</Heading>
           <Container>
             <Form.Field>
-              <Form.Label>Current Industry Name: {currentIndustry.displayName}</Form.Label>
+            {(() => {return(<Form.Label>Current Industry Name: {currentIndustry.displayName}</Form.Label>)})}
               <Form.Label>Updated Industry Name</Form.Label>
               <Form.Control>
                 <Form.Input name="displayName" type="text" value={updateIndustryForm.displayName} onChange={updateIndustryFormDisplayNameField} />
