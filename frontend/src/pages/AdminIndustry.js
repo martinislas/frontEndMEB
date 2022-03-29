@@ -13,15 +13,15 @@ function AdminIndustry () {
 
   // Existing industry
   const [updateIndustryForm, setUpdateIndustryForm] = useState({});
-  const updateUpdateIndustryForm = (e, field) => setUpdateIndustryForm({ ...updateIndustryForm, [field]: e.target.value });
 
   // Populate initial form
   useEffect(() => {
     async function getIndustry() {
       try {
-        const { data: industry } = await axios.get(`/api/industry/${id}`);
-        if (industry) {
-          setUpdateIndustryForm(updateIndustryForm => ({...updateIndustryForm, [industry.fieldName] : industry.value }))
+        const response = await axios.get(`/api/industry/${id}`);
+        if (response) {
+          setUpdateIndustryForm(updateIndustryForm => ({...updateIndustryForm, [response.fieldName] : response.value }))
+          console.log(updateIndustryForm)
         }
       } catch (e) {
         console.log(e)
@@ -30,6 +30,8 @@ function AdminIndustry () {
 
     getIndustry()
   }, [id]);
+
+  const updateUpdateIndustryForm = (e, field) => setUpdateIndustryForm({ ...updateIndustryForm, [field]: e.target.value });
 
   // Update Industry
   const onUpdateIndustryClicked = async () => {
