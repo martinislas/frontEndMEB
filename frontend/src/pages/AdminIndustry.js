@@ -13,7 +13,7 @@ function AdminIndustry () {
 
   // Existing industry
   const [updateIndustryForm, setUpdateIndustryForm] = useState({name: id, displayName: ''});
-  const [currentIndustry, setCurrentIndustry] = useState({ displayName: '' })
+  const [currentIndustry, setCurrentIndustry] = useState({})
 
   // Populate initial form
   useEffect(() => {
@@ -44,7 +44,6 @@ function AdminIndustry () {
       headers: {'Authorization': 'Bearer ' + token}
       });
       navigate(`/admin/system/industry/${response.data.name}?status=success`);
-      console.log(response)
     } catch (e) {
       if (e.response) {
         navigate(`/admin/system/industry/${id}?status=failed`);
@@ -63,11 +62,6 @@ function AdminIndustry () {
           <Container>
             <Form.Field>
               <Form.Label>Current Industry Name: {currentIndustry.displayName}</Form.Label>
-              <Form.Control>
-                <Form.Input name="displayName" type="text" value={currentIndustry.displayName} disabled />
-              </Form.Control>
-            </Form.Field>
-            <Form.Field>
               <Form.Label>Updated Industry Name</Form.Label>
               <Form.Control>
                 <Form.Input name="displayName" type="text" value={updateIndustryForm.displayName} onChange={updateIndustryFormDisplayNameField} />
