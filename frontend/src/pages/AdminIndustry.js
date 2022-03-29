@@ -29,7 +29,7 @@ function AdminIndustry () {
     }
 
     getIndustry()
-  }, [id]);
+  }, [id, updateIndustryForm]);
 
   const updateUpdateIndustryForm = (e, field) => setUpdateIndustryForm({ ...updateIndustryForm, [field]: e.target.value });
 
