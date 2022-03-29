@@ -32,7 +32,7 @@ function AdminIndustry () {
     getIndustry()
   }, [id]);
 
-  const updateIndustryFormDisplayNameField = ((event) => setUpdateIndustryForm({ displayName: event.target.value }));
+  const updateIndustryFormDisplayNameField = ((event) => setUpdateIndustryForm({ name: id, displayName: event.target.value }));
 
   // Update Industry
   const onUpdateIndustryClicked = async () => {
@@ -62,7 +62,7 @@ function AdminIndustry () {
           <Heading>Edit Existing Industry</Heading>
           <Container>
             <Form.Field>
-              <Form.Label>Current Industry Name</Form.Label>
+              <Form.Label>Current Industry Name: {currentIndustry.displayName}</Form.Label>
               <Form.Control>
                 <Form.Input name="displayName" type="text" value={currentIndustry.displayName} disabled />
               </Form.Control>
