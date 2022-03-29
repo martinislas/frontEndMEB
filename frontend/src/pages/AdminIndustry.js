@@ -32,7 +32,7 @@ function AdminIndustry () {
     getIndustry()
   }, [id, updateIndustryForm]);
 
-  const updateUpdateIndustryForm = (({ target }) => setUpdateIndustryForm({ ...updateIndustryForm, [target.name]: target.value }));
+  const updateIndustryFormDisplayNameField = ((event) => setUpdateIndustryForm({ displayName: event.target.value }));
 
   // Update Industry
   const onUpdateIndustryClicked = async () => {
@@ -64,12 +64,12 @@ function AdminIndustry () {
             <Form.Field>
               <Form.Label>Industry Name (As displayed)</Form.Label>
               <Form.Control>
-                <Form.Input name="displayName" type="text" value={updateIndustryForm.displayName} onChange={updateUpdateIndustryForm} />
+                <Form.Input name="displayName" type="text" value={updateIndustryForm.displayName} onChange={updateIndustryFormDisplayNameField} />
               </Form.Control>
             </Form.Field>
-            <Form.Field hidden>
+            <Form.Field>
               <Form.Control>
-                <Form.Input name="name" type="text" value={updateIndustryForm.name} onChange={updateUpdateIndustryForm} />
+                <Form.Input name="name" type="text" value={updateIndustryForm.name} />
               </Form.Control>
             </Form.Field>
             <Form.Field>
