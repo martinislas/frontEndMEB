@@ -96,7 +96,7 @@ function AdminSystem () {
               <Container>
                 <Heading subtitle>Create New Industry</Heading>
                 <Form.Field>
-                  <Form.Label>Industry Name (As displayed)</Form.Label>
+                  <Form.Label>Industry Name</Form.Label>
                   <Form.Control>
                     <Form.Input name="displayName" type="text" value={newIndustryForm.displayName} onChange={updateNewIndustryForm} />
                   </Form.Control>
@@ -137,7 +137,7 @@ function AdminSystem () {
               <Container>
                 <Heading subtitle>Create New Location</Heading>
                 <Form.Field>
-                  <Form.Label>Location Name (As displayed)</Form.Label>
+                  <Form.Label>Location Name</Form.Label>
                   <Form.Control>
                     <Form.Input name="displayName" type="text" value={newLocationForm.displayName} onChange={updateNewLocationForm} />
                   </Form.Control>
