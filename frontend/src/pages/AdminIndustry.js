@@ -66,13 +66,13 @@ function AdminIndustry () {
 }
 
 function GetCurrentIndustry({ id }) {
-  const [currentIndustry, setCurrentIndustry] = useState(null)
-  console.log(id)
+  const [currentIndustry, setCurrentIndustry] = useState({displayName: ''})
 
   // Populate initial form
   useEffect(() => {
-    function getIndustry() {
+    function getIndustry(id) {
       try {
+        console.log(id)
         const response = axios.get(`/api/industry/${id}`);
         if (response) {
           setCurrentIndustry({ displayName: response.data.displayName })
@@ -82,11 +82,10 @@ function GetCurrentIndustry({ id }) {
       }
     }
 
-    console.log(id)
-    getIndustry()
+    getIndustry(id)
   }, [id]);
 
-  if (currentIndustry === null) {
+  if (currentIndustry.displayName === '') {
     return (<Form.Label>Current Industry Name: Loading...</Form.Label>)
   } 
   return (<Form.Label>Current Industry Name: {currentIndustry.displayName}</Form.Label>)
