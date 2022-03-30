@@ -70,19 +70,18 @@ function GetCurrentIndustry({ id }) {
 
   // Populate initial form
   useEffect(() => {
-    function getIndustry(id) {
+    function getIndustry() {
       try {
-        console.log(id)
         const response = axios.get(`/api/industry/${id}`);
         if (response) {
-          setCurrentIndustry({ displayName: response.data.displayName })
+          setCurrentIndustry({ displayName: response.data.display_name })
         }
       } catch (e) {
         console.log(e)
       }
     }
 
-    getIndustry(id)
+    getIndustry()
   }, [id]);
 
   if (currentIndustry.displayName === '') {
