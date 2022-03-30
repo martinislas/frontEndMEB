@@ -65,8 +65,9 @@ function AdminIndustry () {
   );
 }
 
-function GetCurrentIndustry(id) {
+function GetCurrentIndustry({ id }) {
   const [currentIndustry, setCurrentIndustry] = useState(null)
+  console.log(id)
 
   // Populate initial form
   useEffect(() => {
@@ -81,6 +82,7 @@ function GetCurrentIndustry(id) {
       }
     }
 
+    console.log(id)
     getIndustry()
   }, [id]);
 
