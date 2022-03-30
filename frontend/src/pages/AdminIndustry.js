@@ -11,27 +11,8 @@ function AdminIndustry () {
   const {id} = useParams();
   let navigate = useNavigate();
 
-  // Existing industry
+  // Edit industry form
   const [updateIndustryForm, setUpdateIndustryForm] = useState({name: id, displayName: ''});
-  const [currentIndustry, setCurrentIndustry] = useState({})
-
-  // Populate initial form
-  useEffect(() => {
-    async function getIndustry() {
-      try {
-        const response = await axios.get(`/api/industry/${id}`);
-        if (response) {
-          setCurrentIndustry({ displayName: response.data.displayName })
-        }
-        console.log(response.data)
-      } catch (e) {
-        console.log(e)
-      }
-    }
-
-    getIndustry()
-  }, [id]);
-
   const updateIndustryFormDisplayNameField = ((event) => setUpdateIndustryForm({ name: id, displayName: event.target.value }));
 
   // Update Industry
@@ -61,7 +42,7 @@ function AdminIndustry () {
           <Heading>Edit Existing Industry</Heading>
           <Container>
             <Form.Field>
-            {(() => {return(<Form.Label>Current Industry Name: {currentIndustry.displayName}</Form.Label>)})}
+              <GetCurrentIndustry id={id} />
               <Form.Label>Updated Industry Name</Form.Label>
               <Form.Control>
                 <Form.Input name="displayName" type="text" value={updateIndustryForm.displayName} onChange={updateIndustryFormDisplayNameField} />
@@ -82,6 +63,28 @@ function AdminIndustry () {
       </Container>
     </div>
   );
+}
+
+function GetCurrentIndustry(id) {
+  const [currentIndustry, setCurrentIndustry] = useState(null)
+
+  // Populate initial form
+  useEffect(() => {
+    async function getIndustry() {
+      try {
+        const response = await axios.get(`/api/industry/${id}`);
+        if (response) {
+          setCurrentIndustry({ displayName: response.data.displayName })
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    getIndustry()
+  }, [id]);
+
+  return (<Form.Label>Current Industry Name: {currentIndustry.displayName}</Form.Label>)
 }
 
 export default AdminIndustry;
