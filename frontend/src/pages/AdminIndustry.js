@@ -74,6 +74,7 @@ function GetCurrentIndustry({ id }) {
       try {
         const response = axios.get(`/api/industry/${id}`);
         if (response) {
+          console.log(response.data)
           setCurrentIndustry({ displayName: response.data.display_name })
         }
       } catch (e) {
