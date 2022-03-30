@@ -70,9 +70,9 @@ function GetCurrentIndustry(id) {
 
   // Populate initial form
   useEffect(() => {
-    async function getIndustry() {
+    function getIndustry() {
       try {
-        const response = await axios.get(`/api/industry/${id}`);
+        const response = axios.get(`/api/industry/${id}`);
         if (response) {
           setCurrentIndustry({ displayName: response.data.displayName })
         }
@@ -84,6 +84,9 @@ function GetCurrentIndustry(id) {
     getIndustry()
   }, [id]);
 
+  if (currentIndustry === null) {
+    return (<Form.Label>Current Industry Name: Loading...</Form.Label>)
+  } 
   return (<Form.Label>Current Industry Name: {currentIndustry.displayName}</Form.Label>)
 }
 
