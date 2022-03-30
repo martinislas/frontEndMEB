@@ -48,7 +48,7 @@ function AdminIndustry () {
                 <Form.Input name="displayName" type="text" value={updateIndustryForm.displayName} onChange={updateIndustryFormDisplayNameField} />
               </Form.Control>
             </Form.Field>
-            <Form.Field>
+            <Form.Field hidden>
               <Form.Control>
                 <Form.Input name="name" type="text" value={updateIndustryForm.name} />
               </Form.Control>
@@ -68,13 +68,11 @@ function AdminIndustry () {
 function GetCurrentIndustry({ id }) {
   const [currentIndustry, setCurrentIndustry] = useState({displayName: ''})
 
-  // Populate initial form
   useEffect(() => {
     async function getIndustry() {
       try {
         const response = await axios.get(`/api/industry/${id}`);
         if (response) {
-          console.log(response.data)
           setCurrentIndustry({ displayName: response.data.display_name })
         }
       } catch (e) {
