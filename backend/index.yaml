@@ -2,8 +2,8 @@ indexes:
 
 - kind: job
   properties:
-  - name: location
-  - name: industry
+  - name: location_key
+  - name: industry_key
   - name: posted_by
   - name: active
 

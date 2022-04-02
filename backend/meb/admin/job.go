@@ -31,6 +31,7 @@ func GetJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 	getJob.ID = jobID
+	getJob.ApplicantCount = len(getJob.ApplicantKeys)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -70,11 +71,27 @@ func PutJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 
+	locationKey := datastore.NameKey("location", updateJob.LocationKey, nil)
+	var location model.Location
+	if err := tx.Get(locationKey, &location); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	industryKey := datastore.NameKey("industry", updateJob.IndustryKey, nil)
+	var industry model.Industry
+	if err := tx.Get(industryKey, &industry); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	// Update job details here
 	updatedJob.Name = updateJob.Name
 	updatedJob.Description = updateJob.Description
 	updatedJob.Salary = updateJob.Salary
+	updatedJob.Location = location.DisplayName
 	updatedJob.LocationKey = updateJob.LocationKey
+	updatedJob.Industry = industry.DisplayName
 	updatedJob.IndustryKey = updateJob.IndustryKey
 	updatedJob.Active = updateJob.Active
 	updatedJob.Updated = time.Now()
@@ -110,6 +127,23 @@ func PostJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	locationKey := datastore.NameKey("location", newJob.LocationKey, nil)
+	var location model.Location
+	if err := ds.Client.Get(ctx, locationKey, &location); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	industryKey := datastore.NameKey("industry", newJob.IndustryKey, nil)
+	var industry model.Industry
+	if err := ds.Client.Get(ctx, industryKey, &industry); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	newJob.Location = location.DisplayName
+	newJob.Industry = industry.DisplayName
 	newJob.PostedBy = adminDisplay
 	newJob.Active = true
 	newJob.Created = time.Now()
