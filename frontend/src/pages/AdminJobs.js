@@ -109,7 +109,7 @@ function AdminJobs () {
         <Section>
           <Container>
             <Heading subtitle>Existing Jobs</Heading>
-            <Table>
+            <Table size='fullwidth'>
               <tbody>
                 {jobList.jobs.map((job) => {
                   return (

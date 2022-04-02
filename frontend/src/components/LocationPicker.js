@@ -21,6 +21,7 @@ function LocationPicker () {
   
     return (
       <Fragment>
+        <option>Select Location</option>
         {locationList.locations.map((location) => {
           return (
             <option value={location.name}>{location.display_name}</option>

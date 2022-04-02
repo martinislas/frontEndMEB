@@ -21,6 +21,7 @@ function IndustryPicker () {
   
     return (
       <Fragment>
+        <option>Select Industry</option>
         {industryList.industries.map((industry) => {
           return (
             <option value={industry.name}>{industry.display_name}</option>
