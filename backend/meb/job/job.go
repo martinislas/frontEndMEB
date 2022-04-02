@@ -41,6 +41,23 @@ func GetJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		jobs[i].ApplicantCount = len(jobs[i].ApplicantKeys)
 		// Don't leak applicant ID's on public endpoint
 		jobs[i].ApplicantKeys = []string{}
+
+		locationKey := datastore.NameKey("location", jobs[i].LocationKey, nil)
+		var location model.Location
+		if err := ds.Client.Get(ctx, locationKey, &location); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		industryKey := datastore.NameKey("industry", jobs[i].IndustryKey, nil)
+		var industry model.Industry
+		if err := ds.Client.Get(ctx, industryKey, &industry); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		jobs[i].Location = location.DisplayName
+		jobs[i].Industry = industry.DisplayName
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -73,6 +90,23 @@ func GetJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	getJob.ApplicantCount = len(getJob.ApplicantKeys)
 	// Don't leak applicant ID's on public endpoint
 	getJob.ApplicantKeys = []string{}
+
+	locationKey := datastore.NameKey("location", getJob.LocationKey, nil)
+	var location model.Location
+	if err := ds.Client.Get(ctx, locationKey, &location); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	industryKey := datastore.NameKey("industry", getJob.IndustryKey, nil)
+	var industry model.Industry
+	if err := ds.Client.Get(ctx, industryKey, &industry); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	getJob.Location = location.DisplayName
+	getJob.Industry = industry.DisplayName
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
