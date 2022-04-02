@@ -12,24 +12,8 @@ function AdminLocation () {
   let navigate = useNavigate();
 
   // Existing location
-  const [updateLocationForm, setUpdateLocationForm] = useState({ displayName: '', name: '' });
-  const updateUpdateLocationForm = (({ target }) => setUpdateLocationForm({ ...updateLocationForm, [target.name]: target.value }));
-
-  // Populate initial form
-  useEffect(() => {
-    async function getLocation() {
-      try {
-        const { data: location } = await axios.get(`/api/location/${id}`);
-        if (location) {
-          setUpdateLocationForm(updateLocationForm => ({...updateLocationForm, [location.fieldName] : location.value }))
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    }
-
-    getLocation()
-  }, [id]);
+  const [updateLocationForm, setUpdateLocationForm] = useState({ name: id, displayName: '' });
+  const updateLocationFormDisplayNameField = ((event) => setUpdateLocationForm({ name: id, displayName: event.target.value }));
 
   // Update Location
   const onUpdateLocationClicked = async () => {
@@ -41,7 +25,6 @@ function AdminLocation () {
       headers: {'Authorization': 'Bearer ' + token}
       });
       navigate(`/admin/system/location/${response.data.name}?status=success`);
-      console.log(response)
     } catch (e) {
       if (e.response) {
         navigate(`/admin/system/location/${id}?status=failed`);
@@ -59,9 +42,10 @@ function AdminLocation () {
           <Heading>Edit Existing Location</Heading>
           <Container>
             <Form.Field>
-              <Form.Label>Location Name (As displayed)</Form.Label>
+              <GetCurrentLocation id={id} />
+              <Form.Label>Updated Location Name</Form.Label>
               <Form.Control>
-                <Form.Input name="displayName" type="text" value={updateLocationForm.displayName} onChange={updateUpdateLocationForm} />
+                <Form.Input name="displayName" type="text" value={updateLocationForm.displayName} onChange={updateLocationFormDisplayNameField} />
               </Form.Control>
             </Form.Field>
             <Form.Field hidden>
@@ -79,6 +63,30 @@ function AdminLocation () {
       </Container>
     </div>
   );
+}
+
+function GetCurrentLocation({ id }) {
+  const [currentLocation, setCurrentLocation] = useState({displayName: ''})
+
+  useEffect(() => {
+    async function getLocation() {
+      try {
+        const response = await axios.get(`/api/location/${id}`);
+        if (response) {
+          setCurrentLocation({ displayName: response.data.display_name })
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    getLocation()
+  }, [id]);
+
+  if (currentLocation.displayName === '') {
+    return (<Form.Label>Current Location Name: Loading...</Form.Label>);
+  } 
+  return (<Form.Label>Current Location Name: {currentLocation.displayName}</Form.Label>);
 }
 
 export default AdminLocation;

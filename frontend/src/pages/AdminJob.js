@@ -14,46 +14,22 @@ function AdminJob () {
   let navigate = useNavigate();
 
   // Update Job Form
-  const [updateJobForm, setUpdateJobForm] = useState({ title: '', description: '', salary: '', locationKey: '', industryKey: '' });
+  const [updateJobForm, setUpdateJobForm] = useState({ id: id, title: '', description: '', salary: '', location_key: '', industry_key: '', applicant_keys: [], posted_by: '', active: true });
   const updateUpdateJobForm = (({ target }) => setUpdateJobForm({ ...updateJobForm, [target.name]: target.value }));
 
-  // Existing applicants
-  const [applicantList, setApplicantList] = useState({ applicants: [] });
-
   // Populate update form
-  useEffect(() => {
-    async function getJob() {
-      try {
-        const { data: job } = await axios.get(`/api/admin/job/${id}`, {
-          headers: {'Authorization': 'Bearer ' + token}
-        });
-        if (job) {
-          setUpdateJobForm(updateJobForm => ({...updateJobForm, [job.fieldName] : job.value }))
-          getApplicants()
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    }
-
-    async function getApplicants() {
-        setApplicantList([...applicantList, updateJobForm.applicant_keys.map((applicantID) => {
-        try {
-          const { data: applicant } = axios.get(`/api/admin/applicant/${id}`, {
-            headers: {'Authorization': 'Bearer ' + token}
-          });
-          if (applicant) {
-            return applicant
-          }
-        } catch (e) {
-          console.log(e)
-        }
-        return applicantID
-      })])
-    }
-
-    getJob()
-  }, [id, token, applicantList, updateJobForm.applicant_keys]);
+  // async function getJob() {
+  //   try {
+  //     const { data: job } = await axios.get(`/api/admin/job/${id}`, {
+  //       headers: {'Authorization': 'Bearer ' + token}
+  //     });
+  //     if (job) {
+  //       setUpdateJobForm(updateJobForm => ({...updateJobForm, [job.fieldName] : job.value }))
+  //     }
+  //   } catch (e) {
+  //     console.log(e)
+  //   }
+  // }
 
   const onUpdateJobClicked = async () => {
     try {
@@ -62,8 +38,11 @@ function AdminJob () {
         name: updateJobForm.title,
         description: updateJobForm.description,
         salary: updateJobForm.salary,
-        location_key: updateJobForm.locationKey,
-        industry_key: updateJobForm.industryKey,
+        location_key: updateJobForm.location_key,
+        industry_key: updateJobForm.industry_key,
+        applicant_keys: updateJobForm.applicant_keys,
+        posted_by: updateJobForm.posted_by,
+        active: updateJobForm.active,
       }, {
       headers: {'Authorization': 'Bearer ' + token}
       });
@@ -138,18 +117,8 @@ function AdminJob () {
             <Heading subtitle>Applicants</Heading>
             <Table>
               <tbody>
-                {applicantList.applicants.map((applicant) => {
-                  return (
-                    <tr>
-                      <td>{applicant.first_name}</td>
-                      <td>{applicant.middle_name}</td>
-                      <td>{applicant.last_name}</td>
-                      <td>{applicant.phone}</td>
-                      <td>
-                        <Button renderAs="a" href={'/admin/applicant/'+applicant.id}>View Applicant</Button>
-                      </td>
-                    </tr>
-                  );
+                {updateJobForm.applicant_keys.map((applicant) => {
+                  return (<GetApplicant applicantID={applicant.id} />);
                 })}
               </tbody>
             </Table>
@@ -157,6 +126,47 @@ function AdminJob () {
         </Section>
       </Container>
     </div>
+  );
+}
+
+function GetApplicant({ applicantID }) {
+  const [token, ] = useToken();
+  const [applicant, setApplicant] = useState(null)
+
+  useEffect(() => {
+    async function getApplicant() {
+      try {
+        const response = axios.get(`/api/admin/applicant/${applicantID}`, {
+          headers: {'Authorization': 'Bearer ' + token}
+        });
+        if (response) {
+          setApplicant({applicant: response.data})
+        }
+      } catch (e) {
+        console.log(e)
+      }  
+    }
+
+    getApplicant()
+  }, [applicantID, token]);
+
+  if (applicant === null) {
+    return (
+      <tr>
+        <td>Loading...</td>
+      </tr>
+    )
+  }
+  return (
+    <tr>
+      <td>{applicant.first_name}</td>
+      <td>{applicant.middle_name}</td>
+      <td>{applicant.last_name}</td>
+      <td>{applicant.phone}</td>
+      <td>
+        <Button renderAs="a" href={'/admin/applicant/'+applicant.id}>View Applicant</Button>
+      </td>
+    </tr>
   );
 }
 
