@@ -5,51 +5,67 @@ import 'bulma/css/bulma.min.css';
 import { Button, Container, Form, Heading, Section, Table } from 'react-bulma-components';
 import useToken from '../auth/UseToken';
 import AdminNav from '../components/AdminNav';
-import LocationPicker from '../components/LocationPicker';
-import IndustryPicker from '../components/IndustryPicker';
 
 function AdminApplicants () {
   const [token, ] = useToken();
   let navigate = useNavigate();
 
-  // Existing jobs
-  const [jobList, setJobList] = useState({jobs: [] });
+  // Existing applicants
+  const [applicantList, setApplicantList] = useState({applicants: [] });
 
   useEffect(() => {
-    async function getJobs() {
+    async function getApplicants() {
       try {
-        const { data: jobs } = await axios.get('/api/jobs');
-        if (jobs) {
-          setJobList({ jobs })
+        const { data: applicants } = await axios.get('/api/admin/applicants', {
+          headers: {'Authorization': 'Bearer ' + token}
+        });
+        if (applicants) {
+          setApplicantList({ applicants })
         }
       } catch (e) {
         console.log(e)
       }
     }
 
-    getJobs()
-  }, []);
+    getApplicants()
+  }, [token]);
 
-  // New Job
-  const [newJobForm, setNewJobForm] = useState({ title: '', description: '', salary: '', locationKey: '', industryKey: '' });
-  const updateNewJobForm = (({ target }) => setNewJobForm({ ...newJobForm, [target.name]: target.value }));
+  // New Applicant
+  const [newApplicantForm, setNewApplicantForm] = useState({ 
+    first_name: '',
+    middle_name: '',
+    last_name: '',
+    email: '',
+    phone: '',
+    password: '',
+    address_street: '',
+    address_city: '',
+    address_zip: '',
+    address_state: '',
+  });
+  const updateNewApplicantForm = (({ target }) => setNewApplicantForm({ ...newApplicantForm, [target.name]: target.value }));
 
-  const onCreateNewJobClicked = async () => {
+  const onCreateNewApplicantClicked = async () => {
     try {
-      const response = await axios.post('/api/admin/job', {
-        name: newJobForm.title,
-        description: newJobForm.description,
-        salary: newJobForm.salary,
-        location_key: newJobForm.locationKey,
-        industry_key: newJobForm.industryKey,
+      const response = await axios.post('/api/applicant/new', {
+        first_name: newApplicantForm.first_name,
+        middle_name: newApplicantForm.middle_name,
+        last_name: newApplicantForm.last_name,
+        email: newApplicantForm.email,
+        phone: newApplicantForm.phone,
+        password: newApplicantForm.password,
+        address_street: newApplicantForm.address_street,
+        address_city: newApplicantForm.address_city,
+        address_zip: newApplicantForm.address_zip,
+        address_state: newApplicantForm.address_state,
       }, {
       headers: {'Authorization': 'Bearer ' + token}
       });
-      navigate(`/admin/jobs/${response.data.id}?status=success`);
+      navigate(`/admin/applicants/${response.data.id}?status=success`);
       console.log(response)
     } catch (e) {
       if (e.response) {
-        navigate('/admin/jobs?status=failed');
+        navigate('/admin/applicants?status=failed');
       } else {
         console.log(e)
       }
@@ -61,46 +77,70 @@ function AdminApplicants () {
       <AdminNav />
       <Container>
         <Section>
-          <Heading>Jobs</Heading>
+          <Heading>Applicants</Heading>
           <Container>
-            <Heading subtitle>Create New Job Posting</Heading>
+            <Heading subtitle>Create New Applicant Posting</Heading>
             <Form.Field>
-              <Form.Label>Job Title</Form.Label>
+              <Form.Field kind='group'>
+                <Form.Label>First Name</Form.Label>
+                <Form.Control>
+                  <Form.Input name="first_name" type="text" value={newApplicantForm.first_name} onChange={updateNewApplicantForm} />
+                </Form.Control>
+              </Form.Field>
+              <Form.Field kind='group'>
+                <Form.Label>Middle Name</Form.Label>
+                <Form.Control>
+                  <Form.Input name="middle_name" type="text" value={newApplicantForm.middle_name} onChange={updateNewApplicantForm} />
+                </Form.Control>
+              </Form.Field>
+              <Form.Field kind='group'>
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control>
+                  <Form.Input name="last_name" type="text" value={newApplicantForm.last_name} onChange={updateNewApplicantForm} />
+                </Form.Control>
+              </Form.Field>                            
+            </Form.Field>
+            <Form.Field>
+              <Form.Field kind='group'>
+                <Form.Label>Email</Form.Label>
+                <Form.Control>
+                  <Form.Input name="email" type="text" value={newApplicantForm.email} onChange={updateNewApplicantForm} />
+                </Form.Control>
+              </Form.Field>
+              <Form.Field kind='group'>
+                <Form.Label>Phone</Form.Label>
+                <Form.Control>
+                  <Form.Input name="phone" type="text" value={newApplicantForm.phone} onChange={updateNewApplicantForm} />
+                </Form.Control>
+              </Form.Field>
+            </Form.Field>
+            <Form.Field>
+              <Form.Label>Street</Form.Label>
               <Form.Control>
-                <Form.Input name="title" type="text" value={newJobForm.title} onChange={updateNewJobForm} />
+                <Form.Input name="address_street" type="text" value={newApplicantForm.address_street} onChange={updateNewApplicantForm} />
               </Form.Control>
             </Form.Field>
             <Form.Field>
-              <Form.Label>Job Description</Form.Label>
+              <Form.Label>City</Form.Label>
               <Form.Control>
-                <Form.Input name="description" type="text" value={newJobForm.description} onChange={updateNewJobForm} />
+                <Form.Input name="address_city" type="text" value={newApplicantForm.address_city} onChange={updateNewApplicantForm} />
               </Form.Control>
             </Form.Field>
             <Form.Field>
-              <Form.Label>Salary</Form.Label>
+              <Form.Label>Zip Code</Form.Label>
               <Form.Control>
-                <Form.Input name="salary" type="text" value={newJobForm.salary} onChange={updateNewJobForm} />
+                <Form.Input name="address_zip" type="text" value={newApplicantForm.address_zip} onChange={updateNewApplicantForm} />
               </Form.Control>
             </Form.Field>
             <Form.Field>
-              <Form.Label>Location</Form.Label>
+              <Form.Label>State</Form.Label>
               <Form.Control>
-                <Form.Select name="locationKey" onChange={updateNewJobForm}>
-                  <LocationPicker />
-                </Form.Select>
-              </Form.Control>
-            </Form.Field>
-            <Form.Field>
-              <Form.Label>Industry</Form.Label>
-              <Form.Control>
-                <Form.Select name="industryKey" onChange={updateNewJobForm}>
-                  <IndustryPicker />
-                </Form.Select>
+                <Form.Input name="address_state" type="text" value={newApplicantForm.address_state} onChange={updateNewApplicantForm} />
               </Form.Control>
             </Form.Field>
             <Form.Field>
               <Form.Control>
-                <Button type="primary" onClick={onCreateNewJobClicked}>Submit</Button>
+                <Button type="primary" onClick={onCreateNewApplicantClicked}>Submit</Button>
               </Form.Control>
             </Form.Field>
           </Container>
@@ -108,18 +148,19 @@ function AdminApplicants () {
 
         <Section>
           <Container>
-            <Heading subtitle>Existing Jobs</Heading>
-            <Table>
+            <Heading subtitle>Existing Applicants</Heading>
+            <Table size='fullwidth'>
               <tbody>
-                {jobList.jobs.map((job) => {
+                {applicantList.applicants.map((applicant) => {
                   return (
                     <tr>
-                      <td>{job.name}</td>
-                      <td>{job.location}</td>
-                      <td>{job.industry}</td>
-                      <td>{job.applicant_count}</td>
+                      <td>{applicant.first_name}</td>
+                      <td>{applicant.middle_name}</td>
+                      <td>{applicant.last_name}</td>
+                      <td>{applicant.email}</td>
+                      <td>{applicant.phone}</td>
                       <td>
-                        <Button renderAs="a" href={'admin/jobs/'+job.id}>View / Edit</Button>
+                        <Button renderAs="a" href={'admin/applicants/'+applicant.id}>View</Button>
                       </td>
                     </tr>
                   );
