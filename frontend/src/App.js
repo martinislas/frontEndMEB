@@ -27,7 +27,7 @@ function App() {
         <Route path="/admin/jobs" element={<AdminAuthRoute><AdminJobs /></AdminAuthRoute>} />
         {/* Needs testing + pagination for applicants -> is applicant info enough */}
         <Route path="/admin/jobs/:id" element={<AdminAuthRoute><AdminJob /></AdminAuthRoute>} />
-        {/* todo */}
+        {/* Done apart from pagination + form tidy up */}
         <Route path="/admin/applicants" element={<AdminAuthRoute><AdminApplicants /></AdminAuthRoute>} />
         {/* todo */}
         <Route path="/admin/applicants/:id" element={<AdminAuthRoute><AdminApplicant /></AdminAuthRoute>} />

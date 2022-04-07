@@ -58,6 +58,7 @@ function AdminApplicants () {
         address_city: newApplicantForm.address_city,
         address_zip: newApplicantForm.address_zip,
         address_state: newApplicantForm.address_state,
+        reset_password: true,
       }, {
       headers: {'Authorization': 'Bearer ' + token}
       });
@@ -111,6 +112,12 @@ function AdminApplicants () {
                 <Form.Label>Phone</Form.Label>
                 <Form.Control>
                   <Form.Input name="phone" type="text" value={newApplicantForm.phone} onChange={updateNewApplicantForm} />
+                </Form.Control>
+              </Form.Field>
+              <Form.Field kind='group'>
+                <Form.Label>Password</Form.Label>
+                <Form.Control>
+                  <Form.Input name="password" type="text" value={newApplicantForm.password} onChange={updateNewApplicantForm} />
                 </Form.Control>
               </Form.Field>
             </Form.Field>
