@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 import 'bulma/css/bulma.min.css';
@@ -7,6 +7,7 @@ import useToken from '../auth/UseToken';
 import AdminNav from '../components/AdminNav';
 import LocationPicker from '../components/LocationPicker';
 import IndustryPicker from '../components/IndustryPicker';
+import GetApplicantAsAdmin from '../components/GetApplicantAsAdmin';
 
 function AdminJob () {
   const [token, ] = useToken();
@@ -65,6 +66,7 @@ function AdminJob () {
           <Heading>Jobs</Heading>
           <Container>
             <Heading subtitle>Update Job Posting</Heading>
+            <Heading subtitle>Where should the current details go?</Heading>
             <Form.Field>
             <Form.Field hidden>
               <Form.Control>
@@ -118,7 +120,7 @@ function AdminJob () {
             <Table>
               <tbody>
                 {updateJobForm.applicant_keys.map((applicant) => {
-                  return (<GetApplicant applicantID={applicant.id} />);
+                  return (<GetApplicantAsAdmin applicantID={applicant.id} />);
                 })}
               </tbody>
             </Table>
@@ -126,47 +128,6 @@ function AdminJob () {
         </Section>
       </Container>
     </div>
-  );
-}
-
-function GetApplicant({ applicantID }) {
-  const [token, ] = useToken();
-  const [applicant, setApplicant] = useState(null)
-
-  useEffect(() => {
-    async function getApplicant() {
-      try {
-        const response = axios.get(`/api/admin/applicant/${applicantID}`, {
-          headers: {'Authorization': 'Bearer ' + token}
-        });
-        if (response) {
-          setApplicant({applicant: response.data})
-        }
-      } catch (e) {
-        console.log(e)
-      }  
-    }
-
-    getApplicant()
-  }, [applicantID, token]);
-
-  if (applicant === null) {
-    return (
-      <tr>
-        <td>Loading...</td>
-      </tr>
-    )
-  }
-  return (
-    <tr>
-      <td>{applicant.first_name}</td>
-      <td>{applicant.middle_name}</td>
-      <td>{applicant.last_name}</td>
-      <td>{applicant.phone}</td>
-      <td>
-        <Button renderAs="a" href={'/admin/applicant/'+applicant.id}>View Applicant</Button>
-      </td>
-    </tr>
   );
 }
 

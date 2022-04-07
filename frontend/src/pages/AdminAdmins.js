@@ -44,7 +44,7 @@ function Admins () {
       }, {
       headers: {'Authorization': 'Bearer ' + token}
       });
-      navigate(`/admin/admins/${response.data.name}?status=success`);
+      navigate(`/admin/admins?status=success`);
       console.log(response)
     } catch (e) {
       if (e.response) {

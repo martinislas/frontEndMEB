@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 import 'bulma/css/bulma.min.css';
@@ -7,6 +7,7 @@ import useToken from '../auth/UseToken';
 import AdminNav from '../components/AdminNav';
 import LocationPicker from '../components/LocationPicker';
 import IndustryPicker from '../components/IndustryPicker';
+import GetJobAsAdmin from '../components/GetJobAsAdmin'
 
 function AdminApplicant () {
   const [token, ] = useToken();
@@ -14,50 +15,48 @@ function AdminApplicant () {
   let navigate = useNavigate();
 
   // New Job
-  const [updateJobForm, setUpdateJobForm] = useState({ title: '', description: '', salary: '', locationKey: '', industryKey: '' });
+  const [updateJobForm, setUpdateJobForm] = useState({ title: '', description: '', salary: '', locationKey: '', industryKey: '', job_keys: [] });
   const updateUpdateJobForm = (({ target }) => setUpdateJobForm({ ...updateJobForm, [target.name]: target.value }));
 
-  // Existing applicants
-  const [applicantList, setApplicantList] = useState({ applicants: [] });
 
   // Populate update form
-  useEffect(() => {
-    async function getJob() {
-      try {
-        const { data: job } = await axios.get('/api/admin/job', {
-          id: id,
-        }, {
-          headers: {'Authorization': 'Bearer ' + token}
-        });
-        if (job) {
-          setUpdateJobForm({ job })
-          getApplicants()
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    }
+//   useEffect(() => {
+//     async function getJob() {
+//       try {
+//         const { data: job } = await axios.get('/api/admin/job', {
+//           id: id,
+//         }, {
+//           headers: {'Authorization': 'Bearer ' + token}
+//         });
+//         if (job) {
+//           setUpdateJobForm({ job })
+//           getApplicants()
+//         }
+//       } catch (e) {
+//         console.log(e)
+//       }
+//     }
 
-    async function getApplicants() {
-      setApplicantList([...applicantList, updateJobForm.applicant_keys.map((applicantID) => {
-      try {
-        const { data: applicant } = axios.get('/api/admin/applicant', {
-          id: applicantID,
-        }, {
-          headers: {'Authorization': 'Bearer ' + token}
-        });
-        if (applicant) {
-          return applicant
-        }
-      } catch (e) {
-        console.log(e)
-      }
-      return applicantID
-    })])
-  }
+//     async function getApplicants() {
+//       setApplicantList([...applicantList, updateJobForm.applicant_keys.map((applicantID) => {
+//       try {
+//         const { data: applicant } = axios.get('/api/admin/applicant', {
+//           id: applicantID,
+//         }, {
+//           headers: {'Authorization': 'Bearer ' + token}
+//         });
+//         if (applicant) {
+//           return applicant
+//         }
+//       } catch (e) {
+//         console.log(e)
+//       }
+//       return applicantID
+//     })])
+//   }
 
-  getJob()
-}, [id, token, applicantList, updateJobForm.applicant_keys]);
+//   getJob()
+// }, [id, token, applicantList, updateJobForm.applicant_keys]);
 
   const onUpdateJobClicked = async () => {
     try {
@@ -87,7 +86,7 @@ function AdminApplicant () {
       <AdminNav />
       <Container>
         <Section>
-          <Heading>Jobs</Heading>
+          <Heading>Applicants</Heading>
           <Container>
             <Heading subtitle>Update Job Posting</Heading>
             <Form.Field>
@@ -139,21 +138,11 @@ function AdminApplicant () {
 
         <Section>
           <Container>
-            <Heading subtitle>Applicants</Heading>
+            <Heading subtitle>Jobs</Heading>
             <Table>
               <tbody>
-                {applicantList.applicants.map((applicant) => {
-                  return (
-                    <tr>
-                      <td>{applicant.first_name}</td>
-                      <td>{applicant.middle_name}</td>
-                      <td>{applicant.last_name}</td>
-                      <td>{applicant.phone}</td>
-                      <td>
-                        <Button renderAs="a" href={'admin/applicant/'+applicant.id}>View Applicant</Button>
-                      </td>
-                    </tr>
-                  );
+                {updateJobForm.job_keys.map((job) => {
+                  return (<GetJobAsAdmin jobID={job.id} />);
                 })}
               </tbody>
             </Table>
