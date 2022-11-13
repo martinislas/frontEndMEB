@@ -15,8 +15,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var hmacAdminSecret = "Asecret" // This should come from GCP secret manager
-
 // Session is the response of LoginAdmin
 type Session struct {
 	Token string `json:"token"`
@@ -96,7 +94,7 @@ func LoginAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 func GetAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
-	adminUsername := ctx.Value(middleware.AdminUserCtx).(string)
+	adminUsername := ps.ByName("id")
 	adminKey := datastore.NameKey("admin", adminUsername, nil)
 
 	admin := new(model.Admin)
@@ -145,72 +143,15 @@ func PutAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	// Update admin details here
 	updatedAdmin.FirstName = updateAdmin.FirstName
 	updatedAdmin.Surname = updateAdmin.Surname
-	updatedAdmin.ResetPassword = updateAdmin.ResetPassword
 	updatedAdmin.IsActive = updateAdmin.IsActive
-	updatedAdmin.Updated = time.Now()
-
-	if _, err := tx.Put(updateAdminKey, &updatedAdmin); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	if _, err := tx.Commit(); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	// Technically impossible to return through the model but best make sure not to return sensitive fields
-	updatedAdmin.Password = ""
-	updatedAdmin.HashedPassword = []byte{}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	err = json.NewEncoder(w).Encode(updatedAdmin)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-}
-
-func PutAdminPassword(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	ctx := r.Context()
-
-	var updateAdmin model.Admin
-	err := json.NewDecoder(r.Body).Decode(&updateAdmin)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	updateAdminUsername := ctx.Value(middleware.AdminUserCtx).(string)
-	if updateAdmin.Username != updateAdminUsername {
-		http.Error(w, err.Error(), http.StatusForbidden)
-		return
-	}
-	updateAdminKey := datastore.NameKey("admin", updateAdminUsername, nil)
-
-	tx, err := ds.Client.NewTransaction(ctx)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	var updatedAdmin model.Admin
-	if err := tx.Get(updateAdminKey, &updatedAdmin); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if !updatedAdmin.IsActive {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
 	// Update admin password here
-	updatedAdmin.HashedPassword, err = bcrypt.GenerateFromPassword([]byte(updateAdmin.Password), 10)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	if len(updateAdmin.Password) != 0 {
+		updatedAdmin.HashedPassword, err = bcrypt.GenerateFromPassword([]byte(updateAdmin.Password), 10)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
-	updatedAdmin.ResetPassword = false
 	updatedAdmin.Updated = time.Now()
 
 	if _, err := tx.Put(updateAdminKey, &updatedAdmin); err != nil {
@@ -255,7 +196,6 @@ func PostAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	newAdmin.ResetPassword = true
 	newAdmin.IsActive = true
 	newAdmin.Created = time.Now()
 	newAdmin.Updated = time.Now()
@@ -301,10 +241,17 @@ func GetAdmins(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 
+	currentAdminUsername := ctx.Value(middleware.AdminUserCtx).(string)
+
 	// Technically impossible to return through the model but best make sure not to return sensitive fields
 	for _, admin := range admins {
 		admin.Password = ""
 		admin.HashedPassword = []byte{}
+		if admin.Username == currentAdminUsername {
+			admin.IsActive = true
+		} else {
+			admin.IsActive = false
+		}
 	}
 
 	w.Header().Set("Content-Type", "application/json")

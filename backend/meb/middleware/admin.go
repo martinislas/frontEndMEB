@@ -11,8 +11,6 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-var hmacAdminSecret = "Asecret" // This should come from GCP secret manager
-
 type AdminUserContext string
 type AdminDisplayContext string
 
