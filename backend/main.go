@@ -7,8 +7,10 @@ import (
 	"os"
 
 	"cloud.google.com/go/datastore"
+	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	"github.com/OwenJacob/mebresources/meb"
 	"github.com/OwenJacob/mebresources/meb/ds"
+	"github.com/OwenJacob/mebresources/meb/secrets"
 )
 
 func main() {
@@ -27,6 +29,12 @@ func main() {
 		log.Fatal(err)
 	}
 	defer ds.Client.Close()
+
+	secrets.Client, err = secretmanager.NewClient(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer secrets.Client.Close()
 
 	err = http.ListenAndServe(":"+port, meb.Router())
 	if err != nil {

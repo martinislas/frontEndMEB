@@ -9,6 +9,7 @@ import (
 	"github.com/OwenJacob/mebresources/meb/ds"
 	"github.com/OwenJacob/mebresources/meb/middleware"
 	"github.com/OwenJacob/mebresources/meb/model"
+	"github.com/OwenJacob/mebresources/meb/secrets"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/julienschmidt/httprouter"
 	"golang.org/x/crypto/bcrypt"
@@ -66,8 +67,14 @@ func LoginAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		"expiry":      time.Now().AddDate(0, 1, 0),
 	})
 
+	adminSecret, err := secrets.GetAdminSecret()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	// Sign and get the complete encoded token as a string using the secret
-	tokenString, err := token.SignedString([]byte(hmacAdminSecret))
+	tokenString, err := token.SignedString(adminSecret)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

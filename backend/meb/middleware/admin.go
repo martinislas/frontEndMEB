@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/OwenJacob/mebresources/meb/secrets"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/julienschmidt/httprouter"
 )
@@ -36,7 +37,9 @@ func WithAdminAuth(next httprouter.Handle) httprouter.Handle {
 				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 					return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 				}
-				return []byte(hmacAdminSecret), nil
+
+				adminSecret, err := secrets.GetAdminSecret()
+				return adminSecret, err
 			})
 			if err != nil {
 				w.WriteHeader(http.StatusUnauthorized)
