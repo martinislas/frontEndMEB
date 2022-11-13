@@ -12,7 +12,7 @@ var Client *secretmanager.Client
 func GetAdminSecret() ([]byte, error) {
 	ctx := context.Background()
 
-	fetchedSecret, err := Client.GetSecret(ctx, &secretmanagerpb.GetSecretRequest{Name: "admin-secret"})
+	fetchedSecret, err := Client.GetSecret(ctx, &secretmanagerpb.GetSecretRequest{Name: "projects/meb-resources/secrets/admin-secret"})
 	if err != nil {
 		return []byte{}, err
 	}
