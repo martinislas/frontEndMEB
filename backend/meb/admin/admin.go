@@ -32,10 +32,12 @@ func LoginAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	if len(loginAdmin.Username) == 0 {
 		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("L35"))
 		return
 	}
 	if len(loginAdmin.Password) == 0 {
 		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("L40"))
 		return
 	}
 
@@ -43,16 +45,19 @@ func LoginAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	err = ds.Client.Get(ctx, loginAdminKey, &loginAdmin)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte("L48"))
 		return
 	}
 
 	if !loginAdmin.IsActive {
 		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte("L54"))
 		return
 	}
 
 	authorised := bcrypt.CompareHashAndPassword(loginAdmin.HashedPassword, []byte(loginAdmin.Password))
 	if authorised != nil {
+		w.Write([]byte("L60"))
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
@@ -68,6 +73,7 @@ func LoginAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	adminSecret, err := secrets.GetAdminSecret()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		w.Write([]byte("L76"))
 		return
 	}
 
