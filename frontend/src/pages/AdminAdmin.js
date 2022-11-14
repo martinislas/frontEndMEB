@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
 import 'bulma/css/bulma.min.css';
-import { Button, Columns, Container, Form, Heading, Icon, Section, Table } from 'react-bulma-components';
+import { Columns, Container, Heading, Icon, Section, Table } from 'react-bulma-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useToken from '../auth/UseToken';
