@@ -2,6 +2,7 @@ package admin
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -45,7 +46,7 @@ func LoginAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	err = ds.Client.Get(ctx, loginAdminKey, &loginAdmin)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte("L48"))
+		w.Write([]byte(fmt.Sprintf("L48 err: %s", err.Error())))
 		return
 	}
 
