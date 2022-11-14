@@ -94,7 +94,7 @@ func LoginAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 func GetAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
-	adminUsername := ps.ByName("id")
+	adminUsername := ps.ByName("username")
 	adminKey := datastore.NameKey("admin", adminUsername, nil)
 
 	admin := new(model.Admin)
