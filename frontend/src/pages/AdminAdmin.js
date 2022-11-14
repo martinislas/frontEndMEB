@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from 'axios';
 import 'bulma/css/bulma.min.css';
 import { Button, Columns, Container, Form, Heading, Icon, Section, Table } from 'react-bulma-components';
@@ -84,85 +84,85 @@ function Admin () {
   );
 }
 
-function DisableAdmin({ admin, token }) {
-  let navigate = useNavigate();
+// function DisableAdmin({ admin, token }) {
+//   let navigate = useNavigate();
 
-  const onDisableAdminClicked = async () => {
-    try {
-      const response = await axios.put('/api/admin', {
-        username: admin.username,
-        first_name: admin.firstName,
-        surname: admin.lastName,
-        is_active: false
-      }, {
-      headers: {'Authorization': 'Bearer ' + token}
-      });
-      navigate(`/admin/admins/${response.data.username}?status=success`);
-    } catch (e) {
-      if (e.response) {
-        navigate(`/admin/admins/${admin.username}?status=failed`);
-      } else {
-        console.log(e)
-      }
-    }
-  }
+//   const onDisableAdminClicked = async () => {
+//     try {
+//       const response = await axios.put('/api/admin', {
+//         username: admin.username,
+//         first_name: admin.firstName,
+//         surname: admin.lastName,
+//         is_active: false
+//       }, {
+//       headers: {'Authorization': 'Bearer ' + token}
+//       });
+//       navigate(`/admin/admins/${response.data.username}?status=success`);
+//     } catch (e) {
+//       if (e.response) {
+//         navigate(`/admin/admins/${admin.username}?status=failed`);
+//       } else {
+//         console.log(e)
+//       }
+//     }
+//   }
 
-  return (
-    <div>
-      <Container>
-        <Form.Field>
-          <Form.Control>
-            <Button type="primary" onClick={onDisableAdminClicked}>Disable Admin</Button>
-          </Form.Control>
-        </Form.Field>
-      </Container>
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <Container>
+//         <Form.Field>
+//           <Form.Control>
+//             <Button type="primary" onClick={onDisableAdminClicked}>Disable Admin</Button>
+//           </Form.Control>
+//         </Form.Field>
+//       </Container>
+//     </div>
+//   );
+// }
 
-function EnableAdmin({ admin, token }) {
-  let navigate = useNavigate();
+// function EnableAdmin({ admin, token }) {
+//   let navigate = useNavigate();
 
-  const onEnableAdminClicked = async () => {
-    try {
-      const response = await axios.put('/api/admin', {
-        username: admin.username,
-        first_name: admin.firstName,
-        surname: admin.lastName,
-        is_active: true
-      }, {
-      headers: {'Authorization': 'Bearer ' + token}
-      });
-      navigate(`/admin/admins/${response.data.username}?status=success`);
-    } catch (e) {
-      if (e.response) {
-        navigate(`/admin/admins/${admin.username}?status=failed`);
-      } else {
-        console.log(e)
-      }
-    }
-  }
+//   const onEnableAdminClicked = async () => {
+//     try {
+//       const response = await axios.put('/api/admin', {
+//         username: admin.username,
+//         first_name: admin.firstName,
+//         surname: admin.lastName,
+//         is_active: true
+//       }, {
+//       headers: {'Authorization': 'Bearer ' + token}
+//       });
+//       navigate(`/admin/admins/${response.data.username}?status=success`);
+//     } catch (e) {
+//       if (e.response) {
+//         navigate(`/admin/admins/${admin.username}?status=failed`);
+//       } else {
+//         console.log(e)
+//       }
+//     }
+//   }
 
-  return (
-    <div>
-      <Container>
-        <Form.Field>
-          <Form.Control>
-            <Button type="primary" onClick={onEnableAdminClicked}>Enable Admin</Button>
-          </Form.Control>
-        </Form.Field>
-      </Container>
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <Container>
+//         <Form.Field>
+//           <Form.Control>
+//             <Button type="primary" onClick={onEnableAdminClicked}>Enable Admin</Button>
+//           </Form.Control>
+//         </Form.Field>
+//       </Container>
+//     </div>
+//   );
+// }
 
-function ChangeAdminPassword({ admin }) {
+// function ChangeAdminPassword({ admin }) {
 
-  return (
-    <div>
-      Soon
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       Soon
+//     </div>
+//   );
+// }
 
 export default Admin;
