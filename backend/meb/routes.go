@@ -33,13 +33,13 @@ func Router() http.Handler {
 	mux.PUT("/api/location", middleware.WithAdminAuth(admin.PutLocation))   // modify existing location
 	mux.POST("/api/location", middleware.WithAdminAuth(admin.PostLocation)) // new location
 
-	mux.GET("/api/admin/job/:id", middleware.WithAdminAuth(admin.GetJob)) // admin can get existing job with applicant ID's
-	mux.PUT("/api/admin/job", middleware.WithAdminAuth(admin.PutJob))     // admin can modify existing job
-	mux.POST("/api/admin/job", middleware.WithAdminAuth(admin.PostJob))   // admin can create new job
+	mux.GET("/api/admins/job/:id", middleware.WithAdminAuth(admin.GetJob)) // admin can get existing job with applicant ID's
+	mux.PUT("/api/admins/job", middleware.WithAdminAuth(admin.PutJob))     // admin can modify existing job
+	mux.POST("/api/admins/job", middleware.WithAdminAuth(admin.PostJob))   // admin can create new job
 
-	mux.GET("/api/admin/applicants", middleware.WithAdminAuth(admin.GetApplicants))   // admin can get existing applicants
-	mux.GET("/api/admin/applicant/:id", middleware.WithAdminAuth(admin.GetApplicant)) // admin can get an existing applicant
-	mux.PUT("/api/admin/applicant", middleware.WithAdminAuth(admin.PutApplicant))     // admin can update an applicant
+	mux.GET("/api/admins/applicants", middleware.WithAdminAuth(admin.GetApplicants))   // admin can get existing applicants
+	mux.GET("/api/admins/applicant/:id", middleware.WithAdminAuth(admin.GetApplicant)) // admin can get an existing applicant
+	mux.PUT("/api/admins/applicant", middleware.WithAdminAuth(admin.PutApplicant))     // admin can update an applicant
 
 	mux.POST("/api/applicant/login", applicant.LoginApplicant)     // applicant login
 	mux.GET("/api/applicant/existing", applicant.GetExistingCheck) // check if applicant login details are already in use
