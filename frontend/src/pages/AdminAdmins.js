@@ -18,6 +18,7 @@ function Admins () {
   useEffect(() => {
     async function getAdmins() {
       try {
+        console.log(token)
         const { data: admins } = await axios.get('/api/admins', {
           headers: {'Authorization': 'Bearer ' + token}
         });
