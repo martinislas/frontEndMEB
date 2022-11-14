@@ -4,7 +4,7 @@ import axios from 'axios';
 import 'bulma/css/bulma.min.css';
 import { Button, Columns, Container, Form, Heading, Icon, Section, Table } from 'react-bulma-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faCross } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useToken from '../auth/UseToken';
 import AdminNav from '../components/AdminNav';
 
@@ -62,7 +62,7 @@ function Admin () {
                   </tr>
                   <tr>
                     <th>User Status</th>
-                    <td>{currentAdmin.isActive ? <Icon align="center"><FontAwesomeIcon icon={faCheck} /></Icon> : <Icon align="center"><FontAwesomeIcon icon={faCross} /></Icon>}</td>
+                    <td>{currentAdmin.isActive ? <Icon align="center"><FontAwesomeIcon icon={faCheck} /></Icon> : <Icon align="center"><FontAwesomeIcon icon={faXmark} /></Icon>}</td>
                   </tr>
                   <tr>
                     <th>Current User</th>
@@ -72,10 +72,10 @@ function Admin () {
               </Table>
             </Columns.Column>
             <Columns.Column>
-            {currentAdmin.isActive ? <DisableAdmin admin={currentAdmin} token={token} /> : <EnableAdmin admin={currentAdmin} token={token} />}
+              {/* {currentAdmin.isActive ? <DisableAdmin admin={currentAdmin} token={token} /> : <EnableAdmin admin={currentAdmin} token={token} />} */}
             </Columns.Column>
             <Columns.Column>
-              <ChangeAdminPassword admin={currentAdmin} />
+              {/* <ChangeAdminPassword admin={currentAdmin} /> */}
             </Columns.Column>
           </Columns>
         </Section>

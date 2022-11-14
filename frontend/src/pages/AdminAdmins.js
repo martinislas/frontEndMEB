@@ -4,7 +4,7 @@ import axios from 'axios';
 import 'bulma/css/bulma.min.css';
 import { Button, Container, Form, Heading, Icon, Section, Table } from 'react-bulma-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faCross } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useToken from '../auth/UseToken';
 import AdminNav from '../components/AdminNav';
 
@@ -18,7 +18,6 @@ function Admins () {
   useEffect(() => {
     async function getAdmins() {
       try {
-        console.log(token)
         const { data: admins } = await axios.get('/api/admins', {
           headers: {'Authorization': 'Bearer ' + token}
         });
@@ -109,6 +108,7 @@ function Admins () {
                   <th>Username</th>
                   <th>User Status</th>
                   <th>Current User</th>
+                  <th>Options</th>
                 </tr>
               </thead>
               <tbody>
@@ -118,7 +118,7 @@ function Admins () {
                       <td>{admin.first_name}</td>
                       <td>{admin.surname}</td>
                       <td>{admin.username}</td>
-                      <td>{admin.is_active ? <Icon align="center"><FontAwesomeIcon icon={faCheck} /></Icon> : <Icon align="center"><FontAwesomeIcon icon={faCross} /></Icon>}</td>
+                      <td>{admin.is_active ? <Icon align="center"><FontAwesomeIcon icon={faCheck} /></Icon> : <Icon align="center"><FontAwesomeIcon icon={faXmark} /></Icon>}</td>
                       <td>{admin.is_current && <Icon align="center"><FontAwesomeIcon icon={faCheck} /></Icon>}</td>
                       <td>
                         <Button renderAs="a" href={'admin/admins/'+admin.username}>Manage</Button>
