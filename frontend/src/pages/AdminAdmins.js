@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import 'bulma/css/bulma.min.css';
-import { Button, Container, Form, Heading, Section, Table } from 'react-bulma-components';
+import { Button, Container, Form, Heading, Icon, Section, Table } from 'react-bulma-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faCross } from '@fortawesome/free-solid-svg-icons';
 import useToken from '../auth/UseToken';
 import AdminNav from '../components/AdminNav';
 
@@ -70,7 +72,7 @@ function Admins () {
               </Form.Control>
             </Form.Field>
             <Form.Field>
-              <Form.Label>Surname</Form.Label>
+              <Form.Label>Last Name</Form.Label>
               <Form.Control>
                 <Form.Input name="surname" type="text" value={newAdminForm.surname} onChange={updateNewAdminForm} />
               </Form.Control>
@@ -99,6 +101,15 @@ function Admins () {
           <Container>
             <Heading subtitle>Existing Admins</Heading>
             <Table size='fullwidth'>
+              <thead>
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Username</th>
+                  <th>User Status</th>
+                  <th>Current User</th>
+                </tr>
+              </thead>
               <tbody>
                 {adminList.admins.map((admin) => {
                   return (
@@ -106,8 +117,10 @@ function Admins () {
                       <td>{admin.first_name}</td>
                       <td>{admin.surname}</td>
                       <td>{admin.username}</td>
+                      <td>{admin.is_active ? <Icon align="center"><FontAwesomeIcon icon={faCheck} /></Icon> : <Icon align="center"><FontAwesomeIcon icon={faCross} /></Icon>}</td>
+                      <td>{admin.is_current && <Icon align="center"><FontAwesomeIcon icon={faCheck} /></Icon>}</td>
                       <td>
-                        <Button renderAs="a" href={'admin/admins#'}>Reset Password</Button>
+                        <Button renderAs="a" href={'admin/admins/'+admin.username}>Manage</Button>
                       </td>
                     </tr>
                   );
