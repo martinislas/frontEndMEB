@@ -16,8 +16,7 @@ func Router() http.Handler {
 	mux.GET("/api/jobs", job.GetJobs)   // get all jobs
 	mux.GET("/api/job/:id", job.GetJob) // get an existing job
 
-	mux.POST("/api/admin/login", admin.LoginAdmin) // admin login
-
+	mux.POST("/api/admin/login", admin.LoginAdmin)                            // admin login
 	mux.GET("/api/admins", middleware.WithAdminAuth(admin.GetAdmins))         // get all admins
 	mux.GET("/api/admin/:username", middleware.WithAdminAuth(admin.GetAdmin)) // get an existing admin
 	mux.PUT("/api/admin", middleware.WithAdminAuth(admin.PutAdmin))           // modify any existing admin

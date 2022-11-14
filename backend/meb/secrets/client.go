@@ -2,6 +2,7 @@ package secrets
 
 import (
 	"context"
+	"fmt"
 
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	secretmanagerpb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
@@ -14,6 +15,7 @@ func GetAdminSecret() ([]byte, error) {
 
 	fetchedSecret, err := Client.GetSecret(ctx, &secretmanagerpb.GetSecretRequest{Name: "projects/meb-resources/secrets/admin-secret"})
 	if err != nil {
+		fmt.Println(err.Error())
 		return []byte{}, err
 	}
 
