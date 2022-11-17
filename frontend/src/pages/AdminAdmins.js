@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import useToken from "../auth/UseToken";
 import AdminNav from "../components/AdminNav";
+import RemoveToken from "../auth/RemoveToken";
 
 function Admins() {
   const [token] = useToken();
@@ -34,6 +35,9 @@ function Admins() {
         }
       } catch (e) {
         console.log(e);
+        if (e.response.status === 401) {
+          RemoveToken();
+        }
       }
     }
 
@@ -67,7 +71,9 @@ function Admins() {
       navigate(`/admin/admins?status=success`);
       console.log(response);
     } catch (e) {
-      if (e.response) {
+      if (e.response.status === 401) {
+        RemoveToken();
+      } else if (e.response) {
         navigate("/admin/admins?status=failed");
       } else {
         console.log(e);

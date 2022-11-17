@@ -1,38 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from 'axios';
-import 'bulma/css/bulma.min.css';
-import { Button, Container, Form, Heading, Section } from 'react-bulma-components';
-import useToken from '../auth/UseToken';
-import AdminNav from '../components/AdminNav';
+import axios from "axios";
+import "bulma/css/bulma.min.css";
+import {
+  Button,
+  Container,
+  Form,
+  Heading,
+  Section,
+} from "react-bulma-components";
+import useToken from "../auth/UseToken";
+import AdminNav from "../components/AdminNav";
+import RemoveToken from "../auth/RemoveToken";
 
-function AdminIndustry () {
-  const [token, ] = useToken();
-  const {id} = useParams();
-  let navigate = useNavigate();
-
-  // Edit industry form
-  const [updateIndustryForm, setUpdateIndustryForm] = useState({name: id, displayName: ''});
-  const updateIndustryFormDisplayNameField = ((event) => setUpdateIndustryForm({ name: id, displayName: event.target.value }));
-
-  // Update Industry
-  const onUpdateIndustryClicked = async () => {
-    try {
-      const response = await axios.put('/api/industry', {
-        display_name: updateIndustryForm.displayName,
-        name: updateIndustryForm.name,
-      }, {
-      headers: {'Authorization': 'Bearer ' + token}
-      });
-      navigate(`/admin/system/industry/${response.data.name}?status=success`);
-    } catch (e) {
-      if (e.response) {
-        navigate(`/admin/system/industry/${id}?status=failed`);
-      } else {
-        console.log(e)
-      }
-    }
-  }
+function AdminIndustry() {
+  const { id } = useParams();
 
   return (
     <div>
@@ -40,25 +22,7 @@ function AdminIndustry () {
       <Container>
         <Section>
           <Heading>Edit Existing Industry</Heading>
-          <Container>
-            <Form.Field>
-              <GetCurrentIndustry id={id} />
-              <Form.Label>Updated Industry Name</Form.Label>
-              <Form.Control>
-                <Form.Input name="displayName" type="text" value={updateIndustryForm.displayName} onChange={updateIndustryFormDisplayNameField} />
-              </Form.Control>
-            </Form.Field>
-            <Form.Field hidden>
-              <Form.Control>
-                <Form.Input name="name" type="text" value={updateIndustryForm.name} />
-              </Form.Control>
-            </Form.Field>
-            <Form.Field>
-              <Form.Control>
-                <Button type="primary" onClick={onUpdateIndustryClicked}>Update Industry</Button>
-              </Form.Control>
-            </Form.Field>
-          </Container>
+          <GetCurrentIndustry id={id} />
         </Section>
       </Container>
     </div>
@@ -66,27 +30,96 @@ function AdminIndustry () {
 }
 
 function GetCurrentIndustry({ id }) {
-  const [currentIndustry, setCurrentIndustry] = useState({displayName: ''})
+  const [currentIndustry, setCurrentIndustry] = useState({
+    name: "",
+    displayName: "",
+  });
 
   useEffect(() => {
     async function getIndustry() {
       try {
         const response = await axios.get(`/api/industry/${id}`);
         if (response) {
-          setCurrentIndustry({ displayName: response.data.display_name })
+          setCurrentIndustry({
+            name: response.data.name,
+            displayName: response.data.display_name,
+          });
         }
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     }
 
-    getIndustry()
+    getIndustry();
   }, [id]);
 
-  if (currentIndustry.displayName === '') {
-    return (<Form.Label>Current Industry Name: Loading...</Form.Label>)
-  } 
-  return (<Form.Label>Current Industry Name: {currentIndustry.displayName}</Form.Label>)
+  if (currentIndustry.name === "") {
+    return <div>Loading...</div>;
+  }
+  return <UpdateCurrentIndustry industry={currentIndustry} />;
+}
+
+function UpdateCurrentIndustry({ industry }) {
+  const [token] = useToken();
+
+  let navigate = useNavigate();
+
+  // Edit industry form
+  const [updateIndustryForm, setUpdateIndustryForm] = useState({
+    displayName: industry.displayName,
+  });
+  const updateIndustryFormDisplayNameField = event =>
+    setUpdateIndustryForm({
+      displayName: event.target.value,
+    });
+
+  // Update Industry
+  const onUpdateIndustryClicked = async () => {
+    try {
+      await axios.put(
+        "/api/industry",
+        {
+          display_name: updateIndustryForm.displayName,
+          name: industry.name,
+        },
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      );
+      navigate(`/admin/system?status=success`);
+    } catch (e) {
+      if (e.response.status === 401) {
+        RemoveToken();
+      } else if (e.response) {
+        navigate(`/admin/system/industry/${industry.name}?status=failed`);
+      } else {
+        console.log(e);
+      }
+    }
+  };
+
+  return (
+    <Container>
+      <Form.Field>
+        <Form.Label>Update Industry Name</Form.Label>
+        <Form.Control>
+          <Form.Input
+            name="displayName"
+            type="text"
+            value={updateIndustryForm.displayName}
+            onChange={updateIndustryFormDisplayNameField}
+          />
+        </Form.Control>
+      </Form.Field>
+      <Form.Field>
+        <Form.Control>
+          <Button type="primary" onClick={onUpdateIndustryClicked}>
+            Update Industry
+          </Button>
+        </Form.Control>
+      </Form.Field>
+    </Container>
+  );
 }
 
 export default AdminIndustry;

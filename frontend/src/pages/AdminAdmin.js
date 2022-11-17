@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import useToken from "../auth/UseToken";
 import AdminNav from "../components/AdminNav";
+import RemoveToken from "../auth/RemoveToken";
 
 function Admin() {
   const { id, status } = useParams();
@@ -64,6 +65,9 @@ function GetCurrentAdmin({ id }) {
         }
       } catch (e) {
         console.log(e);
+        if (e.response.status === 401) {
+          RemoveToken();
+        }
       }
     }
 
@@ -148,9 +152,11 @@ function DisableAdmin({ admin, token }) {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/admins`);
+      navigate(`/admin/admins?status=success`);
     } catch (e) {
-      if (e.response) {
+      if (e.response.status === 401) {
+        RemoveToken();
+      } else if (e.response) {
         navigate(`/admin/admins/${admin.username}?status=failed`);
       } else {
         console.log(e);
@@ -178,7 +184,7 @@ function EnableAdmin({ admin, token }) {
 
   const onEnableAdminClicked = async () => {
     try {
-      const response = await axios.put(
+      await axios.put(
         "/api/admin",
         {
           username: admin.username,
@@ -190,9 +196,11 @@ function EnableAdmin({ admin, token }) {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/admins/${response.data.username}?status=success`);
+      navigate(`/admin/admins?status=success`);
     } catch (e) {
-      if (e.response) {
+      if (e.response.status === 401) {
+        RemoveToken();
+      } else if (e.response) {
         navigate(`/admin/admins/${admin.username}?status=failed`);
       } else {
         console.log(e);
@@ -226,7 +234,7 @@ function ChangeAdminPassword({ admin, token }) {
 
   const onChangeAdminPasswordClicked = async () => {
     try {
-      const response = await axios.put(
+      await axios.put(
         "/api/admin",
         {
           username: admin.username,
@@ -239,9 +247,11 @@ function ChangeAdminPassword({ admin, token }) {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/admins/${response.data.username}?status=success`);
+      navigate(`/admin/admins?status=success`);
     } catch (e) {
-      if (e.response) {
+      if (e.response.status === 401) {
+        RemoveToken();
+      } else if (e.response) {
         navigate(`/admin/admins/${admin.username}?status=failed`);
       } else {
         console.log(e);
