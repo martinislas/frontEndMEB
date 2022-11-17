@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
 import {
+  Button,
   Columns,
   Container,
+  Form,
   Heading,
   Icon,
   Section,
@@ -26,17 +28,7 @@ function Admin() {
       <Container>
         <Section>
           <Heading>Edit Existing Admin</Heading>
-          <Columns>
-            <Columns.Column>
-              <GetCurrentAdmin id={id} />
-            </Columns.Column>
-            <Columns.Column>
-              {/* {currentAdmin.isActive ? <DisableAdmin admin={currentAdmin} token={token} /> : <EnableAdmin admin={currentAdmin} token={token} />} */}
-            </Columns.Column>
-            <Columns.Column>
-              {/* <ChangeAdminPassword admin={currentAdmin} /> */}
-            </Columns.Column>
-          </Columns>
+          <GetCurrentAdmin id={id} />
         </Section>
       </Container>
     </div>
@@ -65,7 +57,7 @@ function GetCurrentAdmin({ id }) {
           setCurrentAdmin({
             username: response.data.username,
             firstName: response.data.first_name,
-            lastName: response.data.last_name,
+            lastName: response.data.surname,
             isActive: response.data.is_active,
             isCurrent: response.data.is_current,
           });
@@ -82,120 +74,146 @@ function GetCurrentAdmin({ id }) {
     return <div>Loading...</div>;
   }
   return (
-    <Table>
-      <tbody>
-        <tr>
-          <th>Username</th>
-          <td>{currentAdmin.username}</td>
-        </tr>
-        <tr>
-          <th>First Name</th>
-          <td>{currentAdmin.firstName}</td>
-        </tr>
-        <tr>
-          <th>Last Name</th>
-          <td>{currentAdmin.lastName}</td>
-        </tr>
-        <tr>
-          <th>User Status</th>
-          <td>
-            {currentAdmin.isActive ? (
-              <Icon align="center">
-                <FontAwesomeIcon icon={faCheck} />
-              </Icon>
-            ) : (
-              <Icon align="center">
-                <FontAwesomeIcon icon={faXmark} />
-              </Icon>
-            )}
-          </td>
-        </tr>
-        <tr>
-          <th>Current User</th>
-          <td>
-            {currentAdmin.isCurrent && (
-              <Icon align="center">
-                <FontAwesomeIcon icon={faCheck} />
-              </Icon>
-            )}
-          </td>
-        </tr>
-      </tbody>
-    </Table>
+    <Columns>
+      <Columns.Column>
+        <Table>
+          <tbody>
+            <tr>
+              <th>Username</th>
+              <td>{currentAdmin.username}</td>
+            </tr>
+            <tr>
+              <th>First Name</th>
+              <td>{currentAdmin.firstName}</td>
+            </tr>
+            <tr>
+              <th>Last Name</th>
+              <td>{currentAdmin.lastName}</td>
+            </tr>
+            <tr>
+              <th>User Status</th>
+              <td>
+                {currentAdmin.isActive ? (
+                  <Icon align="center">
+                    <FontAwesomeIcon icon={faCheck} />
+                  </Icon>
+                ) : (
+                  <Icon align="center">
+                    <FontAwesomeIcon icon={faXmark} />
+                  </Icon>
+                )}
+              </td>
+            </tr>
+            <tr>
+              <th>Current User</th>
+              <td>
+                {currentAdmin.isCurrent && (
+                  <Icon align="center">
+                    <FontAwesomeIcon icon={faCheck} />
+                  </Icon>
+                )}
+              </td>
+            </tr>
+          </tbody>
+        </Table>
+      </Columns.Column>
+      <Columns.Column>
+        {currentAdmin.isActive ? (
+          <DisableAdmin admin={currentAdmin} token={token} />
+        ) : (
+          <EnableAdmin admin={currentAdmin} token={token} />
+        )}
+      </Columns.Column>
+      <Columns.Column>
+        {/* <ChangeAdminPassword admin={currentAdmin} /> */}
+      </Columns.Column>
+    </Columns>
   );
 }
 
-// function DisableAdmin({ admin, token }) {
-//   let navigate = useNavigate();
+function DisableAdmin({ admin, token }) {
+  let navigate = useNavigate();
 
-//   const onDisableAdminClicked = async () => {
-//     try {
-//       const response = await axios.put('/api/admin', {
-//         username: admin.username,
-//         first_name: admin.firstName,
-//         surname: admin.lastName,
-//         is_active: false
-//       }, {
-//       headers: {'Authorization': 'Bearer ' + token}
-//       });
-//       navigate(`/admin/admins/${response.data.username}?status=success`);
-//     } catch (e) {
-//       if (e.response) {
-//         navigate(`/admin/admins/${admin.username}?status=failed`);
-//       } else {
-//         console.log(e)
-//       }
-//     }
-//   }
+  const onDisableAdminClicked = async () => {
+    try {
+      const response = await axios.put(
+        "/api/admin",
+        {
+          username: admin.username,
+          first_name: admin.firstName,
+          surname: admin.lastName,
+          is_active: false,
+        },
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      );
+      navigate(`/admin/admins/${response.data.username}?status=success`);
+    } catch (e) {
+      if (e.response) {
+        navigate(`/admin/admins/${admin.username}?status=failed`);
+      } else {
+        console.log(e);
+      }
+    }
+  };
 
-//   return (
-//     <div>
-//       <Container>
-//         <Form.Field>
-//           <Form.Control>
-//             <Button type="primary" onClick={onDisableAdminClicked}>Disable Admin</Button>
-//           </Form.Control>
-//         </Form.Field>
-//       </Container>
-//     </div>
-//   );
-// }
+  return (
+    <div>
+      <Container>
+        <Form.Field>
+          <Form.Control>
+            <Button type="primary" onClick={onDisableAdminClicked}>
+              Disable Admin
+            </Button>
+          </Form.Control>
+        </Form.Field>
+      </Container>
+    </div>
+  );
+}
 
-// function EnableAdmin({ admin, token }) {
-//   let navigate = useNavigate();
+function EnableAdmin({ admin, token }) {
+  let navigate = useNavigate();
 
-//   const onEnableAdminClicked = async () => {
-//     try {
-//       const response = await axios.put('/api/admin', {
-//         username: admin.username,
-//         first_name: admin.firstName,
-//         surname: admin.lastName,
-//         is_active: true
-//       }, {
-//       headers: {'Authorization': 'Bearer ' + token}
-//       });
-//       navigate(`/admin/admins/${response.data.username}?status=success`);
-//     } catch (e) {
-//       if (e.response) {
-//         navigate(`/admin/admins/${admin.username}?status=failed`);
-//       } else {
-//         console.log(e)
-//       }
-//     }
-//   }
+  const onEnableAdminClicked = async () => {
+    try {
+      const response = await axios.put(
+        "/api/admin",
+        {
+          username: admin.username,
+          first_name: admin.firstName,
+          surname: admin.lastName,
+          is_active: true,
+        },
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      );
+      navigate(`/admin/admins/${response.data.username}?status=success`);
+    } catch (e) {
+      if (e.response) {
+        navigate(`/admin/admins/${admin.username}?status=failed`);
+      } else {
+        console.log(e);
+      }
+    }
+  };
 
-//   return (
-//     <div>
-//       <Container>
-//         <Form.Field>
-//           <Form.Control>
-//             <Button type="primary" onClick={onEnableAdminClicked}>Enable Admin</Button>
-//           </Form.Control>
-//         </Form.Field>
-//       </Container>
-//     </div>
-//   );
-// }
+  return (
+    <div>
+      <Container>
+        <Form.Field>
+          <Form.Control>
+            <Button type="primary" onClick={onEnableAdminClicked}>
+              Enable Admin
+            </Button>
+          </Form.Control>
+        </Form.Field>
+      </Container>
+    </div>
+  );
+}
 
 // function ChangeAdminPassword({ admin }) {
 
