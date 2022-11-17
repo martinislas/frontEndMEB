@@ -80,7 +80,7 @@ function Admins() {
       <AdminNav />
       <Container>
         <Section>
-          <Heading>Applicants</Heading>
+          <Heading>Admins</Heading>
           <Container>
             <Heading subtitle>Create New Admin User</Heading>
             <Form.Field>
@@ -121,7 +121,7 @@ function Admins() {
               <Form.Control>
                 <Form.Input
                   name="password"
-                  type="text"
+                  type="password"
                   value={newAdminForm.password}
                   onChange={updateNewAdminForm}
                 />

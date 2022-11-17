@@ -18,9 +18,9 @@ import useToken from "../auth/UseToken";
 import AdminNav from "../components/AdminNav";
 
 function Admin() {
-  const { id } = useParams();
+  const { id, status } = useParams();
 
-  console.log(id);
+  console.log("status: " + status);
 
   return (
     <div>
@@ -125,7 +125,7 @@ function GetCurrentAdmin({ id }) {
         )}
       </Columns.Column>
       <Columns.Column>
-        {/* <ChangeAdminPassword admin={currentAdmin} /> */}
+        <ChangeAdminPassword admin={currentAdmin} token={token} />
       </Columns.Column>
     </Columns>
   );
@@ -136,7 +136,7 @@ function DisableAdmin({ admin, token }) {
 
   const onDisableAdminClicked = async () => {
     try {
-      const response = await axios.put(
+      await axios.put(
         "/api/admin",
         {
           username: admin.username,
@@ -148,7 +148,7 @@ function DisableAdmin({ admin, token }) {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/admins/${response.data.username}?status=success`);
+      navigate(`/admin/admins`);
     } catch (e) {
       if (e.response) {
         navigate(`/admin/admins/${admin.username}?status=failed`);
@@ -215,13 +215,78 @@ function EnableAdmin({ admin, token }) {
   );
 }
 
-// function ChangeAdminPassword({ admin }) {
+function ChangeAdminPassword({ admin, token }) {
+  let navigate = useNavigate();
 
-//   return (
-//     <div>
-//       Soon
-//     </div>
-//   );
-// }
+  const [changeAdminPasswordForm, setChangeAdminPasswordForm] = useState({
+    password: "",
+  });
+  const updateChangeAdminPasswordForm = event =>
+    setChangeAdminPasswordForm({ password: event.target.value });
+
+  const onChangeAdminPasswordClicked = async () => {
+    try {
+      const response = await axios.put(
+        "/api/admin",
+        {
+          username: admin.username,
+          first_name: admin.firstName,
+          surname: admin.lastName,
+          is_active: true,
+          password: changeAdminPasswordForm.password,
+        },
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      );
+      navigate(`/admin/admins/${response.data.username}?status=success`);
+    } catch (e) {
+      if (e.response) {
+        navigate(`/admin/admins/${admin.username}?status=failed`);
+      } else {
+        console.log(e);
+      }
+    }
+  };
+
+  if (!admin.isActive) {
+    return (
+      <div>
+        <Container>
+          <Heading subtitle>Change Admin Password</Heading>
+          <p>
+            Admin is currently disabled. Enable to allow password to be changed.
+          </p>
+        </Container>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <Container>
+        <Heading subtitle>Change Admin Password</Heading>
+        <Form.Field>
+          <Form.Label>Enter A New Password</Form.Label>
+          <Form.Control>
+            <Form.Input
+              name="password"
+              type="password"
+              value={changeAdminPasswordForm.password}
+              onChange={updateChangeAdminPasswordForm}
+            />
+          </Form.Control>
+        </Form.Field>
+        <Form.Field>
+          <Form.Control>
+            <Button type="primary" onClick={onChangeAdminPasswordClicked}>
+              Update Password
+            </Button>
+          </Form.Control>
+        </Form.Field>
+      </Container>
+    </div>
+  );
+}
 
 export default Admin;
