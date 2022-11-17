@@ -104,6 +104,12 @@ func GetAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 
+	currentAdminUsername := ctx.Value(middleware.AdminUserCtx).(string)
+
+	if admin.Username == currentAdminUsername {
+		admin.IsCurrent = true
+	}
+
 	// Technically impossible to return through the model but best make sure not to return sensitive fields
 	admin.Password = ""
 	admin.HashedPassword = []byte{}
@@ -249,8 +255,6 @@ func GetAdmins(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		admin.HashedPassword = []byte{}
 		if admin.Username == currentAdminUsername {
 			admin.IsCurrent = true
-		} else {
-			admin.IsCurrent = false
 		}
 	}
 
