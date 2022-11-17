@@ -18,6 +18,8 @@ import AdminNav from "../components/AdminNav";
 function Admin() {
   const { id } = useParams();
 
+  console.log(id);
+
   return (
     <div>
       <AdminNav />
