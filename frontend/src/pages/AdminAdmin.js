@@ -1,42 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from 'axios';
-import 'bulma/css/bulma.min.css';
-import { Columns, Container, Heading, Icon, Section, Table } from 'react-bulma-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
-import useToken from '../auth/UseToken';
-import AdminNav from '../components/AdminNav';
+import axios from "axios";
+import "bulma/css/bulma.min.css";
+import {
+  Columns,
+  Container,
+  Heading,
+  Icon,
+  Section,
+  Table,
+} from "react-bulma-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import useToken from "../auth/UseToken";
+import AdminNav from "../components/AdminNav";
 
-function Admin () {
-  const [token, ] = useToken();
-  const {id} = useParams();
-
-  // Get the admin by ID
-  const [currentAdmin, setCurrentAdmin] = useState({username: '', firstName: '', lastName: '', isActive: false, isCurrent: false})
-
-  useEffect(() => {
-    async function getAdmin() {
-      try {
-        const response = await axios.get(`/api/admin/${id}`, {
-          headers: {'Authorization': 'Bearer ' + token}
-          });
-        if (response) {
-          setCurrentAdmin({ 
-            username: response.data.username,
-            firstName: response.data.first_name,
-            lastName: response.data.last_name,
-            isActive: response.data.is_active,
-            isCurrent: response.data.is_current
-          })
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    }
-
-    getAdmin()
-  }, [id, token]);
+function Admin() {
+  const { id } = useParams();
 
   return (
     <div>
@@ -46,30 +26,7 @@ function Admin () {
           <Heading>Edit Existing Admin</Heading>
           <Columns>
             <Columns.Column>
-              <Table>
-                <tbody>
-                  <tr>
-                    <th>Username</th>
-                    <td>{currentAdmin.username}</td>
-                  </tr>
-                  <tr>
-                    <th>First Name</th>
-                    <td>{currentAdmin.firstName}</td>
-                  </tr>
-                  <tr>
-                    <th>Last Name</th>
-                    <td>{currentAdmin.lastName}</td>
-                  </tr>
-                  <tr>
-                    <th>User Status</th>
-                    <td>{currentAdmin.isActive ? <Icon align="center"><FontAwesomeIcon icon={faCheck} /></Icon> : <Icon align="center"><FontAwesomeIcon icon={faXmark} /></Icon>}</td>
-                  </tr>
-                  <tr>
-                    <th>Current User</th>
-                    <td>{currentAdmin.isCurrent && <Icon align="center"><FontAwesomeIcon icon={faCheck} /></Icon>}</td>
-                  </tr>
-                </tbody>
-              </Table>
+              <GetCurrentAdmin id={id} />
             </Columns.Column>
             <Columns.Column>
               {/* {currentAdmin.isActive ? <DisableAdmin admin={currentAdmin} token={token} /> : <EnableAdmin admin={currentAdmin} token={token} />} */}
@@ -81,6 +38,88 @@ function Admin () {
         </Section>
       </Container>
     </div>
+  );
+}
+
+function GetCurrentAdmin({ id }) {
+  const [token] = useToken();
+
+  // Get the admin by ID
+  const [currentAdmin, setCurrentAdmin] = useState({
+    username: "",
+    firstName: "",
+    lastName: "",
+    isActive: false,
+    isCurrent: false,
+  });
+
+  useEffect(() => {
+    async function getAdmin() {
+      try {
+        const response = await axios.get(`/api/admin/${id}`, {
+          headers: { Authorization: "Bearer " + token },
+        });
+        if (response) {
+          setCurrentAdmin({
+            username: response.data.username,
+            firstName: response.data.first_name,
+            lastName: response.data.last_name,
+            isActive: response.data.is_active,
+            isCurrent: response.data.is_current,
+          });
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    getAdmin();
+  }, [id, token]);
+
+  if (currentAdmin.username === "") {
+    return <div>Loading...</div>;
+  }
+  return (
+    <Table>
+      <tbody>
+        <tr>
+          <th>Username</th>
+          <td>{currentAdmin.username}</td>
+        </tr>
+        <tr>
+          <th>First Name</th>
+          <td>{currentAdmin.firstName}</td>
+        </tr>
+        <tr>
+          <th>Last Name</th>
+          <td>{currentAdmin.lastName}</td>
+        </tr>
+        <tr>
+          <th>User Status</th>
+          <td>
+            {currentAdmin.isActive ? (
+              <Icon align="center">
+                <FontAwesomeIcon icon={faCheck} />
+              </Icon>
+            ) : (
+              <Icon align="center">
+                <FontAwesomeIcon icon={faXmark} />
+              </Icon>
+            )}
+          </td>
+        </tr>
+        <tr>
+          <th>Current User</th>
+          <td>
+            {currentAdmin.isCurrent && (
+              <Icon align="center">
+                <FontAwesomeIcon icon={faCheck} />
+              </Icon>
+            )}
+          </td>
+        </tr>
+      </tbody>
+    </Table>
   );
 }
 
