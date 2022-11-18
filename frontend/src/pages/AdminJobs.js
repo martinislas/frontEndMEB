@@ -54,8 +54,8 @@ function AdminJobs() {
 
   const onCreateNewJobClicked = async () => {
     try {
-      const response = await axios.post(
-        "/api/admin/job",
+      await axios.post(
+        "/api/admins/job",
         {
           name: newJobForm.title,
           description: newJobForm.description,
@@ -68,7 +68,6 @@ function AdminJobs() {
         }
       );
       navigate(`/admin/jobs?status=success`);
-      console.log(response);
     } catch (e) {
       console.log(e); // Remove later
       if (e.response) {
