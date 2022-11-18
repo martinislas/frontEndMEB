@@ -128,7 +128,7 @@ function EditCurrentJob({ job }) {
       await axios.put(
         "/api/admins/job",
         {
-          id: updateJobForm.id,
+          id: job.id,
           name: updateJobForm.name,
           description: updateJobForm.description,
           salary: updateJobForm.salary,
