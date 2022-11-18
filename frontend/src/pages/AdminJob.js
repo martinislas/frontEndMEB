@@ -157,6 +157,7 @@ function EditCurrentJob({ job }) {
 
   return (
     <Container>
+      <Heading subtitle>Edit Job Posting</Heading>
       <Form.Field>
         <Form.Label>Job Title</Form.Label>
         <Form.Control>
@@ -270,6 +271,7 @@ function DisableJob({ job }) {
   return (
     <div>
       <Container>
+        <Heading subtitle>Manage Job Posting Status</Heading>
         <Form.Field>
           <Form.Control>
             <Button type="primary" onClick={onDisableJobClicked}>
@@ -321,6 +323,7 @@ function EnableJob({ job }) {
   return (
     <div>
       <Container>
+        <Heading subtitle>Manage Job Posting Status</Heading>
         <Form.Field>
           <Form.Control>
             <Button type="primary" onClick={onEnableAdminClicked}>
