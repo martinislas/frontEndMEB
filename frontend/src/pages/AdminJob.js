@@ -203,11 +203,7 @@ function EditCurrentJob({ job }) {
       <Form.Field>
         <Form.Label>Industry</Form.Label>
         <Form.Control>
-          <Form.Select
-            name="industryKey"
-            value={job.industry}
-            onChange={updateUpdateJobForm}
-          >
+          <Form.Select name="industryKey" onChange={updateUpdateJobForm}>
             <IndustryPicker />
           </Form.Select>
         </Form.Control>
