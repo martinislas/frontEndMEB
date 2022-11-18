@@ -7,9 +7,12 @@ import {
   Container,
   Form,
   Heading,
+  Icon,
   Section,
   Table,
 } from "react-bulma-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import useToken from "../auth/UseToken";
 import AdminNav from "../components/AdminNav";
 import LocationPicker from "../components/LocationPicker";
@@ -151,6 +154,16 @@ function AdminJobs() {
           <Container>
             <Heading subtitle>Existing Jobs</Heading>
             <Table size="fullwidth">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Location</th>
+                  <th>Industry</th>
+                  <th>Position Open</th>
+                  <th>Current Applicant Count</th>
+                  <th>Options</th>
+                </tr>
+              </thead>
               <tbody>
                 {jobList.jobs.map(job => {
                   return (
@@ -158,10 +171,21 @@ function AdminJobs() {
                       <td>{job.name}</td>
                       <td>{job.location}</td>
                       <td>{job.industry}</td>
+                      <td>
+                        {job.active ? (
+                          <Icon align="center">
+                            <FontAwesomeIcon icon={faCheck} />
+                          </Icon>
+                        ) : (
+                          <Icon align="center">
+                            <FontAwesomeIcon icon={faXmark} />
+                          </Icon>
+                        )}
+                      </td>
                       <td>{job.applicant_count}</td>
                       <td>
                         <Button renderAs="a" href={"/admin/jobs/" + job.id}>
-                          View / Edit
+                          Manage
                         </Button>
                       </td>
                     </tr>

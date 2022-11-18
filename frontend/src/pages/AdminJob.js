@@ -217,7 +217,7 @@ function EditCurrentJob({ job }) {
         <Form.Control>
           <Form.Checkbox
             name="active"
-            value={updateJobForm.active}
+            checked={updateJobForm.active}
             onChange={updateUpdateJobForm}
           />
         </Form.Control>
