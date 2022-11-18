@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 
-function IndustryPicker({ selectedIndustry }) {
+function IndustryPicker({ selectedIndustryKey, selectedIndustryDisplayName }) {
   const [industryList, setIndustryList] = useState({ industries: [] });
 
   useEffect(() => {
@@ -19,7 +19,7 @@ function IndustryPicker({ selectedIndustry }) {
     getIndustries();
   }, []);
 
-  if (selectedIndustry === undefined) {
+  if (selectedIndustryKey === undefined) {
     return (
       <Fragment>
         <option>Select Industry</option>
@@ -31,12 +31,10 @@ function IndustryPicker({ selectedIndustry }) {
   }
   return (
     <Fragment>
-      <option value={selectedIndustry.name}>
-        {selectedIndustry.display_name}
-      </option>
+      <option value={selectedIndustryKey}>{selectedIndustryDisplayName}</option>
       {industryList.industries.filter(industry => {
         return (
-          industry.name !== selectedIndustry.name && (
+          industry.name !== selectedIndustryKey && (
             <option value={industry.name}>{industry.display_name}</option>
           )
         );

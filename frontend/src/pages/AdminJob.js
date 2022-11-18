@@ -191,11 +191,7 @@ function EditCurrentJob({ job }) {
       <Form.Field>
         <Form.Label>Location</Form.Label>
         <Form.Control>
-          <Form.Select
-            name="locationKey"
-            value={job.location}
-            onChange={updateUpdateJobForm}
-          >
+          <Form.Select name="locationKey" onChange={updateUpdateJobForm}>
             <LocationPicker />
           </Form.Select>
         </Form.Control>
@@ -204,7 +200,10 @@ function EditCurrentJob({ job }) {
         <Form.Label>Industry</Form.Label>
         <Form.Control>
           <Form.Select name="industryKey" onChange={updateUpdateJobForm}>
-            <IndustryPicker />
+            <IndustryPicker
+              selectedIndustryKey={job.industryKey}
+              selectedIndustryDisplayName={job.industry}
+            />
           </Form.Select>
         </Form.Control>
       </Form.Field>
