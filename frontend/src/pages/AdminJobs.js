@@ -1,60 +1,81 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-import 'bulma/css/bulma.min.css';
-import { Button, Container, Form, Heading, Section, Table } from 'react-bulma-components';
-import useToken from '../auth/UseToken';
-import AdminNav from '../components/AdminNav';
-import LocationPicker from '../components/LocationPicker';
-import IndustryPicker from '../components/IndustryPicker';
+import axios from "axios";
+import "bulma/css/bulma.min.css";
+import {
+  Button,
+  Container,
+  Form,
+  Heading,
+  Section,
+  Table,
+} from "react-bulma-components";
+import useToken from "../auth/UseToken";
+import AdminNav from "../components/AdminNav";
+import LocationPicker from "../components/LocationPicker";
+import IndustryPicker from "../components/IndustryPicker";
+import RemoveToken from "../auth/RemoveToken";
 
-function AdminJobs () {
-  const [token, ] = useToken();
+function AdminJobs() {
+  const [token] = useToken();
   let navigate = useNavigate();
 
   // Existing jobs
-  const [jobList, setJobList] = useState({jobs: [] });
+  const [jobList, setJobList] = useState({ jobs: [] });
 
   useEffect(() => {
     async function getJobs() {
       try {
-        const { data: jobs } = await axios.get('/api/jobs');
+        const { data: jobs } = await axios.get("/api/jobs");
         if (jobs) {
-          setJobList({ jobs })
+          setJobList({ jobs });
         }
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     }
 
-    getJobs()
+    getJobs();
   }, []);
 
   // New Job
-  const [newJobForm, setNewJobForm] = useState({ title: '', description: '', salary: '', locationKey: '', industryKey: '' });
-  const updateNewJobForm = (({ target }) => setNewJobForm({ ...newJobForm, [target.name]: target.value }));
+  const [newJobForm, setNewJobForm] = useState({
+    title: "",
+    description: "",
+    salary: "",
+    locationKey: "",
+    industryKey: "",
+  });
+  const updateNewJobForm = ({ target }) =>
+    setNewJobForm({ ...newJobForm, [target.name]: target.value });
 
   const onCreateNewJobClicked = async () => {
     try {
-      const response = await axios.post('/api/admin/job', {
-        name: newJobForm.title,
-        description: newJobForm.description,
-        salary: newJobForm.salary,
-        location_key: newJobForm.locationKey,
-        industry_key: newJobForm.industryKey,
-      }, {
-      headers: {'Authorization': 'Bearer ' + token}
-      });
-      navigate(`/admin/jobs/${response.data.id}?status=success`);
-      console.log(response)
+      const response = await axios.post(
+        "/api/admin/job",
+        {
+          name: newJobForm.title,
+          description: newJobForm.description,
+          salary: newJobForm.salary,
+          location_key: newJobForm.locationKey,
+          industry_key: newJobForm.industryKey,
+        },
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      );
+      navigate(`/admin/jobs?status=success`);
+      console.log(response);
     } catch (e) {
-      if (e.response) {
-        navigate('/admin/jobs?status=failed');
+      if (e.response.status === 401) {
+        RemoveToken();
+      } else if (e.response) {
+        navigate("/admin/jobs?status=failed");
       } else {
-        console.log(e)
+        console.log(e);
       }
     }
-  }
+  };
 
   return (
     <div>
@@ -67,19 +88,34 @@ function AdminJobs () {
             <Form.Field>
               <Form.Label>Job Title</Form.Label>
               <Form.Control>
-                <Form.Input name="title" type="text" value={newJobForm.title} onChange={updateNewJobForm} />
+                <Form.Input
+                  name="title"
+                  type="text"
+                  value={newJobForm.title}
+                  onChange={updateNewJobForm}
+                />
               </Form.Control>
             </Form.Field>
             <Form.Field>
               <Form.Label>Job Description</Form.Label>
               <Form.Control>
-                <Form.Input name="description" type="text" value={newJobForm.description} onChange={updateNewJobForm} />
+                <Form.Input
+                  name="description"
+                  type="text"
+                  value={newJobForm.description}
+                  onChange={updateNewJobForm}
+                />
               </Form.Control>
             </Form.Field>
             <Form.Field>
               <Form.Label>Salary</Form.Label>
               <Form.Control>
-                <Form.Input name="salary" type="text" value={newJobForm.salary} onChange={updateNewJobForm} />
+                <Form.Input
+                  name="salary"
+                  type="text"
+                  value={newJobForm.salary}
+                  onChange={updateNewJobForm}
+                />
               </Form.Control>
             </Form.Field>
             <Form.Field>
@@ -100,7 +136,9 @@ function AdminJobs () {
             </Form.Field>
             <Form.Field>
               <Form.Control>
-                <Button type="primary" onClick={onCreateNewJobClicked}>Submit</Button>
+                <Button type="primary" onClick={onCreateNewJobClicked}>
+                  Submit
+                </Button>
               </Form.Control>
             </Form.Field>
           </Container>
@@ -109,9 +147,9 @@ function AdminJobs () {
         <Section>
           <Container>
             <Heading subtitle>Existing Jobs</Heading>
-            <Table size='fullwidth'>
+            <Table size="fullwidth">
               <tbody>
-                {jobList.jobs.map((job) => {
+                {jobList.jobs.map(job => {
                   return (
                     <tr>
                       <td>{job.name}</td>
@@ -119,7 +157,9 @@ function AdminJobs () {
                       <td>{job.industry}</td>
                       <td>{job.applicant_count}</td>
                       <td>
-                        <Button renderAs="a" href={'/admin/jobs/'+job.id}>View / Edit</Button>
+                        <Button renderAs="a" href={"/admin/jobs/" + job.id}>
+                          View / Edit
+                        </Button>
                       </td>
                     </tr>
                   );
