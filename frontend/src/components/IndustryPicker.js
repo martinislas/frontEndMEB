@@ -29,16 +29,10 @@ function IndustryPicker({ selectedIndustryKey, selectedIndustryDisplayName }) {
       </Fragment>
     );
   }
-  console.log(selectedIndustryKey);
-  console.log(selectedIndustryDisplayName);
   return (
     <Fragment>
       <option value={selectedIndustryKey}>{selectedIndustryDisplayName}</option>
-      {industryList.industries.filter(industry => {
-        console.log(industry);
-        if (industry.name === selectedIndustryKey) {
-          return false;
-        }
+      {industryList.industries.map(industry => {
         return <option value={industry.name}>{industry.display_name}</option>;
       })}
     </Fragment>
