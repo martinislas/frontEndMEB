@@ -75,9 +75,13 @@ function GetCurrentJob({ id }) {
           });
         }
       } catch (e) {
-        console.log(e);
-        if (e.response.status === 401) {
-          RemoveToken();
+        console.log(e); // Remove later
+        if (e.response) {
+          if (e.response.status === 401) {
+            RemoveToken();
+          }
+        } else {
+          console.log(e); // Send error to BE?
         }
       }
     }
@@ -132,12 +136,15 @@ function EditCurrentJob({ job }) {
       );
       navigate(`/admin/jobs?status=success`);
     } catch (e) {
-      if (e.response.status === 401) {
-        RemoveToken();
-      } else if (e.response) {
-        navigate(`/admin/jobs/${job.id}?status=failed`);
+      console.log(e); // Remove later
+      if (e.response) {
+        if (e.response.status === 401) {
+          RemoveToken();
+        } else {
+          navigate(`/admin/jobs/${job.id}?status=failed`);
+        }
       } else {
-        console.log(e);
+        console.log(e); // Send error to BE?
       }
     }
   };
@@ -223,6 +230,16 @@ function EditCurrentJob({ job }) {
 }
 
 function GetCurrentJobApplicants({ job }) {
+  console.log(job.applicantCount);
+  console.log(job.applicantKeys);
+  if (job.applicantCount === 0) {
+    return (
+      <Container>
+        <Heading subtitle>Current Applicants</Heading>
+        <p> Currently no apllicants</p>
+      </Container>
+    );
+  }
   return (
     <Container>
       <Heading subtitle>Applicants</Heading>
