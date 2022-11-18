@@ -31,7 +31,7 @@ function AdminJobs() {
           setJobList({ jobs });
         }
       } catch (e) {
-        console.log(e);
+        console.log(e); // Send error to BE?
       }
     }
 
@@ -67,12 +67,15 @@ function AdminJobs() {
       navigate(`/admin/jobs?status=success`);
       console.log(response);
     } catch (e) {
-      if (e.response.status === 401) {
-        RemoveToken();
-      } else if (e.response) {
-        navigate("/admin/jobs?status=failed");
+      console.log(e); // Remove later
+      if (e.response) {
+        if (e.response.status === 401) {
+          RemoveToken();
+        } else {
+          navigate("/admin/jobs?status=failed");
+        }
       } else {
-        console.log(e);
+        console.log(e); // Send error to BE?
       }
     }
   };

@@ -46,7 +46,7 @@ function GetCurrentLocation({ id }) {
           });
         }
       } catch (e) {
-        console.log(e);
+        console.log(e); // Send error to BE?
       }
     }
 
@@ -86,12 +86,15 @@ function UpdateCurrentLocation({ location }) {
       );
       navigate(`/admin/system?status=success`);
     } catch (e) {
-      if (e.response.status === 401) {
-        RemoveToken();
-      } else if (e.response) {
-        navigate(`/admin/system/location/${location.name}?status=failed`);
+      console.log(e); // Remove later
+      if (e.response) {
+        if (e.response.status === 401) {
+          RemoveToken();
+        } else {
+          navigate(`/admin/system/location/${location.name}?status=failed`);
+        }
       } else {
-        console.log(e);
+        console.log(e); // Send error to BE?
       }
     }
   };

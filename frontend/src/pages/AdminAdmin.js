@@ -64,9 +64,13 @@ function GetCurrentAdmin({ id }) {
           });
         }
       } catch (e) {
-        console.log(e);
-        if (e.response.status === 401) {
-          RemoveToken();
+        console.log(e); // Remove later
+        if (e.response) {
+          if (e.response.status === 401) {
+            RemoveToken();
+          }
+        } else {
+          console.log(e); // Send error to BE?
         }
       }
     }
@@ -154,12 +158,15 @@ function DisableAdmin({ admin, token }) {
       );
       navigate(`/admin/admins?status=success`);
     } catch (e) {
-      if (e.response.status === 401) {
-        RemoveToken();
-      } else if (e.response) {
-        navigate(`/admin/admins/${admin.username}?status=failed`);
+      console.log(e); // Remove later
+      if (e.response) {
+        if (e.response.status === 401) {
+          RemoveToken();
+        } else {
+          navigate(`/admin/admins/${admin.username}?status=failed`);
+        }
       } else {
-        console.log(e);
+        console.log(e); // Send error to BE?
       }
     }
   };
@@ -198,12 +205,15 @@ function EnableAdmin({ admin, token }) {
       );
       navigate(`/admin/admins?status=success`);
     } catch (e) {
-      if (e.response.status === 401) {
-        RemoveToken();
-      } else if (e.response) {
-        navigate(`/admin/admins/${admin.username}?status=failed`);
+      console.log(e); // Remove later
+      if (e.response) {
+        if (e.response.status === 401) {
+          RemoveToken();
+        } else {
+          navigate(`/admin/admins/${admin.username}?status=failed`);
+        }
       } else {
-        console.log(e);
+        console.log(e); // Send error to BE?
       }
     }
   };
@@ -249,12 +259,15 @@ function ChangeAdminPassword({ admin, token }) {
       );
       navigate(`/admin/admins?status=success`);
     } catch (e) {
-      if (e.response.status === 401) {
-        RemoveToken();
-      } else if (e.response) {
-        navigate(`/admin/admins/${admin.username}?status=failed`);
+      console.log(e); // Remove later
+      if (e.response) {
+        if (e.response.status === 401) {
+          RemoveToken();
+        } else {
+          navigate(`/admin/admins/${admin.username}?status=failed`);
+        }
       } else {
-        console.log(e);
+        console.log(e); // Send error to BE?
       }
     }
   };

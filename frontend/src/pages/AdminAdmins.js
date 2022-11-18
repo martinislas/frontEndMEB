@@ -34,9 +34,13 @@ function Admins() {
           setAdminList({ admins });
         }
       } catch (e) {
-        console.log(e);
-        if (e.response.status === 401) {
-          RemoveToken();
+        console.log(e); // Remove later
+        if (e.response) {
+          if (e.response.status === 401) {
+            RemoveToken();
+          }
+        } else {
+          console.log(e); // Send error to BE?
         }
       }
     }
@@ -56,7 +60,7 @@ function Admins() {
 
   const onCreateNewAdminClicked = async () => {
     try {
-      const response = await axios.post(
+      await axios.post(
         "/api/admin",
         {
           first_name: newAdminForm.first_name,
@@ -69,14 +73,16 @@ function Admins() {
         }
       );
       navigate(`/admin/admins?status=success`);
-      console.log(response);
     } catch (e) {
-      if (e.response.status === 401) {
-        RemoveToken();
-      } else if (e.response) {
-        navigate("/admin/admins?status=failed");
+      console.log(e); // Remove later
+      if (e.response) {
+        if (e.response.status === 401) {
+          RemoveToken();
+        } else {
+          navigate("/admin/admins?status=failed");
+        }
       } else {
-        console.log(e);
+        console.log(e); // Send error to BE?
       }
     }
   };

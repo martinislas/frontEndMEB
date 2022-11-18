@@ -94,8 +94,12 @@ function GetCurrentJob({ id }) {
   }
   return (
     <div>
-      <EditCurrentJob job={currentJob} />
-      <GetCurrentJobApplicants job={currentJob} />
+      <Section>
+        <EditCurrentJob job={currentJob} />
+      </Section>
+      <Section>
+        <GetCurrentJobApplicants job={currentJob} />
+      </Section>
     </div>
   );
 }
@@ -213,7 +217,7 @@ function EditCurrentJob({ job }) {
         <Form.Control>
           <Form.Checkbox
             name="active"
-            disabled={updateJobForm.active}
+            value={updateJobForm.active}
             onChange={updateUpdateJobForm}
           />
         </Form.Control>
@@ -242,7 +246,7 @@ function GetCurrentJobApplicants({ job }) {
   }
   return (
     <Container>
-      <Heading subtitle>Applicants</Heading>
+      <Heading subtitle>Current Applicants</Heading>
       <Table>
         <tbody>
           {job.applicant_keys.map(applicant => {

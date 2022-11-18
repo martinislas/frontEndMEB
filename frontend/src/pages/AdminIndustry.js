@@ -46,7 +46,7 @@ function GetCurrentIndustry({ id }) {
           });
         }
       } catch (e) {
-        console.log(e);
+        console.log(e); // Send error to BE?
       }
     }
 
@@ -88,12 +88,15 @@ function UpdateCurrentIndustry({ industry }) {
       );
       navigate(`/admin/system?status=success`);
     } catch (e) {
-      if (e.response.status === 401) {
-        RemoveToken();
-      } else if (e.response) {
-        navigate(`/admin/system/industry/${industry.name}?status=failed`);
+      console.log(e); // Remove later
+      if (e.response) {
+        if (e.response.status === 401) {
+          RemoveToken();
+        } else {
+          navigate(`/admin/system/industry/${industry.name}?status=failed`);
+        }
       } else {
-        console.log(e);
+        console.log(e); // Send error to BE?
       }
     }
   };
