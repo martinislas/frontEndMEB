@@ -98,6 +98,9 @@ function GetCurrentJob({ id }) {
         <EditCurrentJob job={currentJob} />
       </Section>
       <Section>
+        <ManageCurrentJobStatus job={currentJob} />
+      </Section>
+      <Section>
         <GetCurrentJobApplicants job={currentJob} />
       </Section>
     </div>
@@ -116,7 +119,6 @@ function EditCurrentJob({ job }) {
     salary: job.salary,
     locationKey: job.locationKey,
     industryKey: job.industryKey,
-    active: job.active,
   });
   const updateUpdateJobForm = ({ target }) =>
     setUpdateJobForm({ ...updateJobForm, [target.name]: target.value });
@@ -132,7 +134,7 @@ function EditCurrentJob({ job }) {
           salary: updateJobForm.salary,
           location_key: updateJobForm.locationKey,
           industry_key: updateJobForm.industryKey,
-          active: updateJobForm.active,
+          active: job.active,
         },
         {
           headers: { Authorization: "Bearer " + token },
@@ -211,16 +213,6 @@ function EditCurrentJob({ job }) {
         </Form.Control>
       </Form.Field>
       <Form.Field>
-        <Form.Label>Active Job Listing</Form.Label>
-        <Form.Control>
-          <Form.Checkbox
-            name="active"
-            checked={updateJobForm.active}
-            onChange={updateUpdateJobForm}
-          />
-        </Form.Control>
-      </Form.Field>
-      <Form.Field>
         <Form.Control>
           <Button type="primary" onClick={onUpdateJobClicked}>
             Update Job Posting
@@ -231,9 +223,117 @@ function EditCurrentJob({ job }) {
   );
 }
 
+function ManageCurrentJobStatus({ job }) {
+  return (
+    <Container>
+      {job.active ? <DisableJob job={job} /> : <EnableJob job={job} />}
+    </Container>
+  );
+}
+
+function DisableJob({ job }) {
+  const [token] = useToken();
+  let navigate = useNavigate();
+
+  const onDisableJobClicked = async () => {
+    try {
+      await axios.put(
+        "/api/admins/job",
+        {
+          id: job.id,
+          name: job.name,
+          description: job.description,
+          salary: job.salary,
+          location_key: job.locationKey,
+          industry_key: job.industryKey,
+          active: false,
+        },
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      );
+      navigate(`/admin/jobs?status=success`);
+    } catch (e) {
+      console.log(e); // Remove later
+      if (e.response) {
+        if (e.response.status === 401) {
+          RemoveToken();
+        } else {
+          navigate(`/admin/jobs/${job.id}?status=failed`);
+        }
+      } else {
+        console.log(e); // Send error to BE?
+      }
+    }
+  };
+
+  return (
+    <div>
+      <Container>
+        <Form.Field>
+          <Form.Control>
+            <Button type="primary" onClick={onDisableJobClicked}>
+              Disable Job Posting
+            </Button>
+          </Form.Control>
+        </Form.Field>
+      </Container>
+    </div>
+  );
+}
+
+function EnableJob({ job }) {
+  const [token] = useToken();
+  let navigate = useNavigate();
+
+  const onEnableAdminClicked = async () => {
+    try {
+      await axios.put(
+        "/api/admins/job",
+        {
+          id: job.id,
+          name: job.name,
+          description: job.description,
+          salary: job.salary,
+          location_key: job.locationKey,
+          industry_key: job.industryKey,
+          active: true,
+        },
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      );
+      navigate(`/admin/jobs?status=success`);
+    } catch (e) {
+      console.log(e); // Remove later
+      if (e.response) {
+        if (e.response.status === 401) {
+          RemoveToken();
+        } else {
+          navigate(`/admin/jobs/${job.id}?status=failed`);
+        }
+      } else {
+        console.log(e); // Send error to BE?
+      }
+    }
+  };
+
+  return (
+    <div>
+      <Container>
+        <Form.Field>
+          <Form.Control>
+            <Button type="primary" onClick={onEnableAdminClicked}>
+              Enable Job Posting
+            </Button>
+          </Form.Control>
+        </Form.Field>
+      </Container>
+    </div>
+  );
+}
+
 function GetCurrentJobApplicants({ job }) {
-  console.log(job.applicantCount);
-  console.log(job.applicantKeys);
   if (job.applicantCount === 0) {
     return (
       <Container>

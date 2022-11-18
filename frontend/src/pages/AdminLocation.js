@@ -66,7 +66,7 @@ function UpdateCurrentLocation({ location }) {
 
   // Existing location
   const [updateLocationForm, setUpdateLocationForm] = useState({
-    displayName: "",
+    displayName: location.displayName,
   });
   const updateLocationFormDisplayNameField = event =>
     setUpdateLocationForm({ displayName: event.target.value });
