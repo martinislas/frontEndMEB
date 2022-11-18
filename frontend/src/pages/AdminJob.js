@@ -124,7 +124,7 @@ function EditCurrentJob({ job }) {
   const onUpdateJobClicked = async () => {
     try {
       await axios.put(
-        "/api/admin/job",
+        "/api/admins/job",
         {
           id: updateJobForm.id,
           name: updateJobForm.name,
@@ -192,7 +192,10 @@ function EditCurrentJob({ job }) {
         <Form.Label>Location</Form.Label>
         <Form.Control>
           <Form.Select name="locationKey" onChange={updateUpdateJobForm}>
-            <LocationPicker />
+            <LocationPicker
+              selectedLocationKey={job.locationKey}
+              selectedLocationDisplayName={job.location}
+            />
           </Form.Select>
         </Form.Control>
       </Form.Field>
@@ -235,7 +238,7 @@ function GetCurrentJobApplicants({ job }) {
     return (
       <Container>
         <Heading subtitle>Current Applicants</Heading>
-        <p> Currently no apllicants</p>
+        <p> Currently no applicants</p>
       </Container>
     );
   }
