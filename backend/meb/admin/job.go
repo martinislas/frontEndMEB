@@ -146,7 +146,7 @@ func PostJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	newJob.Location = location.DisplayName
 	newJob.Industry = industry.DisplayName
 	newJob.PostedBy = adminDisplay
-	newJob.Active = true
+	newJob.Active = false
 	newJob.Created = time.Now()
 	newJob.Updated = time.Now()
 
