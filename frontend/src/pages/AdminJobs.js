@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
 import {
@@ -25,9 +25,9 @@ import DisableJob from "../components/DisableJob";
 function AdminJobs() {
   const [token] = useToken();
   let navigate = useNavigate();
-  let query = useSearchParams();
+  let location = useLocation();
 
-  console.log(query);
+  console.log(location);
 
   // Existing jobs
   const [jobList, setJobList] = useState({ jobs: [] });
@@ -73,14 +73,16 @@ function AdminJobs() {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/jobs?status=success`);
+      navigate(`/admin/jobs?status=success`, { state: { status: "success" } });
     } catch (e) {
       console.log(e); // Remove later
       if (e.response) {
         if (e.response.status === 401) {
           RemoveToken();
         } else {
-          navigate("/admin/jobs?status=failed");
+          navigate("/admin/jobs?status=failed", {
+            state: { status: "failed" },
+          });
         }
       } else {
         console.log(e); // Send error to BE?
@@ -158,8 +160,8 @@ function AdminJobs() {
         </Section>
 
         <Section>
-          <Box>
-            <Container>
+          <Container>
+            <Box>
               <Heading subtitle>Existing Jobs</Heading>
               <Table size="fullwidth">
                 <thead>
@@ -206,8 +208,8 @@ function AdminJobs() {
                   })}
                 </tbody>
               </Table>
-            </Container>
-          </Box>
+            </Box>
+          </Container>
         </Section>
       </Container>
     </div>
