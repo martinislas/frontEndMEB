@@ -27,7 +27,9 @@ function AdminJobs() {
   let navigate = useNavigate();
   let location = useLocation();
 
-  console.log(location.state.status);
+  if (location.state !== null) {
+    console.log(location.state.status);
+  }
 
   // Existing jobs
   const [jobList, setJobList] = useState({ jobs: [] });
