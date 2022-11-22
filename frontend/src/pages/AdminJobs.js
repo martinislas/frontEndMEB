@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
 import {
@@ -24,6 +24,9 @@ import DisableJob from "../components/DisableJob";
 function AdminJobs() {
   const [token] = useToken();
   let navigate = useNavigate();
+  let query = useSearchParams();
+
+  console.log(query);
 
   // Existing jobs
   const [jobList, setJobList] = useState({ jobs: [] });
