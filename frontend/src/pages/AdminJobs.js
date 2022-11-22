@@ -10,6 +10,8 @@ import {
   Form,
   Heading,
   Icon,
+  Level,
+  Message,
   Notification,
   Section,
   Table,
@@ -103,9 +105,9 @@ function AdminJobs() {
           <Notification color="success">Success!</Notification>
         </Block>
       )}
-      <Block>
-        <Notification color="danger">Failure!</Notification>
-      </Block>
+      <Message color="danger">
+        <Message.Header>Failed!</Message.Header>
+      </Message>
       <Container>
         <Section>
           <Heading>Jobs</Heading>
@@ -210,14 +212,23 @@ function AdminJobs() {
                         </td>
                         <td>{job.applicant_count}</td>
                         <td>
-                          <Button renderAs="a" href={"/admin/jobs/" + job.id}>
-                            Manage
-                          </Button>
-                          {job.active ? (
-                            <DisableJob job={job} />
-                          ) : (
-                            <EnableJob job={job} />
-                          )}
+                          <Level>
+                            <Level.Item>
+                              <Button
+                                renderAs="a"
+                                href={"/admin/jobs/" + job.id}
+                              >
+                                Manage
+                              </Button>
+                            </Level.Item>
+                            <Level>
+                              {job.active ? (
+                                <DisableJob job={job} />
+                              ) : (
+                                <EnableJob job={job} />
+                              )}
+                            </Level>
+                          </Level>
                         </td>
                       </tr>
                     );
