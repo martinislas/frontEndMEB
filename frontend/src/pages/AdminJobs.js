@@ -9,7 +9,6 @@ import {
   Container,
   Form,
   Heading,
-  Hero,
   Icon,
   Level,
   Notification,
@@ -105,19 +104,17 @@ function AdminJobs() {
           <Notification color="success">Success!</Notification>
         </Block>
       )}
-      <Hero hasNavbar>
-        <Hero.Body>
-          <Notification color="danger">
-            Failed!
-            <Button
-              remove
-              onClick={() => {
-                navigate(`/admin/jobs`, { state: null });
-              }}
-            />
-          </Notification>
-        </Hero.Body>
-      </Hero>
+      <Section>
+        <Notification color="danger">
+          Failed!
+          <Button
+            remove
+            onClick={() => {
+              navigate(`/admin/jobs`, { state: null });
+            }}
+          />
+        </Notification>
+      </Section>
       <Container>
         <Section>
           <Heading>Jobs</Heading>
