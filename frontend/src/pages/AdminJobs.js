@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
 import {
+  Box,
   Button,
   Container,
   Form,
@@ -94,115 +95,119 @@ function AdminJobs() {
         <Section>
           <Heading>Jobs</Heading>
           <Container>
-            <Heading subtitle>Create New Job Posting</Heading>
-            <Form.Field>
-              <Form.Label>Job Title</Form.Label>
-              <Form.Control>
-                <Form.Input
-                  name="title"
-                  type="text"
-                  value={newJobForm.title}
-                  onChange={updateNewJobForm}
-                />
-              </Form.Control>
-            </Form.Field>
-            <Form.Field>
-              <Form.Label>Job Description</Form.Label>
-              <Form.Control>
-                <Form.Input
-                  name="description"
-                  type="text"
-                  value={newJobForm.description}
-                  onChange={updateNewJobForm}
-                />
-              </Form.Control>
-            </Form.Field>
-            <Form.Field>
-              <Form.Label>Salary</Form.Label>
-              <Form.Control>
-                <Form.Input
-                  name="salary"
-                  type="text"
-                  value={newJobForm.salary}
-                  onChange={updateNewJobForm}
-                />
-              </Form.Control>
-            </Form.Field>
-            <Form.Field>
-              <Form.Label>Location</Form.Label>
-              <Form.Control>
-                <Form.Select name="locationKey" onChange={updateNewJobForm}>
-                  <LocationPicker />
-                </Form.Select>
-              </Form.Control>
-            </Form.Field>
-            <Form.Field>
-              <Form.Label>Industry</Form.Label>
-              <Form.Control>
-                <Form.Select name="industryKey" onChange={updateNewJobForm}>
-                  <IndustryPicker />
-                </Form.Select>
-              </Form.Control>
-            </Form.Field>
-            <Form.Field>
-              <Form.Control>
-                <Button type="primary" onClick={onCreateNewJobClicked}>
-                  Submit
-                </Button>
-              </Form.Control>
-            </Form.Field>
+            <Box>
+              <Heading subtitle>Create New Job Posting</Heading>
+              <Form.Field>
+                <Form.Label>Job Title</Form.Label>
+                <Form.Control>
+                  <Form.Input
+                    name="title"
+                    type="text"
+                    value={newJobForm.title}
+                    onChange={updateNewJobForm}
+                  />
+                </Form.Control>
+              </Form.Field>
+              <Form.Field>
+                <Form.Label>Job Description</Form.Label>
+                <Form.Control>
+                  <Form.Input
+                    name="description"
+                    type="text"
+                    value={newJobForm.description}
+                    onChange={updateNewJobForm}
+                  />
+                </Form.Control>
+              </Form.Field>
+              <Form.Field>
+                <Form.Label>Salary</Form.Label>
+                <Form.Control>
+                  <Form.Input
+                    name="salary"
+                    type="text"
+                    value={newJobForm.salary}
+                    onChange={updateNewJobForm}
+                  />
+                </Form.Control>
+              </Form.Field>
+              <Form.Field>
+                <Form.Label>Location</Form.Label>
+                <Form.Control>
+                  <Form.Select name="locationKey" onChange={updateNewJobForm}>
+                    <LocationPicker />
+                  </Form.Select>
+                </Form.Control>
+              </Form.Field>
+              <Form.Field>
+                <Form.Label>Industry</Form.Label>
+                <Form.Control>
+                  <Form.Select name="industryKey" onChange={updateNewJobForm}>
+                    <IndustryPicker />
+                  </Form.Select>
+                </Form.Control>
+              </Form.Field>
+              <Form.Field>
+                <Form.Control>
+                  <Button type="primary" onClick={onCreateNewJobClicked}>
+                    Submit
+                  </Button>
+                </Form.Control>
+              </Form.Field>
+            </Box>
           </Container>
         </Section>
 
         <Section>
-          <Container>
-            <Heading subtitle>Existing Jobs</Heading>
-            <Table size="fullwidth">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Location</th>
-                  <th>Industry</th>
-                  <th>Position Open</th>
-                  <th>Current Applicant Count</th>
-                  <th>Options</th>
-                </tr>
-              </thead>
-              <tbody>
-                {jobList.jobs.map(job => {
-                  return (
-                    <tr>
-                      <td>{job.name}</td>
-                      <td>{job.location}</td>
-                      <td>{job.industry}</td>
-                      <td>
-                        {job.active ? (
-                          <Icon align="center">
-                            <FontAwesomeIcon icon={faCheck} />
-                          </Icon>
-                        ) : (
-                          <Icon align="center">
-                            <FontAwesomeIcon icon={faXmark} />
-                          </Icon>
-                        )}
-                      </td>
-                      <td>{job.applicant_count}</td>
-                      <td>
-                        <Button renderAs="a" href={"/admin/jobs/" + job.id}>
-                          Manage
-                        </Button>
-                        {job.active ? (
-                          <DisableJob job={job} />
-                        ) : (
-                          <EnableJob job={job} />
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
-          </Container>
+          <Box>
+            <Container>
+              <Heading subtitle>Existing Jobs</Heading>
+              <Table size="fullwidth">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Location</th>
+                    <th>Industry</th>
+                    <th>Position Open</th>
+                    <th>Current Applicant Count</th>
+                    <th>Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {jobList.jobs.map(job => {
+                    return (
+                      <tr>
+                        <td>{job.name}</td>
+                        <td>{job.location}</td>
+                        <td>{job.industry}</td>
+                        <td>
+                          {job.active ? (
+                            <Icon align="center">
+                              <FontAwesomeIcon icon={faCheck} />
+                            </Icon>
+                          ) : (
+                            <Icon align="center">
+                              <FontAwesomeIcon icon={faXmark} />
+                            </Icon>
+                          )}
+                        </td>
+                        <td>{job.applicant_count}</td>
+                        <td>
+                          <Button renderAs="a" href={"/admin/jobs/" + job.id}>
+                            Manage
+                          </Button>
+                          {job.active ? (
+                            <DisableJob job={job} />
+                          ) : (
+                            <EnableJob job={job} />
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </Container>
+          </Box>
         </Section>
       </Container>
     </div>
