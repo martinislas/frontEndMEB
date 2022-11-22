@@ -11,7 +11,6 @@ import {
   Heading,
   Icon,
   Level,
-  Message,
   Notification,
   Section,
   Table,
@@ -105,9 +104,14 @@ function AdminJobs() {
           <Notification color="success">Success!</Notification>
         </Block>
       )}
-      <Message color="danger">
-        <Message.Header>Failed!</Message.Header>
-      </Message>
+      <Container>
+        <Block>
+          <Notification color="danger">
+            Failed!
+            <Button remove />
+          </Notification>
+        </Block>
+      </Container>
       <Container>
         <Section>
           <Heading>Jobs</Heading>
@@ -221,13 +225,13 @@ function AdminJobs() {
                                 Manage
                               </Button>
                             </Level.Item>
-                            <Level>
+                            <Level.Item>
                               {job.active ? (
                                 <DisableJob job={job} />
                               ) : (
                                 <EnableJob job={job} />
                               )}
-                            </Level>
+                            </Level.Item>
                           </Level>
                         </td>
                       </tr>
