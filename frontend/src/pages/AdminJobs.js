@@ -109,7 +109,12 @@ function AdminJobs() {
         <Hero.Body>
           <Notification color="danger">
             Failed!
-            <Button remove />
+            <Button
+              remove
+              onClick={() => {
+                navigate(`/admin/jobs`, { state: null });
+              }}
+            />
           </Notification>
         </Hero.Body>
       </Hero>
