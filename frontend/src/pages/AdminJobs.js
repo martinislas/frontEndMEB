@@ -9,6 +9,7 @@ import {
   Container,
   Form,
   Heading,
+  Hero,
   Icon,
   Level,
   Notification,
@@ -104,14 +105,14 @@ function AdminJobs() {
           <Notification color="success">Success!</Notification>
         </Block>
       )}
-      <Container>
-        <Block>
+      <Hero hasNavbar>
+        <Hero.Body>
           <Notification color="danger">
             Failed!
             <Button remove />
           </Notification>
-        </Block>
-      </Container>
+        </Hero.Body>
+      </Hero>
       <Container>
         <Section>
           <Heading>Jobs</Heading>
