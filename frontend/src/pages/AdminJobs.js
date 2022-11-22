@@ -3,12 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
 import {
+  Block,
   Box,
   Button,
   Container,
   Form,
   Heading,
   Icon,
+  Notification,
   Section,
   Table,
 } from "react-bulma-components";
@@ -96,6 +98,14 @@ function AdminJobs() {
   return (
     <div>
       <AdminNav />
+      {location.state.status === "success" && (
+        <Block>
+          <Notification color="success">Success!</Notification>
+        </Block>
+      )}
+      <Block>
+        <Notification color="danger">Failure!</Notification>
+      </Block>
       <Container>
         <Section>
           <Heading>Jobs</Heading>
@@ -166,7 +176,9 @@ function AdminJobs() {
           <Container>
             <Box>
               <Heading subtitle>Existing Jobs</Heading>
-              <Container>Filters</Container>
+              <Block>
+                <Container>Filters</Container>
+              </Block>
               <Table size="fullwidth">
                 <thead>
                   <tr>
