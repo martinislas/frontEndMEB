@@ -18,8 +18,8 @@ function DisableJob({ job }) {
           name: job.name,
           description: job.description,
           salary: job.salary,
-          location_key: job.locationKey,
-          industry_key: job.industryKey,
+          location_key: job.location_key,
+          industry_key: job.industry_key,
           active: false,
         },
         {

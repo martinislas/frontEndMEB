@@ -45,9 +45,9 @@ function GetCurrentJob({ id }) {
     description: "",
     salary: "",
     location: "",
-    locationKey: "",
+    location_key: "",
     industry: "",
-    industryKey: "",
+    industry_key: "",
     applicantKeys: [],
     applicantCount: 0,
     postedBy: "",
@@ -67,9 +67,9 @@ function GetCurrentJob({ id }) {
             description: response.data.description,
             salary: response.data.salary,
             location: response.data.location,
-            locationKey: response.data.location_key,
+            location_key: response.data.location_key,
             industry: response.data.industry,
-            industryKey: response.data.industry_key,
+            industry_key: response.data.industry_key,
             applicantKeys: response.data.applicant_keys,
             applicantCount: response.data.applicant_count,
             postedBy: response.data.posted_by,
@@ -119,8 +119,8 @@ function EditCurrentJob({ job }) {
     name: job.name,
     description: job.description,
     salary: job.salary,
-    locationKey: job.locationKey,
-    industryKey: job.industryKey,
+    location_key: job.location_key,
+    industry_key: job.industry_key,
   });
   const updateUpdateJobForm = ({ target }) =>
     setUpdateJobForm({ ...updateJobForm, [target.name]: target.value });
@@ -134,8 +134,8 @@ function EditCurrentJob({ job }) {
           name: updateJobForm.name,
           description: updateJobForm.description,
           salary: updateJobForm.salary,
-          location_key: updateJobForm.locationKey,
-          industry_key: updateJobForm.industryKey,
+          location_key: updateJobForm.location_key,
+          industry_key: updateJobForm.industry_key,
           active: job.active,
         },
         {
@@ -196,9 +196,9 @@ function EditCurrentJob({ job }) {
       <Form.Field>
         <Form.Label>Location</Form.Label>
         <Form.Control>
-          <Form.Select name="locationKey" onChange={updateUpdateJobForm}>
+          <Form.Select name="location_key" onChange={updateUpdateJobForm}>
             <LocationPicker
-              selectedLocationKey={job.locationKey}
+              selectedLocationKey={job.location_key}
               selectedLocationDisplayName={job.location}
             />
           </Form.Select>
@@ -207,9 +207,9 @@ function EditCurrentJob({ job }) {
       <Form.Field>
         <Form.Label>Industry</Form.Label>
         <Form.Control>
-          <Form.Select name="industryKey" onChange={updateUpdateJobForm}>
+          <Form.Select name="industry_key" onChange={updateUpdateJobForm}>
             <IndustryPicker
-              selectedIndustryKey={job.industryKey}
+              selectedIndustryKey={job.industry_key}
               selectedIndustryDisplayName={job.industry}
             />
           </Form.Select>
