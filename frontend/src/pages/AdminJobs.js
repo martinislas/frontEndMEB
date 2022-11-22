@@ -100,21 +100,31 @@ function AdminJobs() {
     <div>
       <AdminNav />
       {location.state !== null && location.state.status === "success" && (
-        <Block>
-          <Notification color="success">Success!</Notification>
-        </Block>
+        <Section>
+          <Notification color="success">
+            Success!
+            <Button
+              remove
+              onClick={() => {
+                navigate(`/admin/jobs`, { state: null });
+              }}
+            />
+          </Notification>
+        </Section>
       )}
-      <Section>
-        <Notification color="danger">
-          Failed!
-          <Button
-            remove
-            onClick={() => {
-              navigate(`/admin/jobs`, { state: null });
-            }}
-          />
-        </Notification>
-      </Section>
+      {location.state !== null && location.state.status === "failed" && (
+        <Section>
+          <Notification color="danger">
+            Failed!
+            <Button
+              remove
+              onClick={() => {
+                navigate(`/admin/jobs`, { state: null });
+              }}
+            />
+          </Notification>
+        </Section>
+      )}
       <Container>
         <Section>
           <Heading>Jobs</Heading>
