@@ -18,6 +18,8 @@ import AdminNav from "../components/AdminNav";
 import LocationPicker from "../components/LocationPicker";
 import IndustryPicker from "../components/IndustryPicker";
 import RemoveToken from "../auth/RemoveToken";
+import EnableJob from "../components/EnableJob";
+import DisableJob from "../components/DisableJob";
 
 function AdminJobs() {
   const [token] = useToken();
@@ -186,6 +188,11 @@ function AdminJobs() {
                         <Button renderAs="a" href={"/admin/jobs/" + job.id}>
                           Manage
                         </Button>
+                        {job.active ? (
+                          <DisableJob job={job} />
+                        ) : (
+                          <EnableJob job={job} />
+                        )}
                       </td>
                     </tr>
                   );
