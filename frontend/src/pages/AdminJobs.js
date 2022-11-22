@@ -98,7 +98,7 @@ function AdminJobs() {
   return (
     <div>
       <AdminNav />
-      {location.state.status === "success" && (
+      {location.state !== null && location.state.status === "success" && (
         <Block>
           <Notification color="success">Success!</Notification>
         </Block>
