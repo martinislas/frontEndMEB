@@ -163,6 +163,7 @@ function AdminJobs() {
           <Container>
             <Box>
               <Heading subtitle>Existing Jobs</Heading>
+              <Container>Filters</Container>
               <Table size="fullwidth">
                 <thead>
                   <tr>
