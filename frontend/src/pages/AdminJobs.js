@@ -27,15 +27,16 @@ function AdminJobs() {
   let navigate = useNavigate();
   let location = useLocation();
 
-  console.log(location);
+  console.log(location.state.status);
 
   // Existing jobs
   const [jobList, setJobList] = useState({ jobs: [] });
+  // Filter state
 
   useEffect(() => {
     async function getJobs() {
       try {
-        const { data: jobs } = await axios.get("/api/jobs");
+        const { data: jobs } = await axios.get("/api/jobs?limit=10");
         if (jobs) {
           setJobList({ jobs });
         }
@@ -73,14 +74,14 @@ function AdminJobs() {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/jobs?status=success`, { state: { status: "success" } });
+      navigate(`/admin/jobs`, { state: { status: "success" } });
     } catch (e) {
       console.log(e); // Remove later
       if (e.response) {
         if (e.response.status === 401) {
           RemoveToken();
         } else {
-          navigate("/admin/jobs?status=failed", {
+          navigate("/admin/jobs", {
             state: { status: "failed" },
           });
         }
