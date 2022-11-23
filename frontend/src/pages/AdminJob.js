@@ -18,6 +18,7 @@ import GetApplicantAsAdmin from "../components/GetApplicantAsAdmin";
 import RemoveToken from "../auth/RemoveToken";
 import EnableJob from "../components/EnableJob";
 import DisableJob from "../components/DisableJob";
+import StatusNotification from "../components/StatusNotification";
 
 function AdminJob() {
   const { id } = useParams();
@@ -25,6 +26,7 @@ function AdminJob() {
   return (
     <div>
       <AdminNav />
+      <StatusNotification />
       <Container>
         <Section>
           <Heading>Manage Job Listing</Heading>
@@ -142,14 +144,14 @@ function EditCurrentJob({ job }) {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/jobs?status=success`);
+      navigate(`/admin/jobs`, { state: { status: "success" } });
     } catch (e) {
       console.log(e); // Remove later
       if (e.response) {
         if (e.response.status === 401) {
           RemoveToken();
         } else {
-          navigate(`/admin/jobs/${job.id}?status=failed`);
+          navigate(`/admin/jobs/${job.id}`, { state: { status: "failed" } });
         }
       } else {
         console.log(e); // Send error to BE?

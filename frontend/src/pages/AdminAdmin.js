@@ -17,15 +17,15 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import useToken from "../auth/UseToken";
 import AdminNav from "../components/AdminNav";
 import RemoveToken from "../auth/RemoveToken";
+import StatusNotification from "../components/StatusNotification";
 
 function Admin() {
-  const { id, status } = useParams();
-
-  console.log("status: " + status);
+  const { id } = useParams();
 
   return (
     <div>
       <AdminNav />
+      <StatusNotification />
       <Container>
         <Section>
           <Heading>Edit Existing Admin</Heading>
@@ -156,14 +156,16 @@ function DisableAdmin({ admin, token }) {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/admins?status=success`);
+      navigate(`/admin/admins`, { state: { status: "success" } });
     } catch (e) {
       console.log(e); // Remove later
       if (e.response) {
         if (e.response.status === 401) {
           RemoveToken();
         } else {
-          navigate(`/admin/admins/${admin.username}?status=failed`);
+          navigate(`/admin/admins/${admin.username}`, {
+            state: { status: "failed" },
+          });
         }
       } else {
         console.log(e); // Send error to BE?
@@ -203,14 +205,18 @@ function EnableAdmin({ admin, token }) {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/admins?status=success`);
+      navigate(`/admin/admins`, {
+        state: { status: "success" },
+      });
     } catch (e) {
       console.log(e); // Remove later
       if (e.response) {
         if (e.response.status === 401) {
           RemoveToken();
         } else {
-          navigate(`/admin/admins/${admin.username}?status=failed`);
+          navigate(`/admin/admins/${admin.username}`, {
+            state: { status: "failed" },
+          });
         }
       } else {
         console.log(e); // Send error to BE?
@@ -257,14 +263,16 @@ function ChangeAdminPassword({ admin, token }) {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/admins?status=success`);
+      navigate(`/admin/admins`, { state: { status: "success" } });
     } catch (e) {
       console.log(e); // Remove later
       if (e.response) {
         if (e.response.status === 401) {
           RemoveToken();
         } else {
-          navigate(`/admin/admins/${admin.username}?status=failed`);
+          navigate(`/admin/admins/${admin.username}`, {
+            state: { status: "failed" },
+          });
         }
       } else {
         console.log(e); // Send error to BE?

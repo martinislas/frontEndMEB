@@ -1,11 +1,13 @@
-import 'bulma/css/bulma.min.css';
-import { Navbar } from 'react-bulma-components';
+import "bulma/css/bulma.min.css";
+import { Navbar } from "react-bulma-components";
 
 function Nav() {
   return (
     <Navbar color="primary" fixed="top">
       <Navbar.Brand>
-        <Navbar.Item href="/"><strong>MEB Resources</strong></Navbar.Item>
+        <Navbar.Item href="/">
+          <strong>MEB Resources</strong>
+        </Navbar.Item>
       </Navbar.Brand>
       <Navbar.Menu>
         <Navbar.Container align="right">
@@ -20,4 +22,4 @@ function Nav() {
   );
 }
 
-export default Nav
+export default Nav;

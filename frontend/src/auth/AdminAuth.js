@@ -1,12 +1,12 @@
-import { Navigate } from 'react-router-dom';
-import useToken from './UseToken';
+import { Navigate } from "react-router-dom";
+import useToken from "./UseToken";
 
-function AdminAuthRoute ({ children }) {
-    const [token] = useToken();
+function AdminAuthRoute({ children }) {
+  const [token] = useToken();
 
-    if (!token) return <Navigate to="/login/admin" />
+  if (!token) return <Navigate to="/login/admin" />;
 
-    return children
+  return children;
 }
 
 export default AdminAuthRoute;

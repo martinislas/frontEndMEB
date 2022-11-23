@@ -16,6 +16,7 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import useToken from "../auth/UseToken";
 import AdminNav from "../components/AdminNav";
 import RemoveToken from "../auth/RemoveToken";
+import StatusNotification from "../components/StatusNotification";
 
 function Admins() {
   const [token] = useToken();
@@ -72,14 +73,14 @@ function Admins() {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/admins?status=success`);
+      navigate(`/admin/admins`, { state: { status: "success" } });
     } catch (e) {
       console.log(e); // Remove later
       if (e.response) {
         if (e.response.status === 401) {
           RemoveToken();
         } else {
-          navigate("/admin/admins?status=failed");
+          navigate("/admin/admins", { state: { status: "failed" } });
         }
       } else {
         console.log(e); // Send error to BE?
@@ -90,6 +91,7 @@ function Admins() {
   return (
     <div>
       <AdminNav />
+      <StatusNotification />
       <Container>
         <Section>
           <Heading>Admins</Heading>

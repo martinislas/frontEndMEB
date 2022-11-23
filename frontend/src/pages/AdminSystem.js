@@ -14,6 +14,7 @@ import {
 import useToken from "../auth/UseToken";
 import AdminNav from "../components/AdminNav";
 import RemoveToken from "../auth/RemoveToken";
+import StatusNotification from "../components/StatusNotification";
 
 function AdminSystem() {
   const [token] = useToken();
@@ -66,14 +67,16 @@ function AdminSystem() {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/system/industry/${response.data.name}?status=success`);
+      navigate(`/admin/system/industry/${response.data.name}`, {
+        state: { status: "success" },
+      });
     } catch (e) {
       console.log(e); // Remove later
       if (e.response) {
         if (e.response.status === 401) {
           RemoveToken();
         } else {
-          navigate("/admin/system?status=failed");
+          navigate("/admin/system", { state: { status: "failed" } });
         }
       } else {
         console.log(e); // Send error to BE?
@@ -97,14 +100,16 @@ function AdminSystem() {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/system/location/${response.data.name}?status=success`);
+      navigate(`/admin/system/location/${response.data.name}`, {
+        state: { status: "success" },
+      });
     } catch (e) {
       console.log(e); // Remove later
       if (e.response) {
         if (e.response.status === 401) {
           RemoveToken();
         } else {
-          navigate("/admin/system?status=failed");
+          navigate("/admin/system", { state: { status: "failed" } });
         }
       } else {
         console.log(e); // Send error to BE?
@@ -115,6 +120,7 @@ function AdminSystem() {
   return (
     <div>
       <AdminNav />
+      <StatusNotification />
       <Section>
         <Columns>
           <Columns.Column>

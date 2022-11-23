@@ -1,33 +1,42 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-import 'bulma/css/bulma.min.css';
-import { Button, Container, Form, Heading, Icon, Level, Section } from 'react-bulma-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
-import useToken from '../auth/UseToken';
+import axios from "axios";
+import "bulma/css/bulma.min.css";
+import {
+  Button,
+  Container,
+  Form,
+  Heading,
+  Icon,
+  Level,
+  Section,
+} from "react-bulma-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import useToken from "../auth/UseToken";
 
-function AdminLogin () {
+function AdminLogin() {
   const [, setToken] = useToken();
 
-  const [form, setForm] = useState({ username: '', password: '' });
-  const update = (({ target }) => setForm({ ...form, [target.name]: target.value }));
+  const [form, setForm] = useState({ username: "", password: "" });
+  const update = ({ target }) =>
+    setForm({ ...form, [target.name]: target.value });
 
   let navigate = useNavigate();
 
   const onLoginClicked = async () => {
     try {
-      const response = await axios.post('/api/admin/login', {
+      const response = await axios.post("/api/admin/login", {
         username: form.username,
         password: form.password,
       });
       const { token } = response.data;
       setToken(token);
-      navigate('/admin');
+      navigate("/admin");
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
   return (
     <div>
@@ -48,7 +57,12 @@ function AdminLogin () {
                 <Form.Field>
                   <Form.Label>Username</Form.Label>
                   <Form.Control iconleft>
-                    <Form.Input name="username" type="text" value={form.username} onChange={update} />
+                    <Form.Input
+                      name="username"
+                      type="text"
+                      value={form.username}
+                      onChange={update}
+                    />
                     <Icon align="left">
                       <FontAwesomeIcon icon={faUser} />
                     </Icon>
@@ -57,7 +71,12 @@ function AdminLogin () {
                 <Form.Field>
                   <Form.Label>Password</Form.Label>
                   <Form.Control iconleft>
-                    <Form.Input name="password" type="password" value={form.password} onChange={update} />
+                    <Form.Input
+                      name="password"
+                      type="password"
+                      value={form.password}
+                      onChange={update}
+                    />
                     <Icon align="left">
                       <FontAwesomeIcon icon={faLock} />
                     </Icon>
@@ -65,7 +84,9 @@ function AdminLogin () {
                 </Form.Field>
                 <Form.Field>
                   <Form.Control>
-                    <Button type="primary" onClick={onLoginClicked}>Submit</Button>
+                    <Button type="primary" onClick={onLoginClicked}>
+                      Submit
+                    </Button>
                   </Form.Control>
                 </Form.Field>
               </div>

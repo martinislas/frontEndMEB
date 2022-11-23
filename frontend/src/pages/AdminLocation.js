@@ -12,6 +12,7 @@ import {
 import useToken from "../auth/UseToken";
 import AdminNav from "../components/AdminNav";
 import RemoveToken from "../auth/RemoveToken";
+import StatusNotification from "../components/StatusNotification";
 
 function AdminLocation() {
   const { id } = useParams();
@@ -19,6 +20,7 @@ function AdminLocation() {
   return (
     <div>
       <AdminNav />
+      <StatusNotification />
       <Container>
         <Section>
           <Heading>Edit Existing Location</Heading>
@@ -84,14 +86,16 @@ function UpdateCurrentLocation({ location }) {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/system?status=success`);
+      navigate(`/admin/system`, { state: { status: "success" } });
     } catch (e) {
       console.log(e); // Remove later
       if (e.response) {
         if (e.response.status === 401) {
           RemoveToken();
         } else {
-          navigate(`/admin/system/location/${location.name}?status=failed`);
+          navigate(`/admin/system/location/${location.name}`, {
+            state: { status: "failed" },
+          });
         }
       } else {
         console.log(e); // Send error to BE?

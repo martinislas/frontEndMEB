@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
 import {
@@ -11,7 +11,6 @@ import {
   Heading,
   Icon,
   Level,
-  Notification,
   Section,
   Table,
 } from "react-bulma-components";
@@ -24,15 +23,11 @@ import IndustryPicker from "../components/IndustryPicker";
 import RemoveToken from "../auth/RemoveToken";
 import EnableJob from "../components/EnableJob";
 import DisableJob from "../components/DisableJob";
+import StatusNotification from "../components/StatusNotification";
 
 function AdminJobs() {
   const [token] = useToken();
   let navigate = useNavigate();
-  let location = useLocation();
-
-  if (location.state !== null) {
-    console.log(location.state.status);
-  }
 
   // Existing jobs
   const [jobList, setJobList] = useState({ jobs: [] });
@@ -41,17 +36,26 @@ function AdminJobs() {
   useEffect(() => {
     async function getJobs() {
       try {
-        const { data: jobs } = await axios.get("/api/jobs?limit=10");
+        const { data: jobs } = await axios.get("/api/admins/jobs", {
+          headers: { Authorization: "Bearer " + token },
+        });
         if (jobs) {
           setJobList({ jobs });
         }
       } catch (e) {
-        console.log(e); // Send error to BE?
+        console.log(e); // Remove later
+        if (e.response) {
+          if (e.response.status === 401) {
+            RemoveToken();
+          }
+        } else {
+          console.log(e); // Send error to BE?
+        }
       }
     }
 
     getJobs();
-  }, []);
+  }, [token]);
 
   // New Job
   const [newJobForm, setNewJobForm] = useState({
@@ -99,32 +103,7 @@ function AdminJobs() {
   return (
     <div>
       <AdminNav />
-      {location.state !== null && location.state.status === "success" && (
-        <Section>
-          <Notification color="success">
-            Success!
-            <Button
-              remove
-              onClick={() => {
-                navigate(`/admin/jobs`, { state: null });
-              }}
-            />
-          </Notification>
-        </Section>
-      )}
-      {location.state !== null && location.state.status === "failed" && (
-        <Section>
-          <Notification color="danger">
-            Failed!
-            <Button
-              remove
-              onClick={() => {
-                navigate(`/admin/jobs`, { state: null });
-              }}
-            />
-          </Notification>
-        </Section>
-      )}
+      <StatusNotification />
       <Container>
         <Section>
           <Heading>Jobs</Heading>

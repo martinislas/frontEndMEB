@@ -26,14 +26,14 @@ function EnableJob({ job }) {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/jobs?status=success`);
+      navigate(`/admin/jobs`, { state: { status: "success" } });
     } catch (e) {
       console.log(e); // Remove later
       if (e.response) {
         if (e.response.status === 401) {
           RemoveToken();
         } else {
-          navigate(`/admin/jobs/${job.id}?status=failed`);
+          navigate(`/admin/jobs/${job.id}`, { state: { status: "failed" } });
         }
       } else {
         console.log(e); // Send error to BE?
