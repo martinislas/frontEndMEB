@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
 import {
+  Box,
   Button,
   Columns,
   Container,
@@ -82,60 +83,64 @@ function GetCurrentAdmin({ id }) {
     return <div>Loading...</div>;
   }
   return (
-    <Columns>
-      <Columns.Column>
-        <Table>
-          <tbody>
-            <tr>
-              <th>Username</th>
-              <td>{currentAdmin.username}</td>
-            </tr>
-            <tr>
-              <th>First Name</th>
-              <td>{currentAdmin.firstName}</td>
-            </tr>
-            <tr>
-              <th>Last Name</th>
-              <td>{currentAdmin.lastName}</td>
-            </tr>
-            <tr>
-              <th>User Status</th>
-              <td>
-                {currentAdmin.isActive ? (
-                  <Icon align="center">
-                    <FontAwesomeIcon icon={faCheck} />
-                  </Icon>
-                ) : (
-                  <Icon align="center">
-                    <FontAwesomeIcon icon={faXmark} />
-                  </Icon>
-                )}
-              </td>
-            </tr>
-            <tr>
-              <th>Current User</th>
-              <td>
-                {currentAdmin.isCurrent && (
-                  <Icon align="center">
-                    <FontAwesomeIcon icon={faCheck} />
-                  </Icon>
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </Table>
-      </Columns.Column>
-      <Columns.Column>
-        {currentAdmin.isActive ? (
-          <DisableAdmin admin={currentAdmin} token={token} />
-        ) : (
-          <EnableAdmin admin={currentAdmin} token={token} />
-        )}
-      </Columns.Column>
-      <Columns.Column>
-        <ChangeAdminPassword admin={currentAdmin} token={token} />
-      </Columns.Column>
-    </Columns>
+    <Container>
+      <Box>
+        <Columns>
+          <Columns.Column>
+            <Table>
+              <tbody>
+                <tr>
+                  <th>Username</th>
+                  <td>{currentAdmin.username}</td>
+                </tr>
+                <tr>
+                  <th>First Name</th>
+                  <td>{currentAdmin.firstName}</td>
+                </tr>
+                <tr>
+                  <th>Last Name</th>
+                  <td>{currentAdmin.lastName}</td>
+                </tr>
+                <tr>
+                  <th>User Status</th>
+                  <td>
+                    {currentAdmin.isActive ? (
+                      <Icon align="center">
+                        <FontAwesomeIcon icon={faCheck} />
+                      </Icon>
+                    ) : (
+                      <Icon align="center">
+                        <FontAwesomeIcon icon={faXmark} />
+                      </Icon>
+                    )}
+                  </td>
+                </tr>
+                <tr>
+                  <th>Current User</th>
+                  <td>
+                    {currentAdmin.isCurrent && (
+                      <Icon align="center">
+                        <FontAwesomeIcon icon={faCheck} />
+                      </Icon>
+                    )}
+                  </td>
+                </tr>
+              </tbody>
+            </Table>
+          </Columns.Column>
+          <Columns.Column>
+            {currentAdmin.isActive ? (
+              <DisableAdmin admin={currentAdmin} token={token} />
+            ) : (
+              <EnableAdmin admin={currentAdmin} token={token} />
+            )}
+          </Columns.Column>
+          <Columns.Column>
+            <ChangeAdminPassword admin={currentAdmin} token={token} />
+          </Columns.Column>
+        </Columns>
+      </Box>
+    </Container>
   );
 }
 

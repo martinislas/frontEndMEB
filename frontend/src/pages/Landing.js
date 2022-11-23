@@ -11,6 +11,11 @@ import Nav from "../components/Nav";
 import Logo from "../landingLogo.png";
 
 function Landing() {
+  const linkStyle = {
+    color: "#4a4a4a",
+    textDecoration: "none",
+  };
+
   return (
     <div>
       <Nav />
@@ -32,6 +37,14 @@ function Landing() {
                   We work here. We live here. We're committed to providing great
                   service to the clients we serve as well as the candidates and
                   employees we partner with.
+                </Heading>
+                <Heading size={4} subtitle spaced>
+                  While our new website is under construction, check us out on{" "}
+                  <a href="https://facebook.com/MEBResources" style={linkStyle}>
+                    Facebook
+                  </a>{" "}
+                  or call us directly on 507-313-4804 for all your staffing and
+                  job needs today!
                 </Heading>
               </Container>
             </Columns.Column>

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
 import {
+  Box,
   Button,
   Container,
   Form,
@@ -59,7 +60,7 @@ function GetCurrentJob({ id }) {
   useEffect(() => {
     async function getJob() {
       try {
-        const response = await axios.get(`/api/job/${id}`, {
+        const response = await axios.get(`/api/admins/job/${id}`, {
           headers: { Authorization: "Bearer " + token },
         });
         if (response) {
@@ -161,69 +162,71 @@ function EditCurrentJob({ job }) {
 
   return (
     <Container>
-      <Heading subtitle>Edit Job Posting</Heading>
-      <Form.Field>
-        <Form.Label>Job Title</Form.Label>
-        <Form.Control>
-          <Form.Input
-            name="name"
-            type="text"
-            value={updateJobForm.name}
-            onChange={updateUpdateJobForm}
-          />
-        </Form.Control>
-      </Form.Field>
-      <Form.Field>
-        <Form.Label>Job Description</Form.Label>
-        <Form.Control>
-          <Form.Input
-            name="description"
-            type="text"
-            value={updateJobForm.description}
-            onChange={updateUpdateJobForm}
-          />
-        </Form.Control>
-      </Form.Field>
-      <Form.Field>
-        <Form.Label>Salary</Form.Label>
-        <Form.Control>
-          <Form.Input
-            name="salary"
-            type="text"
-            value={updateJobForm.salary}
-            onChange={updateUpdateJobForm}
-          />
-        </Form.Control>
-      </Form.Field>
-      <Form.Field>
-        <Form.Label>Location</Form.Label>
-        <Form.Control>
-          <Form.Select name="location_key" onChange={updateUpdateJobForm}>
-            <LocationPicker
-              selectedLocationKey={job.location_key}
-              selectedLocationDisplayName={job.location}
+      <Box>
+        <Heading subtitle>Edit Job Posting</Heading>
+        <Form.Field>
+          <Form.Label>Job Title</Form.Label>
+          <Form.Control>
+            <Form.Input
+              name="name"
+              type="text"
+              value={updateJobForm.name}
+              onChange={updateUpdateJobForm}
             />
-          </Form.Select>
-        </Form.Control>
-      </Form.Field>
-      <Form.Field>
-        <Form.Label>Industry</Form.Label>
-        <Form.Control>
-          <Form.Select name="industry_key" onChange={updateUpdateJobForm}>
-            <IndustryPicker
-              selectedIndustryKey={job.industry_key}
-              selectedIndustryDisplayName={job.industry}
+          </Form.Control>
+        </Form.Field>
+        <Form.Field>
+          <Form.Label>Job Description</Form.Label>
+          <Form.Control>
+            <Form.Input
+              name="description"
+              type="text"
+              value={updateJobForm.description}
+              onChange={updateUpdateJobForm}
             />
-          </Form.Select>
-        </Form.Control>
-      </Form.Field>
-      <Form.Field>
-        <Form.Control>
-          <Button type="primary" onClick={onUpdateJobClicked}>
-            Update Job Posting
-          </Button>
-        </Form.Control>
-      </Form.Field>
+          </Form.Control>
+        </Form.Field>
+        <Form.Field>
+          <Form.Label>Salary</Form.Label>
+          <Form.Control>
+            <Form.Input
+              name="salary"
+              type="text"
+              value={updateJobForm.salary}
+              onChange={updateUpdateJobForm}
+            />
+          </Form.Control>
+        </Form.Field>
+        <Form.Field>
+          <Form.Label>Location</Form.Label>
+          <Form.Control>
+            <Form.Select name="location_key" onChange={updateUpdateJobForm}>
+              <LocationPicker
+                selectedLocationKey={job.location_key}
+                selectedLocationDisplayName={job.location}
+              />
+            </Form.Select>
+          </Form.Control>
+        </Form.Field>
+        <Form.Field>
+          <Form.Label>Industry</Form.Label>
+          <Form.Control>
+            <Form.Select name="industry_key" onChange={updateUpdateJobForm}>
+              <IndustryPicker
+                selectedIndustryKey={job.industry_key}
+                selectedIndustryDisplayName={job.industry}
+              />
+            </Form.Select>
+          </Form.Control>
+        </Form.Field>
+        <Form.Field>
+          <Form.Control>
+            <Button type="primary" onClick={onUpdateJobClicked}>
+              Update Job Posting
+            </Button>
+          </Form.Control>
+        </Form.Field>
+      </Box>
     </Container>
   );
 }
@@ -232,8 +235,10 @@ function ManageCurrentJobStatus({ job }) {
   return (
     <div>
       <Container>
-        <Heading subtitle>Manage Job Posting Status</Heading>
-        {job.active ? <DisableJob job={job} /> : <EnableJob job={job} />}
+        <Box>
+          <Heading subtitle>Manage Job Posting Status</Heading>
+          {job.active ? <DisableJob job={job} /> : <EnableJob job={job} />}
+        </Box>
       </Container>
     </div>
   );
@@ -243,21 +248,25 @@ function GetCurrentJobApplicants({ job }) {
   if (job.applicantCount === 0) {
     return (
       <Container>
-        <Heading subtitle>Current Applicants</Heading>
-        <p> Currently no applicants</p>
+        <Box>
+          <Heading subtitle>Current Applicants</Heading>
+          <p>Currently no applicants</p>
+        </Box>
       </Container>
     );
   }
   return (
     <Container>
-      <Heading subtitle>Current Applicants</Heading>
-      <Table>
-        <tbody>
-          {job.applicant_keys.map(applicant => {
-            return <GetApplicantAsAdmin applicantID={applicant.id} />;
-          })}
-        </tbody>
-      </Table>
+      <Box>
+        <Heading subtitle>Current Applicants</Heading>
+        <Table>
+          <tbody>
+            {job.applicant_keys.map(applicant => {
+              return <GetApplicantAsAdmin applicantID={applicant.id} />;
+            })}
+          </tbody>
+        </Table>
+      </Box>
     </Container>
   );
 }

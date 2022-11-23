@@ -1,11 +1,15 @@
-import { Hero } from "react-bulma-components";
+import { Container, Heading, Section } from "react-bulma-components";
+import Nav from "../components/Nav";
 
 function PageNotFound() {
   return (
     <div>
-      <Hero>
-        <Hero.Body>Page Not Found</Hero.Body>
-      </Hero>
+      <Nav />
+      <Container>
+        <Section>
+          <Heading>404 Page Not Found</Heading>
+        </Section>
+      </Container>
     </div>
   );
 }

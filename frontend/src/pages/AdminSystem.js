@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
 import {
+  Box,
   Button,
   Columns,
   Container,
@@ -127,50 +128,57 @@ function AdminSystem() {
             <Section>
               <Heading>Industries</Heading>
               <Container>
-                <Heading subtitle>Create New Industry</Heading>
-                <Form.Field>
-                  <Form.Label>Industry Name</Form.Label>
-                  <Form.Control>
-                    <Form.Input
-                      name="displayName"
-                      type="text"
-                      value={newIndustryForm.displayName}
-                      onChange={updateNewIndustryForm}
-                    />
-                  </Form.Control>
-                </Form.Field>
-                <Form.Field>
-                  <Form.Control>
-                    <Button type="primary" onClick={onCreateNewIndustryClicked}>
-                      Create New Industry
-                    </Button>
-                  </Form.Control>
-                </Form.Field>
+                <Box>
+                  <Heading subtitle>Create New Industry</Heading>
+                  <Form.Field>
+                    <Form.Label>Industry Name</Form.Label>
+                    <Form.Control>
+                      <Form.Input
+                        name="displayName"
+                        type="text"
+                        value={newIndustryForm.displayName}
+                        onChange={updateNewIndustryForm}
+                      />
+                    </Form.Control>
+                  </Form.Field>
+                  <Form.Field>
+                    <Form.Control>
+                      <Button
+                        type="primary"
+                        onClick={onCreateNewIndustryClicked}
+                      >
+                        Create New Industry
+                      </Button>
+                    </Form.Control>
+                  </Form.Field>
+                </Box>
               </Container>
             </Section>
 
             <Section>
               <Container>
-                <Heading subtitle>Existing Industries</Heading>
-                <Table>
-                  <tbody>
-                    {industryList.industries.map(industry => {
-                      return (
-                        <tr>
-                          <td>{industry.display_name}</td>
-                          <td>
-                            <Button
-                              renderAs="a"
-                              href={"/admin/system/industry/" + industry.name}
-                            >
-                              Edit
-                            </Button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </Table>
+                <Box>
+                  <Heading subtitle>Existing Industries</Heading>
+                  <Table>
+                    <tbody>
+                      {industryList.industries.map(industry => {
+                        return (
+                          <tr>
+                            <td>{industry.display_name}</td>
+                            <td>
+                              <Button
+                                renderAs="a"
+                                href={"/admin/system/industry/" + industry.name}
+                              >
+                                Edit
+                              </Button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                </Box>
               </Container>
             </Section>
           </Columns.Column>
@@ -179,50 +187,57 @@ function AdminSystem() {
             <Section>
               <Heading>Locations</Heading>
               <Container>
-                <Heading subtitle>Create New Location</Heading>
-                <Form.Field>
-                  <Form.Label>Location Name</Form.Label>
-                  <Form.Control>
-                    <Form.Input
-                      name="displayName"
-                      type="text"
-                      value={newLocationForm.displayName}
-                      onChange={updateNewLocationForm}
-                    />
-                  </Form.Control>
-                </Form.Field>
-                <Form.Field>
-                  <Form.Control>
-                    <Button type="primary" onClick={onCreateNewLocationClicked}>
-                      Create New Location
-                    </Button>
-                  </Form.Control>
-                </Form.Field>
+                <Box>
+                  <Heading subtitle>Create New Location</Heading>
+                  <Form.Field>
+                    <Form.Label>Location Name</Form.Label>
+                    <Form.Control>
+                      <Form.Input
+                        name="displayName"
+                        type="text"
+                        value={newLocationForm.displayName}
+                        onChange={updateNewLocationForm}
+                      />
+                    </Form.Control>
+                  </Form.Field>
+                  <Form.Field>
+                    <Form.Control>
+                      <Button
+                        type="primary"
+                        onClick={onCreateNewLocationClicked}
+                      >
+                        Create New Location
+                      </Button>
+                    </Form.Control>
+                  </Form.Field>
+                </Box>
               </Container>
             </Section>
 
             <Section>
               <Container>
-                <Heading subtitle>Existing Locations</Heading>
-                <Table>
-                  <tbody>
-                    {locationList.locations.map(location => {
-                      return (
-                        <tr>
-                          <td>{location.display_name}</td>
-                          <td>
-                            <Button
-                              renderAs="a"
-                              href={"/admin/system/location/" + location.name}
-                            >
-                              Edit
-                            </Button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </Table>
+                <Box>
+                  <Heading subtitle>Existing Locations</Heading>
+                  <Table>
+                    <tbody>
+                      {locationList.locations.map(location => {
+                        return (
+                          <tr>
+                            <td>{location.display_name}</td>
+                            <td>
+                              <Button
+                                renderAs="a"
+                                href={"/admin/system/location/" + location.name}
+                              >
+                                Edit
+                              </Button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                </Box>
               </Container>
             </Section>
           </Columns.Column>

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
 import {
+  Box,
   Button,
   Container,
   Form,
@@ -105,24 +106,26 @@ function UpdateCurrentLocation({ location }) {
 
   return (
     <Container>
-      <Form.Field>
-        <Form.Label>Update Location Name</Form.Label>
-        <Form.Control>
-          <Form.Input
-            name="displayName"
-            type="text"
-            value={updateLocationForm.displayName}
-            onChange={updateLocationFormDisplayNameField}
-          />
-        </Form.Control>
-      </Form.Field>
-      <Form.Field>
-        <Form.Control>
-          <Button type="primary" onClick={onUpdateLocationClicked}>
-            Update Location
-          </Button>
-        </Form.Control>
-      </Form.Field>
+      <Box>
+        <Form.Field>
+          <Form.Label>Update Location Name</Form.Label>
+          <Form.Control>
+            <Form.Input
+              name="displayName"
+              type="text"
+              value={updateLocationForm.displayName}
+              onChange={updateLocationFormDisplayNameField}
+            />
+          </Form.Control>
+        </Form.Field>
+        <Form.Field>
+          <Form.Control>
+            <Button type="primary" onClick={onUpdateLocationClicked}>
+              Update Location
+            </Button>
+          </Form.Control>
+        </Form.Field>
+      </Box>
     </Container>
   );
 }

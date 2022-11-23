@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
 import {
+  Box,
   Button,
   Container,
   Form,
@@ -107,24 +108,26 @@ function UpdateCurrentIndustry({ industry }) {
 
   return (
     <Container>
-      <Form.Field>
-        <Form.Label>Update Industry Name</Form.Label>
-        <Form.Control>
-          <Form.Input
-            name="displayName"
-            type="text"
-            value={updateIndustryForm.displayName}
-            onChange={updateIndustryFormDisplayNameField}
-          />
-        </Form.Control>
-      </Form.Field>
-      <Form.Field>
-        <Form.Control>
-          <Button type="primary" onClick={onUpdateIndustryClicked}>
-            Update Industry
-          </Button>
-        </Form.Control>
-      </Form.Field>
+      <Box>
+        <Form.Field>
+          <Form.Label>Update Industry Name</Form.Label>
+          <Form.Control>
+            <Form.Input
+              name="displayName"
+              type="text"
+              value={updateIndustryForm.displayName}
+              onChange={updateIndustryFormDisplayNameField}
+            />
+          </Form.Control>
+        </Form.Field>
+        <Form.Field>
+          <Form.Control>
+            <Button type="primary" onClick={onUpdateIndustryClicked}>
+              Update Industry
+            </Button>
+          </Form.Control>
+        </Form.Field>
+      </Box>
     </Container>
   );
 }
