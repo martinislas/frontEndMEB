@@ -13,6 +13,59 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+func GetJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	ctx := r.Context()
+	var err error
+
+	// get jobs by industry
+	// get jobs by location
+	// get jobs by active
+
+	// 
+	// This needs flipping in terms of created date !!!
+	// 
+
+	query := datastore.NewQuery("job")
+
+	var jobs []*model.Job
+	keys, err := ds.Client.GetAll(ctx, query, &jobs)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	for i, key := range keys {
+		keyName := strconv.FormatInt(key.ID, 10)
+		jobs[i].ID = keyName
+		jobs[i].ApplicantCount = len(jobs[i].ApplicantKeys)
+
+		locationKey := datastore.NameKey("location", jobs[i].LocationKey, nil)
+		var location model.Location
+		if err := ds.Client.Get(ctx, locationKey, &location); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		industryKey := datastore.NameKey("industry", jobs[i].IndustryKey, nil)
+		var industry model.Industry
+		if err := ds.Client.Get(ctx, industryKey, &industry); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		jobs[i].Location = location.DisplayName
+		jobs[i].Industry = industry.DisplayName
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	err = json.NewEncoder(w).Encode(jobs)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
 func GetJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 

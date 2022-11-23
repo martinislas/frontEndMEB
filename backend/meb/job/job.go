@@ -18,15 +18,12 @@ func GetJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	// get jobs by industry
 	// get jobs by location
 	// get jobs by active
-	queryLimit := r.URL.Query().Get("limit")
-	limit := 5
-	if len(queryLimit) != 0 {
-		limit, err = strconv.Atoi(queryLimit)
-		if err != nil {
-			limit = 5
-		}
-	}
-	query := datastore.NewQuery("job").Limit(limit)
+
+	// 
+	// This needs flipping in terms of created date !!!
+	// 
+
+	query := datastore.NewQuery("job").Filter("active =", true)
 
 	var jobs []*model.Job
 	keys, err := ds.Client.GetAll(ctx, query, &jobs)

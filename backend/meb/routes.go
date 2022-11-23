@@ -13,7 +13,7 @@ import (
 func Router() http.Handler {
 	mux := httprouter.New()
 
-	mux.GET("/api/jobs", job.GetJobs)   // get all jobs
+	mux.GET("/api/jobs", job.GetJobs)   // get all active jobs
 	mux.GET("/api/job/:id", job.GetJob) // get an existing job
 
 	mux.POST("/api/admin/login", admin.LoginAdmin)                            // admin login
@@ -32,6 +32,7 @@ func Router() http.Handler {
 	mux.PUT("/api/location", middleware.WithAdminAuth(admin.PutLocation))   // modify existing location
 	mux.POST("/api/location", middleware.WithAdminAuth(admin.PostLocation)) // new location
 
+	mux.GET("/api/admins/jobs", middleware.WithAdminAuth(admin.GetJobs)) //get all jobs
 	mux.GET("/api/admins/job/:id", middleware.WithAdminAuth(admin.GetJob)) // admin can get existing job with applicant ID's
 	mux.PUT("/api/admins/job", middleware.WithAdminAuth(admin.PutJob))     // admin can modify existing job
 	mux.POST("/api/admins/job", middleware.WithAdminAuth(admin.PostJob))   // admin can create new job

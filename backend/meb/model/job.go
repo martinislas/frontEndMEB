@@ -15,6 +15,6 @@ type Job struct {
 	ApplicantCount int       `json:"applicant_count" datastore:"-"`
 	PostedBy       string    `json:"posted_by" datastore:"posted_by"`
 	Active         bool      `json:"active" datastore:"active"`
-	Created        time.Time `datastore:"created,noindex"`
-	Updated        time.Time `datastore:"updated,noindex"`
+	Created        time.Time `datastore:"created"`
+	Updated        time.Time `datastore:"updated"`
 }
