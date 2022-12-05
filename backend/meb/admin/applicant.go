@@ -16,17 +16,7 @@ func GetApplicants(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 	ctx := r.Context()
 	var err error
 
-	// get applicants by industry
-	// get applicants by location
-	queryLimit := r.URL.Query().Get("limit")
-	limit := 5
-	if len(queryLimit) != 0 {
-		limit, err = strconv.Atoi(queryLimit)
-		if err != nil {
-			limit = 5
-		}
-	}
-	query := datastore.NewQuery("applicant").Limit(limit)
+	query := datastore.NewQuery("applicant")
 
 	var applicants []*model.Applicant
 	keys, err := ds.Client.GetAll(ctx, query, &applicants)

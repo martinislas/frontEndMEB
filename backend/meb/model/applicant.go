@@ -23,3 +23,11 @@ type Applicant struct {
 	Created               time.Time `datastore:"created,noindex"`
 	Updated               time.Time `datastore:"updated,noindex"`
 }
+
+type Application struct {
+	JobID     string `json:"job_id"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
+	Phone     string `json:"phone"`
+}

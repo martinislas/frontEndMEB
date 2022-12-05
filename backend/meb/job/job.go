@@ -18,11 +18,6 @@ func GetJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	// get jobs by industry
 	// get jobs by location
-	// get jobs by active
-
-	//
-	// This needs flipping in terms of created date !!!
-	//
 
 	query := datastore.NewQuery("job").Filter("active =", true).Order(fmt.Sprintf("%q", "-created"))
 

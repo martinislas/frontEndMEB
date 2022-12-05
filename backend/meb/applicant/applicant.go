@@ -323,73 +323,127 @@ func PostNewApplicant(w http.ResponseWriter, r *http.Request, ps httprouter.Para
 func ApplyJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := r.Context()
 
-	applyingID := ctx.Value(middleware.ApplicantIDCtx).(string)
-
-	var applyJob model.Job
-	err := json.NewDecoder(r.Body).Decode(&applyJob)
+	var application model.Application
+	err := json.NewDecoder(r.Body).Decode(&application)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	applicantID, err := strconv.ParseInt(applyingID, 10, 64)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if len(application.Email) == 0 || len(application.Phone) == 0 {
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	jobID, err := strconv.ParseInt(applyJob.ID, 10, 64)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	applicantFound := false
+	var applicantID int64
+
+	if len(application.Phone) != 0 {
+		phoneQuery := datastore.NewQuery("applicant").Filter("phone =", application.Phone)
+		var foundPhoneApplicant []*model.Applicant
+		keys, err := ds.Client.GetAll(ctx, phoneQuery, &foundPhoneApplicant)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// We have found an applicant with the same phone number
+		if len(keys) == 1 {
+			applicantFound = true
+			applicantID = keys[0].ID
+		}
 	}
+
+	if len(application.Email) != 0 && !applicantFound {
+		emailQuery := datastore.NewQuery("applicant").Filter("email =", application.Email)
+		var foundEmailApplicant []*model.Applicant
+		keys, err := ds.Client.GetAll(ctx, emailQuery, &foundEmailApplicant)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// We have found an applicant with the same email
+		if len(keys) == 1 {
+			applicantFound = true
+			applicantID = keys[0].ID
+		}
+	}
+
+	if !applicantFound {
+		// Create a New Applicant
+		newApplicant := model.Applicant{
+			FirstName: application.FirstName,
+			LastName:  application.LastName,
+			Email:     application.Email,
+			Phone:     application.Phone,
+			JobKeys:   []string{application.JobID},
+		}
+
+		key := datastore.IncompleteKey("applicant", nil)
+		storedKey, err := ds.Client.Put(ctx, key, &newApplicant)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		applicantID = storedKey.ID
+	} else {
+		// Update Existing Applicant
+		applicantKey := datastore.IDKey("applicant", applicantID, nil)
+
+		tx1, err := ds.Client.NewTransaction(ctx)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		var applicant model.Applicant
+		if err := tx1.Get(applicantKey, &applicant); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Add job ID
+		applicant.JobKeys = append(applicant.JobKeys, application.JobID)
+		applicant.Updated = time.Now()
+
+		if _, err := tx1.Put(applicantKey, &applicant); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		if _, err := tx1.Commit(); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	applicantKey := strconv.FormatInt(applicantID, 10)
 
 	// Update Job
-	jobKey := datastore.IDKey("job", jobID, nil)
-
-	tx1, err := ds.Client.NewTransaction(ctx)
+	jobID, err := strconv.ParseInt(application.JobID, 10, 64)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	var appliedJob model.Job
-	if err := tx1.Get(jobKey, &appliedJob); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
 
-	// Add applicant ID
-	appliedJob.ApplicantKeys = append(appliedJob.ApplicantKeys, applyingID)
-	appliedJob.Updated = time.Now()
-
-	if _, err := tx1.Put(jobKey, &appliedJob); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	if _, err := tx1.Commit(); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	// Update Applicant
-	applicantKey := datastore.IDKey("applicant", applicantID, nil)
+	jobKey := datastore.IDKey("job", jobID, nil)
 
 	tx2, err := ds.Client.NewTransaction(ctx)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	var applicant model.Applicant
-	if err := tx2.Get(applicantKey, &applicant); err != nil {
+	var appliedJob model.Job
+	if err := tx2.Get(jobKey, &appliedJob); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Add job ID
-	applicant.JobKeys = append(applicant.JobKeys, applyJob.ID)
-	applicant.Updated = time.Now()
+	// Add applicant ID
+	appliedJob.ApplicantKeys = append(appliedJob.ApplicantKeys, applicantKey)
+	appliedJob.Updated = time.Now()
 
-	if _, err := tx2.Put(applicantKey, &applicant); err != nil {
+	if _, err := tx2.Put(jobKey, &appliedJob); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

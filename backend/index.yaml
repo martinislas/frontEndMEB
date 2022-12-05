@@ -3,10 +3,13 @@ indexes:
     properties:
       - name: location
       - name: industry
-      - name: posted_by
       - name: active
-      - name: created
-      - name: updated
+      - name: -created
+
+  - kind: job
+    properties:
+      - name: active
+      - name: -created
 
   - kind: applicant
     properties:
