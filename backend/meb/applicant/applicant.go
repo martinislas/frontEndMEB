@@ -330,7 +330,7 @@ func ApplyJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 
-	if len(application.Email) == 0 || len(application.Phone) == 0 {
+	if len(application.Email) == 0 && len(application.Phone) == 0 {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}

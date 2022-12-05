@@ -48,7 +48,7 @@ func Router() http.Handler {
 	mux.GET("/api/applicant", middleware.WithApplicantAuth(applicant.GetApplicant)) // get the authenticated applicants details
 	mux.PUT("/api/applicant", middleware.WithApplicantAuth(applicant.PutApplicant)) // update the authenticated applicants details
 	// mux.POST("/api/job/apply", middleware.WithApplicantAuth(applicant.ApplyJob))    // user just needs to assign their ID to a job to apply
-	mux.POST("/api/job/apply", applicant.ApplyJob)
+	mux.POST("/api/apply", applicant.ApplyJob)
 
 	return mux
 }
