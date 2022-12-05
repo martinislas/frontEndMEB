@@ -18,7 +18,7 @@ function ApplyJob({ openModal, closeModal }) {
 
   const onApplyJobClicked = async () => {
     try {
-      await axios.post("/api/job/apply", {
+      await axios.post("/api/apply", {
         job_id: openModal.jobID,
         first_name: applyJobForm.first_name,
         last_name: applyJobForm.last_name,
