@@ -8,12 +8,15 @@ import {
   Container,
   Form,
   Heading,
+  Icon,
   Section,
 } from "react-bulma-components";
 import useToken from "../auth/UseToken";
 import AdminNav from "../components/AdminNav";
 import RemoveToken from "../auth/RemoveToken";
 import StatusNotification from "../components/StatusNotification";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 function AdminIndustry() {
   const { id } = useParams();
@@ -57,7 +60,22 @@ function GetCurrentIndustry({ id }) {
   }, [id]);
 
   if (currentIndustry.name === "") {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Section>
+          <Container>
+            <Box>
+              <p>
+                <Icon align="center">
+                  <FontAwesomeIcon icon={faSpinner} className={"fa-spin"} />
+                </Icon>
+                Fetching industry details...
+              </p>
+            </Box>
+          </Container>
+        </Section>
+      </div>
+    );
   }
   return <UpdateCurrentIndustry industry={currentIndustry} />;
 }

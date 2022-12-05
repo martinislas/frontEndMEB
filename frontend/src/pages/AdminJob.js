@@ -8,6 +8,7 @@ import {
   Container,
   Form,
   Heading,
+  Icon,
   Section,
   Table,
 } from "react-bulma-components";
@@ -20,6 +21,8 @@ import RemoveToken from "../auth/RemoveToken";
 import EnableJob from "../components/EnableJob";
 import DisableJob from "../components/DisableJob";
 import StatusNotification from "../components/StatusNotification";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 function AdminJob() {
   const { id } = useParams();
@@ -95,7 +98,22 @@ function GetCurrentJob({ id }) {
   }, [id, token]);
 
   if (currentJob.id === "") {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Section>
+          <Container>
+            <Box>
+              <p>
+                <Icon align="center">
+                  <FontAwesomeIcon icon={faSpinner} className={"fa-spin"} />
+                </Icon>
+                Fetching job details...
+              </p>
+            </Box>
+          </Container>
+        </Section>
+      </div>
+    );
   }
   return (
     <div>

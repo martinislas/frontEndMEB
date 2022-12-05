@@ -14,7 +14,7 @@ import {
   Table,
 } from "react-bulma-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faXmark, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import useToken from "../auth/UseToken";
 import AdminNav from "../components/AdminNav";
 import RemoveToken from "../auth/RemoveToken";
@@ -80,7 +80,22 @@ function GetCurrentAdmin({ id }) {
   }, [id, token]);
 
   if (currentAdmin.username === "") {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Section>
+          <Container>
+            <Box>
+              <p>
+                <Icon align="center">
+                  <FontAwesomeIcon icon={faSpinner} className={"fa-spin"} />
+                </Icon>
+                Fetching admin details...
+              </p>
+            </Box>
+          </Container>
+        </Section>
+      </div>
+    );
   }
   return (
     <Container>

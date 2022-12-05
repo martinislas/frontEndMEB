@@ -8,12 +8,15 @@ import {
   Container,
   Form,
   Heading,
+  Icon,
   Section,
 } from "react-bulma-components";
 import useToken from "../auth/UseToken";
 import AdminNav from "../components/AdminNav";
 import RemoveToken from "../auth/RemoveToken";
 import StatusNotification from "../components/StatusNotification";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 function AdminLocation() {
   const { id } = useParams();
@@ -57,7 +60,22 @@ function GetCurrentLocation({ id }) {
   }, [id]);
 
   if (currentLocation.name === "") {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Section>
+          <Container>
+            <Box>
+              <p>
+                <Icon align="center">
+                  <FontAwesomeIcon icon={faSpinner} className={"fa-spin"} />
+                </Icon>
+                Fetching location details...
+              </p>
+            </Box>
+          </Container>
+        </Section>
+      </div>
+    );
   }
   return <UpdateCurrentLocation location={currentLocation} />;
 }

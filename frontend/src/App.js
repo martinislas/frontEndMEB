@@ -31,7 +31,6 @@ function App() {
             </AdminAuthRoute>
           }
         />
-        {/* Done apart from pagination */}
         <Route
           path="/admin/jobs"
           element={
@@ -40,7 +39,6 @@ function App() {
             </AdminAuthRoute>
           }
         />
-        {/* Needs testing + pagination for applicants -> is applicant info enough */}
         <Route
           path="/admin/jobs/:id"
           element={
@@ -49,7 +47,6 @@ function App() {
             </AdminAuthRoute>
           }
         />
-        {/* Done apart from pagination + form tidy up */}
         <Route
           path="/admin/applicants"
           element={
@@ -58,7 +55,6 @@ function App() {
             </AdminAuthRoute>
           }
         />
-        {/* todo */}
         <Route
           path="/admin/applicants/:id"
           element={
@@ -67,7 +63,6 @@ function App() {
             </AdminAuthRoute>
           }
         />
-        {/* Done */}
         <Route
           path="/admin/admins"
           element={
@@ -84,7 +79,6 @@ function App() {
             </AdminAuthRoute>
           }
         />
-        {/* Done - possibly add tags for applicants? */}
         <Route
           path="/admin/system"
           element={
