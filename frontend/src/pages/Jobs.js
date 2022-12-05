@@ -20,10 +20,10 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 function Jobs() {
   // Existing jobs
   const [jobList, setJobList] = useState({ jobs: [] });
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState({ modalState: false, jobID: "" });
 
-  const onModalClose = useCallback(modalState => {
-    setShowModal(modalState);
+  const onModalClose = useCallback(updatedModalState => {
+    setShowModal({ modalState: updatedModalState });
   }, []);
 
   useEffect(() => {
@@ -41,8 +41,8 @@ function Jobs() {
     getJobs();
   }, []);
 
-  const onApplyJobClicked = async () => {
-    setShowModal(true);
+  const onApplyJobClicked = id => async () => {
+    setShowModal({ modalState: true, jobID: id });
   };
 
   if (jobList.jobs.length === 0) {
@@ -99,7 +99,9 @@ function Jobs() {
                         <td>
                           <Level>
                             <Level.Item>
-                              <Button onClick={onApplyJobClicked}>Apply</Button>
+                              <Button onClick={onApplyJobClicked(job.id)}>
+                                Apply
+                              </Button>
                             </Level.Item>
                             <Level.Item>
                               <Button renderAs="a" href={"/jobs/" + job.id}>

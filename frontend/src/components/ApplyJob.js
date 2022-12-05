@@ -1,3 +1,5 @@
+import { useState } from "react";
+import axios from "axios";
 import { Button, Content, Form, Modal } from "react-bulma-components";
 
 function ApplyJob({ openModal, closeModal }) {
@@ -5,14 +7,40 @@ function ApplyJob({ openModal, closeModal }) {
     closeModal(false);
   };
 
+  const [applyJobForm, setApplyJobForm] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: "",
+  });
+  const updateApplyJobForm = ({ target }) =>
+    setApplyJobForm({ ...applyJobForm, [target.name]: target.value });
+
+  const onApplyJobClicked = async () => {
+    try {
+      await axios.post("/api/job/apply", {
+        job_id: openModal.jobID,
+        first_name: applyJobForm.first_name,
+        last_name: applyJobForm.last_name,
+        email: applyJobForm.email,
+        phone: applyJobForm.phone,
+      });
+      onCloseModalClicked();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
-    <Modal show={openModal} onClose={onCloseModalClicked}>
+    <Modal show={openModal.modalState} onClose={onCloseModalClicked}>
       <Modal.Card>
         <Modal.Card.Header>
           <Modal.Card.Title>Apply</Modal.Card.Title>
         </Modal.Card.Header>
         <Modal.Card.Body>
-          <Content>Send us your details and we'll be in touch!</Content>
+          <Content>
+            Send us your details and we'll be in touch! {openModal.jobID}
+          </Content>
           <Form.Field>
             <Form.Label>Enter Your Name</Form.Label>
             <Form.Field kind="group">
@@ -21,7 +49,8 @@ function ApplyJob({ openModal, closeModal }) {
                   name="first_name"
                   type="text"
                   placeholder="First Name"
-                  onChange={function noRefCheck() {}}
+                  required
+                  onChange={updateApplyJobForm}
                 />
               </Form.Control>
               <Form.Control>
@@ -29,7 +58,8 @@ function ApplyJob({ openModal, closeModal }) {
                   name="last_name"
                   type="text"
                   placeholder="Last Name"
-                  onChange={function noRefCheck() {}}
+                  required
+                  onChange={updateApplyJobForm}
                 />
               </Form.Control>
             </Form.Field>
@@ -42,7 +72,7 @@ function ApplyJob({ openModal, closeModal }) {
                   name="email"
                   type="email"
                   placeholder="Email Address"
-                  onChange={function noRefCheck() {}}
+                  onChange={updateApplyJobForm}
                 />
               </Form.Control>
               <Form.Control>
@@ -50,7 +80,7 @@ function ApplyJob({ openModal, closeModal }) {
                   name="phone"
                   type="phone"
                   placeholder="111-222-333"
-                  onChange={function noRefCheck() {}}
+                  onChange={updateApplyJobForm}
                 />
               </Form.Control>
             </Form.Field>
@@ -59,7 +89,7 @@ function ApplyJob({ openModal, closeModal }) {
         <Modal.Card.Footer>
           <Form.Field>
             <Form.Control>
-              <Button type="primary" onClick={function noRefCheck() {}}>
+              <Button type="primary" onClick={onApplyJobClicked}>
                 Apply
               </Button>
             </Form.Control>

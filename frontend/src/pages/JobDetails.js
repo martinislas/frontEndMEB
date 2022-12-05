@@ -30,10 +30,10 @@ function JobDetails() {
 }
 
 function GetCurrentJob({ id }) {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState({ modalState: false, jobID: "" });
 
-  const onModalClose = useCallback(modalState => {
-    setShowModal(modalState);
+  const onModalClose = useCallback(updatedModalState => {
+    setShowModal({ modalState: updatedModalState });
   }, []);
 
   // Get the job by ID
@@ -74,8 +74,8 @@ function GetCurrentJob({ id }) {
     getJob();
   }, [id]);
 
-  const onApplyJobClicked = async () => {
-    setShowModal(true);
+  const onApplyJobClicked = id => async () => {
+    setShowModal({ modalState: true, jobID: id });
   };
 
   if (currentJob.id === "") {
@@ -105,7 +105,7 @@ function GetCurrentJob({ id }) {
           <Block>Industry: {currentJob.industry}</Block>
           <Block>{currentJob.description}</Block>
           <Block>
-            <Button onClick={onApplyJobClicked}>Apply</Button>
+            <Button onClick={onApplyJobClicked(currentJob.id)}>Apply</Button>
           </Block>
         </Box>
       </Container>
