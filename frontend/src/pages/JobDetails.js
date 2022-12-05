@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
@@ -8,9 +8,13 @@ import {
   Button,
   Container,
   Heading,
+  Icon,
   Section,
 } from "react-bulma-components";
 import Nav from "../components/Nav";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import ApplyJob from "../components/ApplyJob";
 
 function JobDetails() {
   const { id } = useParams();
@@ -26,6 +30,12 @@ function JobDetails() {
 }
 
 function GetCurrentJob({ id }) {
+  const [showModal, setShowModal] = useState(false);
+
+  const onModalClose = useCallback(modalState => {
+    setShowModal(modalState);
+  }, []);
+
   // Get the job by ID
   const [currentJob, setCurrentJob] = useState({
     id: "",
@@ -64,12 +74,21 @@ function GetCurrentJob({ id }) {
     getJob();
   }, [id]);
 
+  const onApplyJobClicked = async () => {
+    setShowModal(true);
+  };
+
   if (currentJob.id === "") {
     return (
       <Section>
         <Container>
           <Box>
-            <p>Fetching job details...</p>
+            <p>
+              <Icon align="center">
+                <FontAwesomeIcon icon={faSpinner} className={"fa-spin"} />
+              </Icon>
+              Fetching job details...
+            </p>
           </Box>
         </Container>
       </Section>
@@ -77,6 +96,7 @@ function GetCurrentJob({ id }) {
   }
   return (
     <Section>
+      <ApplyJob openModal={showModal} closeModal={onModalClose} />
       <Container>
         <Box>
           <Heading subtitle>{currentJob.name}</Heading>
@@ -85,9 +105,7 @@ function GetCurrentJob({ id }) {
           <Block>Industry: {currentJob.industry}</Block>
           <Block>{currentJob.description}</Block>
           <Block>
-            <Button renderAs="a" href={"/jobs/" + currentJob.id}>
-              Apply
-            </Button>
+            <Button onClick={onApplyJobClicked}>Apply</Button>
           </Block>
         </Box>
       </Container>

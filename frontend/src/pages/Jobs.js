@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
 import {
@@ -7,15 +7,24 @@ import {
   Button,
   Container,
   Heading,
+  Icon,
   Level,
   Section,
   Table,
 } from "react-bulma-components";
 import Nav from "../components/Nav";
+import ApplyJob from "../components/ApplyJob";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 function Jobs() {
   // Existing jobs
   const [jobList, setJobList] = useState({ jobs: [] });
+  const [showModal, setShowModal] = useState(false);
+
+  const onModalClose = useCallback(modalState => {
+    setShowModal(modalState);
+  }, []);
 
   useEffect(() => {
     async function getJobs() {
@@ -32,8 +41,35 @@ function Jobs() {
     getJobs();
   }, []);
 
+  const onApplyJobClicked = async () => {
+    setShowModal(true);
+  };
+
+  if (jobList.jobs.length === 0) {
+    return (
+      <div>
+        <Nav />
+        <Container>
+          <Section>
+            <Container>
+              <Box>
+                <p>
+                  <Icon align="center">
+                    <FontAwesomeIcon icon={faSpinner} className={"fa-spin"} />
+                  </Icon>
+                  Fetching current job openings...
+                </p>
+              </Box>
+            </Container>
+          </Section>
+        </Container>
+      </div>
+    );
+  }
+
   return (
     <div>
+      <ApplyJob openModal={showModal} closeModal={onModalClose} />
       <Nav />
       <Container>
         <Section>
@@ -63,9 +99,7 @@ function Jobs() {
                         <td>
                           <Level>
                             <Level.Item>
-                              <Button renderAs="a" href={"/jobs/" + job.id}>
-                                Apply
-                              </Button>
+                              <Button onClick={onApplyJobClicked}>Apply</Button>
                             </Level.Item>
                             <Level.Item>
                               <Button renderAs="a" href={"/jobs/" + job.id}>
