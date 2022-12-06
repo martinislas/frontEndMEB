@@ -31,7 +31,7 @@ function GetApplicantAsAdmin({ applicantID }) {
   useEffect(() => {
     async function getApplicant() {
       try {
-        const response = axios.get(`/api/admin/applicant/${applicantID}`, {
+        const response = axios.get(`/api/admins/applicant/${applicantID}`, {
           headers: { Authorization: "Bearer " + token },
         });
         if (response) {
