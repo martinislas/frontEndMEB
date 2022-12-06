@@ -7,7 +7,7 @@ import RemoveToken from "../auth/RemoveToken";
 
 function GetApplicantsAsAdmin({ applicantKeys }) {
   return (
-    <Table>
+    <Table size="fullwidth">
       <thead>
         <tr>
           <th>First Name</th>
@@ -39,9 +39,12 @@ function GetApplicantAsAdmin({ applicantID }) {
   useEffect(() => {
     async function getApplicant() {
       try {
-        const response = axios.get(`/api/admins/applicant/${applicantID}`, {
-          headers: { Authorization: "Bearer " + token },
-        });
+        const response = await axios.get(
+          `/api/admins/applicant/${applicantID}`,
+          {
+            headers: { Authorization: "Bearer " + token },
+          }
+        );
         if (response) {
           setApplicant({
             id: response.data.id,
