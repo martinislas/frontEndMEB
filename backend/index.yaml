@@ -4,12 +4,14 @@ indexes:
       - name: location
       - name: industry
       - name: active
-      - name: -created
+      - name: created
+        direction: desc
 
   - kind: job
     properties:
       - name: active
-      - name: -created
+      - name: created
+        direction: desc
 
   - kind: applicant
     properties:

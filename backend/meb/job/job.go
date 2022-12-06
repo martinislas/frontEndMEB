@@ -2,7 +2,6 @@ package job
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -19,7 +18,7 @@ func GetJobs(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	// get jobs by industry
 	// get jobs by location
 
-	query := datastore.NewQuery("job").Filter("active =", true).Order(fmt.Sprintf("%q", "-created"))
+	query := datastore.NewQuery("job").Filter("active =", true).Order("-created")
 
 	var jobs []*model.Job
 	keys, err := ds.Client.GetAll(ctx, query, &jobs)

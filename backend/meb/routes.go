@@ -41,12 +41,12 @@ func Router() http.Handler {
 	mux.GET("/api/admins/applicant/:id", middleware.WithAdminAuth(admin.GetApplicant)) // admin can get an existing applicant
 	mux.PUT("/api/admins/applicant", middleware.WithAdminAuth(admin.PutApplicant))     // admin can update an applicant
 
-	mux.POST("/api/applicant/login", applicant.LoginApplicant)     // applicant login
-	mux.GET("/api/applicant/existing", applicant.GetExistingCheck) // check if applicant login details are already in use
-	mux.POST("/api/applicant/new", applicant.PostNewApplicant)     // create new applicant
+	// mux.POST("/api/applicant/login", applicant.LoginApplicant)     // applicant login
+	// mux.GET("/api/applicant/existing", applicant.GetExistingCheck) // check if applicant login details are already in use
+	// mux.POST("/api/applicant/new", applicant.PostNewApplicant)     // create new applicant
 
-	mux.GET("/api/applicant", middleware.WithApplicantAuth(applicant.GetApplicant)) // get the authenticated applicants details
-	mux.PUT("/api/applicant", middleware.WithApplicantAuth(applicant.PutApplicant)) // update the authenticated applicants details
+	// mux.GET("/api/applicant", middleware.WithApplicantAuth(applicant.GetApplicant)) // get the authenticated applicants details
+	// mux.PUT("/api/applicant", middleware.WithApplicantAuth(applicant.PutApplicant)) // update the authenticated applicants details
 	// mux.POST("/api/job/apply", middleware.WithApplicantAuth(applicant.ApplyJob))    // user just needs to assign their ID to a job to apply
 	mux.POST("/api/apply", applicant.ApplyJob)
 
