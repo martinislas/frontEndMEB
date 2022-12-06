@@ -10,19 +10,18 @@ import {
   Heading,
   Icon,
   Section,
-  Table,
 } from "react-bulma-components";
 import useToken from "../auth/UseToken";
 import AdminNav from "../components/AdminNav";
 import LocationPicker from "../components/LocationPicker";
 import IndustryPicker from "../components/IndustryPicker";
-import GetApplicantAsAdmin from "../components/GetApplicantAsAdmin";
 import RemoveToken from "../auth/RemoveToken";
 import EnableJob from "../components/EnableJob";
 import DisableJob from "../components/DisableJob";
 import StatusNotification from "../components/StatusNotification";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import GetApplicantsAsAdmin from "../components/GetApplicantAsAdmin";
 
 function AdminJob() {
   const { id } = useParams();
@@ -277,13 +276,7 @@ function GetCurrentJobApplicants({ job }) {
     <Container>
       <Box>
         <Heading subtitle>Current Applicants</Heading>
-        <Table>
-          <tbody>
-            {job.applicant_keys.map(applicant => {
-              return <GetApplicantAsAdmin applicantID={applicant} />;
-            })}
-          </tbody>
-        </Table>
+        <GetApplicantsAsAdmin applicantKeys={job.applicantKeys} />
       </Box>
     </Container>
   );
