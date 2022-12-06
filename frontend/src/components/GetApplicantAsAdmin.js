@@ -1,28 +1,30 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
-import { Button, Table } from "react-bulma-components";
+import { Button, Container, Table } from "react-bulma-components";
 import useToken from "../auth/UseToken";
 import RemoveToken from "../auth/RemoveToken";
 
 function GetApplicantsAsAdmin({ applicantKeys }) {
   return (
-    <Table size="fullwidth">
-      <thead>
-        <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Phone</th>
-          <th>Email</th>
-          <th>Options</th>
-        </tr>
-      </thead>
-      <tbody>
-        {applicantKeys.map(applicantKey => {
-          return <GetApplicantAsAdmin applicantID={applicantKey} />;
-        })}
-      </tbody>
-    </Table>
+    <Container>
+      <Table size="fullwidth">
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          {applicantKeys.map(applicantKey => {
+            return <GetApplicantAsAdmin applicantID={applicantKey} />;
+          })}
+        </tbody>
+      </Table>
+    </Container>
   );
 }
 
@@ -46,6 +48,7 @@ function GetApplicantAsAdmin({ applicantID }) {
           }
         );
         if (response) {
+          console.log(response);
           setApplicant({
             id: response.data.id,
             first_name: response.data.first_name,
