@@ -280,7 +280,7 @@ function GetCurrentJobApplicants({ job }) {
         <Table>
           <tbody>
             {job.applicant_keys.map(applicant => {
-              return <GetApplicantAsAdmin applicantID={applicant.id} />;
+              return <GetApplicantAsAdmin applicantID={applicant} />;
             })}
           </tbody>
         </Table>
