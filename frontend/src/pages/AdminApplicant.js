@@ -58,7 +58,7 @@ function GetCurrentApplicant({ id }) {
   useEffect(() => {
     async function getApplicant() {
       try {
-        const response = await axios.get(`/api/admins/job/${id}`, {
+        const response = await axios.get(`/api/admins/applicant/${id}`, {
           headers: { Authorization: "Bearer " + token },
         });
         if (response) {

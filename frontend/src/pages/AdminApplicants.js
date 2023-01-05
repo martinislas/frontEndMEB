@@ -95,8 +95,8 @@ function AdminApplicants() {
           <Container>
             <Box>
               <Heading subtitle>Create New Applicant Posting</Heading>
-              <Form.Field>
-                <Form.Field kind="group">
+              <Form.Field kind="group">
+                <Form.Field>
                   <Form.Label>First Name</Form.Label>
                   <Form.Control>
                     <Form.Input
@@ -107,7 +107,7 @@ function AdminApplicants() {
                     />
                   </Form.Control>
                 </Form.Field>
-                <Form.Field kind="group">
+                <Form.Field>
                   <Form.Label>Middle Name</Form.Label>
                   <Form.Control>
                     <Form.Input
@@ -118,7 +118,7 @@ function AdminApplicants() {
                     />
                   </Form.Control>
                 </Form.Field>
-                <Form.Field kind="group">
+                <Form.Field>
                   <Form.Label>Last Name</Form.Label>
                   <Form.Control>
                     <Form.Input
