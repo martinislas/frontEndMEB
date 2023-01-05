@@ -7,25 +7,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cache Node Modules
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/frontend/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+        uses: actions/checkout@v3
       - name: Setup Node Env
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: '14.x'
-      - name: Build 
+          node-version: 16
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+      - name: Build
         run: |
-           cd ./frontend
-           npm install
-           npm run build
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v0'
+          cd ./frontend
+          npm install
+          npm run build
+      - id: "auth"
+        uses: "google-github-actions/auth@v0"
         with:
           credentials_json: ${{ secrets.gcp_credentials }}
       - name: GCP React Client Deploy
