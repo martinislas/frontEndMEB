@@ -370,6 +370,8 @@ func ApplyJob(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	if !applicantFound {
 		// Create a New Applicant
 		newApplicant := model.Applicant{
+			Created:   time.Now(),
+			Updated:   time.Now(),
 			FirstName: application.FirstName,
 			LastName:  application.LastName,
 			Email:     application.Email,
