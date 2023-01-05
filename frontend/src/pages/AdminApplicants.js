@@ -13,6 +13,8 @@ import {
 } from "react-bulma-components";
 import useToken from "../auth/UseToken";
 import AdminNav from "../components/AdminNav";
+import RemoveToken from "../auth/RemoveToken";
+import StatusNotification from "../components/StatusNotification";
 
 function AdminApplicants() {
   const [token] = useToken();
@@ -55,8 +57,8 @@ function AdminApplicants() {
 
   const onCreateNewApplicantClicked = async () => {
     try {
-      const response = await axios.post(
-        "/api/applicant/new",
+      await axios.post(
+        "/api/admins/applicant",
         {
           first_name: newApplicantForm.first_name,
           middle_name: newApplicantForm.middle_name,
@@ -73,13 +75,19 @@ function AdminApplicants() {
           headers: { Authorization: "Bearer " + token },
         }
       );
-      navigate(`/admin/applicants/${response.data.id}?status=success`);
-      console.log(response);
+      navigate(`/admin/applicants`, { state: { status: "success" } });
     } catch (e) {
+      console.log(e); // Remove later
       if (e.response) {
-        navigate("/admin/applicants?status=failed");
+        if (e.response.status === 401) {
+          RemoveToken();
+        } else {
+          navigate("/admin/jobs", {
+            state: { status: "failed" },
+          });
+        }
       } else {
-        console.log(e);
+        console.log(e); // Send error to BE?
       }
     }
   };
@@ -87,6 +95,7 @@ function AdminApplicants() {
   return (
     <div>
       <AdminNav />
+      <StatusNotification />
       <Container>
         <Section>
           <Heading>Applicants</Heading>
