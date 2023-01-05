@@ -43,7 +43,7 @@ function GetJobAsAdmin({ jobID }) {
   useEffect(() => {
     async function getJob() {
       try {
-        const response = axios.get(`/api/admins/job/${jobID}`, {
+        const response = await axios.get(`/api/admins/job/${jobID}`, {
           headers: { Authorization: "Bearer " + token },
         });
         if (response) {
