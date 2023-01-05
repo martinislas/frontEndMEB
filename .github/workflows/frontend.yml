@@ -24,7 +24,7 @@ jobs:
         with:
           credentials_json: ${{ secrets.gcp_credentials }}
       - name: GCP React Client Deploy
-        uses: google-github-actions/deploy-appengine@main
+        uses: google-github-actions/deploy-appengine@v1
         with:
           working_directory: ./frontend
           deliverables: client.yaml
