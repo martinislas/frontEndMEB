@@ -234,7 +234,7 @@ function AdminApplicants() {
                         <td>
                           <Button
                             renderAs="a"
-                            href={"admin/applicants/" + applicant.id}
+                            href={"/admin/applicants/" + applicant.id}
                           >
                             View
                           </Button>
