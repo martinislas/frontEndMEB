@@ -113,10 +113,10 @@ function GetCurrentApplicant({ id }) {
   return (
     <div>
       <Section>
-        <EditCurrentApplicant job={currentApplicant} />
+        <EditCurrentApplicant applicant={currentApplicant} />
       </Section>
       <Section>
-        <GetCurrentApplicantJobs job={currentApplicant} />
+        <GetCurrentApplicantJobs applicant={currentApplicant} />
       </Section>
     </div>
   );

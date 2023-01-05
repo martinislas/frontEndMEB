@@ -45,7 +45,6 @@ function AdminApplicants() {
     last_name: "",
     email: "",
     phone: "",
-    password: "",
     address_street: "",
     address_city: "",
     address_zip: "",
@@ -64,7 +63,6 @@ function AdminApplicants() {
           last_name: newApplicantForm.last_name,
           email: newApplicantForm.email,
           phone: newApplicantForm.phone,
-          password: newApplicantForm.password,
           address_street: newApplicantForm.address_street,
           address_city: newApplicantForm.address_city,
           address_zip: newApplicantForm.address_zip,
@@ -130,8 +128,8 @@ function AdminApplicants() {
                   </Form.Control>
                 </Form.Field>
               </Form.Field>
-              <Form.Field>
-                <Form.Field kind="group">
+              <Form.Field kind="group">
+                <Form.Field>
                   <Form.Label>Email</Form.Label>
                   <Form.Control>
                     <Form.Input
@@ -142,24 +140,13 @@ function AdminApplicants() {
                     />
                   </Form.Control>
                 </Form.Field>
-                <Form.Field kind="group">
+                <Form.Field>
                   <Form.Label>Phone</Form.Label>
                   <Form.Control>
                     <Form.Input
                       name="phone"
                       type="text"
                       value={newApplicantForm.phone}
-                      onChange={updateNewApplicantForm}
-                    />
-                  </Form.Control>
-                </Form.Field>
-                <Form.Field kind="group">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control>
-                    <Form.Input
-                      name="password"
-                      type="text"
-                      value={newApplicantForm.password}
                       onChange={updateNewApplicantForm}
                     />
                   </Form.Control>
