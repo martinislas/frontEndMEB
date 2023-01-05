@@ -69,7 +69,6 @@ function AdminApplicants() {
           address_city: newApplicantForm.address_city,
           address_zip: newApplicantForm.address_zip,
           address_state: newApplicantForm.address_state,
-          reset_password: true,
         },
         {
           headers: { Authorization: "Bearer " + token },
@@ -82,7 +81,7 @@ function AdminApplicants() {
         if (e.response.status === 401) {
           RemoveToken();
         } else {
-          navigate("/admin/jobs", {
+          navigate("/admin/applicants", {
             state: { status: "failed" },
           });
         }
@@ -102,7 +101,7 @@ function AdminApplicants() {
           <Container>
             <Box>
               <Heading subtitle>Create New Applicant Posting</Heading>
-              <Form.Field kind="group">
+              <Form.Field>
                 <Form.Label>First Name</Form.Label>
                 <Form.Control>
                   <Form.Input
@@ -112,6 +111,8 @@ function AdminApplicants() {
                     onChange={updateNewApplicantForm}
                   />
                 </Form.Control>
+              </Form.Field>
+              <Form.Field>
                 <Form.Label>Middle Name</Form.Label>
                 <Form.Control>
                   <Form.Input
@@ -121,6 +122,8 @@ function AdminApplicants() {
                     onChange={updateNewApplicantForm}
                   />
                 </Form.Control>
+              </Form.Field>
+              <Form.Field>
                 <Form.Label>Last Name</Form.Label>
                 <Form.Control>
                   <Form.Input
@@ -131,29 +134,27 @@ function AdminApplicants() {
                   />
                 </Form.Control>
               </Form.Field>
-              <Form.Field kind="group">
-                <Form.Field>
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control>
-                    <Form.Input
-                      name="email"
-                      type="text"
-                      value={newApplicantForm.email}
-                      onChange={updateNewApplicantForm}
-                    />
-                  </Form.Control>
-                </Form.Field>
-                <Form.Field>
-                  <Form.Label>Phone</Form.Label>
-                  <Form.Control>
-                    <Form.Input
-                      name="phone"
-                      type="text"
-                      value={newApplicantForm.phone}
-                      onChange={updateNewApplicantForm}
-                    />
-                  </Form.Control>
-                </Form.Field>
+              <Form.Field>
+                <Form.Label>Email</Form.Label>
+                <Form.Control>
+                  <Form.Input
+                    name="email"
+                    type="email"
+                    value={newApplicantForm.email}
+                    onChange={updateNewApplicantForm}
+                  />
+                </Form.Control>
+              </Form.Field>
+              <Form.Field>
+                <Form.Label>Phone</Form.Label>
+                <Form.Control>
+                  <Form.Input
+                    name="phone"
+                    type="phone"
+                    value={newApplicantForm.phone}
+                    onChange={updateNewApplicantForm}
+                  />
+                </Form.Control>
               </Form.Field>
               <Form.Field>
                 <Form.Label>Street</Form.Label>

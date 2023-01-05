@@ -38,9 +38,7 @@ function ApplyJob({ openModal, closeModal }) {
           <Modal.Card.Title>Apply</Modal.Card.Title>
         </Modal.Card.Header>
         <Modal.Card.Body>
-          <Content>
-            Send us your details and we'll be in touch! {openModal.jobID}
-          </Content>
+          <Content>Send us your details and we'll be in touch!</Content>
           <Form.Field>
             <Form.Label>Enter Your Name</Form.Label>
             <Form.Field kind="group">

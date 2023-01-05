@@ -151,6 +151,15 @@ function EditCurrentApplicant({ applicant }) {
         "/api/admins/applicant",
         {
           id: applicant.id,
+          first_name: updateApplicantForm.first_name,
+          middle_name: updateApplicantForm.middle_name,
+          last_name: updateApplicantForm.last_name,
+          email: updateApplicantForm.email,
+          phone: updateApplicantForm.phone,
+          address_street: updateApplicantForm.address_street,
+          address_city: updateApplicantForm.address_city,
+          address_zip: updateApplicantForm.address_zip,
+          address_state: updateApplicantForm.address_state,
         },
         {
           headers: { Authorization: "Bearer " + token },
@@ -226,7 +235,7 @@ function EditCurrentApplicant({ applicant }) {
           <Form.Control>
             <Form.Input
               name="phone"
-              type="text"
+              type="phone"
               value={updateApplicantForm.phone}
               onChange={updateUpdateApplicantForm}
             />
