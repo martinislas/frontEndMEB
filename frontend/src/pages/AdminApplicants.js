@@ -103,39 +103,33 @@ function AdminApplicants() {
             <Box>
               <Heading subtitle>Create New Applicant Posting</Heading>
               <Form.Field kind="group">
-                <Form.Field>
-                  <Form.Label>First Name</Form.Label>
-                  <Form.Control>
-                    <Form.Input
-                      name="first_name"
-                      type="text"
-                      value={newApplicantForm.first_name}
-                      onChange={updateNewApplicantForm}
-                    />
-                  </Form.Control>
-                </Form.Field>
-                <Form.Field>
-                  <Form.Label>Middle Name</Form.Label>
-                  <Form.Control>
-                    <Form.Input
-                      name="middle_name"
-                      type="text"
-                      value={newApplicantForm.middle_name}
-                      onChange={updateNewApplicantForm}
-                    />
-                  </Form.Control>
-                </Form.Field>
-                <Form.Field>
-                  <Form.Label>Last Name</Form.Label>
-                  <Form.Control>
-                    <Form.Input
-                      name="last_name"
-                      type="text"
-                      value={newApplicantForm.last_name}
-                      onChange={updateNewApplicantForm}
-                    />
-                  </Form.Control>
-                </Form.Field>
+                <Form.Label>First Name</Form.Label>
+                <Form.Control>
+                  <Form.Input
+                    name="first_name"
+                    type="text"
+                    value={newApplicantForm.first_name}
+                    onChange={updateNewApplicantForm}
+                  />
+                </Form.Control>
+                <Form.Label>Middle Name</Form.Label>
+                <Form.Control>
+                  <Form.Input
+                    name="middle_name"
+                    type="text"
+                    value={newApplicantForm.middle_name}
+                    onChange={updateNewApplicantForm}
+                  />
+                </Form.Control>
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control>
+                  <Form.Input
+                    name="last_name"
+                    type="text"
+                    value={newApplicantForm.last_name}
+                    onChange={updateNewApplicantForm}
+                  />
+                </Form.Control>
               </Form.Field>
               <Form.Field kind="group">
                 <Form.Field>
