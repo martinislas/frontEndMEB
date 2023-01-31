@@ -2,7 +2,6 @@ import { useCallback, useState, useEffect } from "react";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
 import {
-  Block,
   Box,
   Button,
   Container,
@@ -77,9 +76,9 @@ function Jobs() {
           <Container>
             <Box>
               <Heading subtitle>Current Openings</Heading>
-              <Block>
+              {/* <Block>
                 <Container>Filters</Container>
-              </Block>
+              </Block> */}
               <Table size="fullwidth">
                 <thead>
                   <tr>
