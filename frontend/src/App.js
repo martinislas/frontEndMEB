@@ -15,6 +15,9 @@ import AdminApplicants from "./pages/AdminApplicants";
 import Admin from "./pages/AdminAdmin";
 import Admins from "./pages/AdminAdmins";
 import PageNotFound from "./pages/PageNotFound";
+// import Services from "./pages/Services";
+import ContactUs from "./pages/ContactUs";
+import AboutUs from "./pages/AboutUs";
 
 function App() {
   return (
@@ -105,6 +108,9 @@ function App() {
         />
         <Route path="/jobs/:id" element={<JobDetails />} />
         <Route path="/jobs" element={<Jobs />} />
+        <Route path="/contact" element={<ContactUs />} />
+        {/* <Route path="/services" element={<Services />} /> */}
+        <Route path="/about" element={<AboutUs />} />
         <Route path="/" element={<Landing />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>

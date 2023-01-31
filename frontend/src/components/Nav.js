@@ -12,10 +12,10 @@ function Nav() {
       <Navbar.Menu>
         <Navbar.Container align="right">
           <Navbar.Item href="/">Home</Navbar.Item>
-          {/* <Navbar.Item href="/jobs">Jobs</Navbar.Item>
-          <Navbar.Item href="/jobs">Job Seeker Advice</Navbar.Item>
-          <Navbar.Item href="/jobs">For Employers</Navbar.Item>
-          <Navbar.Item>Applicants</Navbar.Item> */}
+          <Navbar.Item href="/contact">Contact Us</Navbar.Item>
+          {/* <Navbar.Item href="/services">Services</Navbar.Item> */}
+          <Navbar.Item href="/jobs">Jobs</Navbar.Item>
+          <Navbar.Item href="/about">About Us</Navbar.Item>
         </Navbar.Container>
       </Navbar.Menu>
     </Navbar>

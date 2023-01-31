@@ -50,7 +50,7 @@ function SiteFooter() {
         </Columns>
         <hr />
         <Content style={{ textAlign: "center" }}>
-          <FontAwesomeIcon icon={faCopyright} /> 2022
+          <FontAwesomeIcon icon={faCopyright} /> 2023
         </Content>
       </Container>
     </Footer>
