@@ -5,14 +5,53 @@ import {
   Container,
   Heading,
   Hero,
+  Icon,
   Image,
   Level,
 } from "react-bulma-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import SiteFooter from "../components/Footer";
 import Nav from "../components/Nav";
 import Logo from "../landingLogo.png";
+import useContentful from "../hooks/useContentful";
+
+const query = `query {
+  landing(id: "6tngxuPAoAgIMrZbi8W9L0") {
+    title
+    subTitle
+    cta
+    jobsButton
+    contactUsButton
+  }
+}`;
 
 function Landing() {
+  let { data } = useContentful(query);
+
+  if (!data) {
+    return (
+      <div>
+        <Nav />
+        <Hero size="fullheight" hasNavbar>
+          <Hero.Header />
+          <Hero.Body>
+            <Container textAlign="center">
+              <Heading spaced>Welcome to MEB Resources</Heading>
+              <Icon align="center">
+                <FontAwesomeIcon icon={faSpinner} className={"fa-spin"} />
+              </Icon>
+              Fetching content...
+            </Container>
+          </Hero.Body>
+          <Hero.Footer>
+            <SiteFooter />
+          </Hero.Footer>
+        </Hero>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Nav />
@@ -25,15 +64,12 @@ function Landing() {
             </Columns.Column>
             <Columns.Column size="half">
               <Container>
-                <Heading spaced>MEB Resources</Heading>
+                <Heading spaced>{data.landing.title}</Heading>
                 <Heading size={2} subtitle spaced>
-                  We provide staffing management and HR consulting in Rochester,
-                  Austin and St. Cloud MN.
+                  {data.landing.subTitle}
                 </Heading>
                 <Heading size={4} subtitle spaced>
-                  We work here. We live here. We're committed to providing great
-                  service to the clients we serve as well as the candidates and
-                  employees we partner with.
+                  {data.landing.cta}
                 </Heading>
                 <Level>
                   <Level.Side align="left">
@@ -45,7 +81,7 @@ function Landing() {
                         size="large"
                         rounded
                       >
-                        Check our latest openings
+                        {data.landing.jobsButton}
                       </Button>
                     </Level.Item>
                     <Level.Item>
@@ -55,7 +91,7 @@ function Landing() {
                         size="large"
                         rounded
                       >
-                        Contact us
+                        {data.landing.contactUsButton}
                       </Button>
                     </Level.Item>
                   </Level.Side>
