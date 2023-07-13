@@ -769,6 +769,21 @@ ul.actions {
 }
 
 @media screen and (max-width: 980px) {
+    .wrapper.style1{
+        padding: 0 0 2em 0em;
+        margin: 0em;
+    }
+    
+    .wrapper.style2{
+        padding: 0 0 2em 0em;
+        margin: 0em;
+    }
+    
+    .wrapper.style3 {
+        padding: 3em;
+    }
+    
+    
     .wrapper.style4 .inner{
         grid-template-columns: 1fr;
         justify-content: center;
@@ -861,7 +876,12 @@ ul.actions {
 	height: 20em;
     background-image: url(b4.jpeg);
     width: 45%;
+    }
 
+    @media screen and (max-width: 980px) {
+        .spotlight .image {
+            height: 10em;
+        }
     }
 
     .spotlight .image.one{
