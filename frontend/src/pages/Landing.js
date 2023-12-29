@@ -1,20 +1,11 @@
-import "bulma/css/bulma.min.css";
-import {
-  Button,
-  Columns,
-  Container,
-  Heading,
-  Hero,
-  Icon,
-  Image,
-  Level,
-} from "react-bulma-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import SiteFooter from "../components/Footer";
-import Nav from "../components/Nav";
-import Logo from "../landingLogo.png";
-import useContentful from "../hooks/useContentful";
+import React from 'react';
+import { Button, Col, Container, Image, Row } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import SiteFooter from '../components/Footer';
+import Nav from '../components/Nav';
+import Logo from '../landingLogo.png';
+import useContentful from '../hooks/useContentful';
 
 const query = `query {
   landing(id: "6tngxuPAoAgIMrZbi8W9L0") {
@@ -33,21 +24,14 @@ function Landing() {
     return (
       <div>
         <Nav />
-        <Hero size="fullheight" hasNavbar>
-          <Hero.Header />
-          <Hero.Body>
-            <Container textAlign="center">
-              <Heading spaced>Welcome to MEB Resources</Heading>
-              <Icon align="center">
-                <FontAwesomeIcon icon={faSpinner} className={"fa-spin"} />
-              </Icon>
-              Fetching content...
-            </Container>
-          </Hero.Body>
-          <Hero.Footer>
-            <SiteFooter />
-          </Hero.Footer>
-        </Hero>
+        <div className="d-flex align-items-center justify-content-center vh-100">
+          <Container>
+            <h1 className="text-center mb-4" >Welcome to MEB Resources</h1>
+            <FontAwesomeIcon icon={faSpinner} className="fa-spin mb-2" />
+            <p className="text-center">Fetching content...</p>
+          </Container>
+        </div>
+        <SiteFooter />
       </div>
     );
   }
@@ -55,55 +39,50 @@ function Landing() {
   return (
     <div>
       <Nav />
-      <Hero size="fullheight" hasNavbar>
-        <Hero.Header />
-        <Hero.Body>
-          <Columns vCentered>
-            <Columns.Column size="half">
-              <Image src={Logo} />
-            </Columns.Column>
-            <Columns.Column size="half">
+      <div className="d-flex align-items-center justify-content-center vh-100 hero-text">
+        <Container>
+          <Row>
+            <Col xs={12} md={6}>
+              <Image src={Logo} fluid />
+            </Col> 
+            
+
+            <Col xs={12} md={6}>
               <Container>
-                <Heading spaced>{data.landing.title}</Heading>
-                <Heading size={2} subtitle spaced>
-                  {data.landing.subTitle}
-                </Heading>
-                <Heading size={4} subtitle spaced>
-                  {data.landing.cta}
-                </Heading>
-                <Level>
-                  <Level.Side align="left">
-                    <Level.Item>
-                      <Button
-                        renderAs="a"
-                        href={"/jobs"}
-                        color="primary"
-                        size="large"
-                        rounded
-                      >
-                        {data.landing.jobsButton}
-                      </Button>
-                    </Level.Item>
-                    <Level.Item>
-                      <Button
-                        renderAs="a"
-                        href={"/contact"}
-                        size="large"
-                        rounded
-                      >
-                        {data.landing.contactUsButton}
-                      </Button>
-                    </Level.Item>
-                  </Level.Side>
-                </Level>
+                <h1 className="mb-4 ">{data.landing.title}</h1>
+                <h2 className="mb-4">{data.landing.subTitle}</h2>
+                <h4 className="mb-4">{data.landing.cta}</h4>
+                <div className="d-flex justify-content-center">
+                                   
+                    <Button
+                      as="a"
+                      href="/jobs"
+                      size="lg"
+                      className="mr-3 ligth btn btn-primary bg-white text-dark border border-none"
+                    >
+                     
+                    {data.landing.jobsButton}
+                  </Button>
+
+                  <Button
+                      as="a"
+                      href="/contact"
+                      size="lg"
+                      className="mr-3 ligth btn btn-primary bg-white text-dark border border-none"
+
+                    >
+                     
+                    {data.landing.contactUsButton}
+                  </Button>
+                  
+                </div>
+                
               </Container>
-            </Columns.Column>
-          </Columns>
-        </Hero.Body>
-        <Hero.Footer>
-          <SiteFooter />
-        </Hero.Footer>
-      </Hero>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+      <SiteFooter />
     </div>
   );
 }

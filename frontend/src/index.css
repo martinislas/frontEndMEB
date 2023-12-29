@@ -11,3 +11,135 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Navbar Starts */
+.nav-bar{
+  font-family: Nunito, sans-serif;
+  padding: 1.5rem 15rem;
+  background-color: rgba(255, 217, 198, 255);
+ 
+}
+.navbar-brand{
+  min-width: none;
+  font-size: 2.5rem;
+  font-weight: 1000;
+  color: #ee7a00;
+}
+
+#responsive-navbar-nav{
+  border: none;
+}
+
+.navbar-toggler {
+  background-color: transparent; 
+  border: none
+}
+
+.navbar-toggler :focus {
+  text-decoration: none;
+  outline: 0;
+  box-shadow: none;
+  border-radius: none;
+  border: none;
+}
+
+@media (max-width: 1201px) {
+  .nav-bar{
+    padding: 1rem;
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-brand{
+    
+    font-size: 2rem;
+  }
+
+}
+
+.mr-3{
+  font-weight: 700;
+  color: black;
+}
+
+/* Navbar Ends */
+
+/* Footar Starts*/
+
+.footer{
+  font-family: Nunito, sans-serif;
+  padding: 1.5rem 15rem!important;
+  background-color: #ee7a00!important;
+  color: azure;
+}
+@media (max-width: 780px) {
+  .footer{
+    padding: 3rem!important;
+    text-align: center;
+    
+  }
+
+}
+.footer .mx-2{
+  color: azure;
+  font-size: 1.5rem;
+}
+.footer h3{
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.footer h5{
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.footer .mx-2:hover{
+  color: rgb(217, 198, 255);
+}
+/* Footar Ends*/
+
+/* Hero Starts */
+.hero-text{
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 217, 198, 255);
+  /*background-image: url(./landingLogo.png);*/
+  background-size: 45em;
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+.hero-text h1{
+  font-family: Nunito, sans-serif;
+  font-size: 4rem;
+  font-weight: 900;
+}
+
+.hero-text h2{
+  font-family: Nunito, sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.hero-text h4{
+  font-family: Nunito, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+
+@media (max-width: 780px) {
+  .hero-text{
+    background-size: 18em;
+    background-position: top;
+  }
+
+  .hero-text h2{
+    margin: 2em;
+  }
+  
+}
+/* Hero Ends */
