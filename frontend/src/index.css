@@ -167,7 +167,7 @@ code {
 }
 /* Hero Ends */
 
-/* Wow Effects */
+/* Wow Effects Start */
 .wow.slideUp {
   animation-name: slideUp;
   animation-duration: 1s;
@@ -183,4 +183,18 @@ code {
     transform: none;
   }
 }
+/* Wow Effects Ends*/
 
+/* Contact starts*/
+
+.hyperlink {
+  color: #4a4a4a;
+  text-decoration: none;
+  transition: letter-spacing 0.3s ease-in-out;
+}
+
+.hyperlink:hover {
+  letter-spacing: 2px;
+}
+
+/* Contact ends */
