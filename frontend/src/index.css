@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: rgba(255, 217, 198, 255);
 }
 
 code {
@@ -16,8 +17,6 @@ code {
 .nav-bar{
   font-family: Nunito, sans-serif;
   padding: 1.5rem 15rem;
-  background-color: rgba(255, 217, 198, 255);
- 
 }
 .navbar-brand{
   min-width: none;
@@ -63,15 +62,23 @@ code {
   color: black;
 }
 
+.nav-bar .nav-link {
+  transition: color 0.5s ease-in-out; /* Add transition property for smooth color change */
+}
+
+.nav-bar .nav-link:hover {
+  color: #ee7a00; /* hover color */
+}
 /* Navbar Ends */
 
-/* Footar Starts*/
+/* Footer Starts*/
 
 .footer{
   font-family: Nunito, sans-serif;
   padding: 1.5rem 15rem!important;
   background-color: #ee7a00!important;
   color: azure;
+  position: relative
 }
 @media (max-width: 780px) {
   .footer{
@@ -98,18 +105,18 @@ code {
 .footer .mx-2:hover{
   color: rgb(217, 198, 255);
 }
-/* Footar Ends*/
+/* Footer Ends*/
 
 /* Hero Starts */
 .hero-text{
-  text-align: center;
+  text-align: left;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 217, 198, 255);
   /*background-image: url(./landingLogo.png);*/
   background-size: 45em;
   background-repeat: no-repeat;
   background-position: left;
+  padding: 0 0 3rem 0;
 }
 
 .hero-text h1{
@@ -130,11 +137,17 @@ code {
   font-weight: 700;
 }
 
+.hero-button{
+  margin-top: 2em;
+  border-color: transparent;
+}
 
 @media (max-width: 780px) {
   .hero-text{
     background-size: 18em;
     background-position: top;
+    text-align: center;
+
   }
 
   .hero-text h2{
@@ -142,4 +155,32 @@ code {
   }
   
 }
+
+.hero-button {
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Add transition properties for smooth background color and text color change */
+}
+
+.hero-button:hover {
+  background-color: #ee7a00!important; /* Change the background color to your desired hover color */
+  color: whitesmoke !important; /* Change the text color to your desired hover color and add !important to override any other CSS styles */
+  border-color: transparent !important; /* Optional: Set the border color to transparent to remove the border when hovering */
+}
 /* Hero Ends */
+
+/* Wow Effects */
+.wow.slideUp {
+  animation-name: slideUp;
+  animation-duration: 1s;
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+

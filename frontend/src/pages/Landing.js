@@ -39,7 +39,7 @@ function Landing() {
   return (
     <div>
       <Nav />
-      <div className="d-flex align-items-center justify-content-center vh-100 hero-text">
+      <div className="d-flex min-vh-100 hero-text wow slideUp">
         <Container>
           <Row>
             <Col xs={12} md={6}>
@@ -49,16 +49,16 @@ function Landing() {
 
             <Col xs={12} md={6}>
               <Container>
-                <h1 className="mb-4 ">{data.landing.title}</h1>
+                <h1 className="mb-4">{data.landing.title}</h1>
                 <h2 className="mb-4">{data.landing.subTitle}</h2>
                 <h4 className="mb-4">{data.landing.cta}</h4>
-                <div className="d-flex justify-content-center">
+                <div className="d-flex justify-content-center ">
                                    
                     <Button
-                      as="a"
+                      aas="a"
                       href="/jobs"
                       size="lg"
-                      className="mr-3 ligth btn btn-primary bg-white text-dark border border-none"
+                      className="mr-3 light btn btn-primary bg-white text-dark border border-none hero-button"
                     >
                      
                     {data.landing.jobsButton}
@@ -68,7 +68,7 @@ function Landing() {
                       as="a"
                       href="/contact"
                       size="lg"
-                      className="mr-3 ligth btn btn-primary bg-white text-dark border border-none"
+                      className="mr-3 light btn btn-primary bg-white text-dark border border-none hero-button"
 
                     >
                      
@@ -82,8 +82,12 @@ function Landing() {
           </Row>
         </Container>
       </div>
+      <script>
+        new WOW().init();
+      </script>
       <SiteFooter />
     </div>
+    
   );
 }
 
